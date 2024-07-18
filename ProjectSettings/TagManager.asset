@@ -3,19 +3,29 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Destination
+  - Panel
+  - Npc
+  - Buildings
+  - Button
+  - Job
+  - Ear
+  - Assign
+  - NpcDummy
+  - Hellper
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - postProcessing
   - Water
   - UI
+  - Button1
   - 
   - 
   - 
-  - 
-  - 
+  - Load
   - 
   - 
   - 
@@ -40,4 +50,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 959034137
     locked: 0

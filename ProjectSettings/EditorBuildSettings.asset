@@ -4,5 +4,44 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/BJH/01_Scenes/01_LoginScene.unity
+    guid: 7487589558c94ed45886f4617d33b0c0
+  - enabled: 0
+    path: Assets/Main/loginScene.unity
+    guid: 20d3c69ed11dfa1498af8c702c425cb2
+  - enabled: 1
+    path: Assets/BJH/01_Scenes/CharacterCustom.unity
+    guid: f8de6efe0f6710d45acfc530e6ab772b
+  - enabled: 1
+    path: Assets/Main/Intro.unity
+    guid: 7182d877ff7b0e44fb46591f3cde252e
+  - enabled: 1
+    path: Assets/BJH/01_Scenes/03_GameScene.unity
+    guid: d2c418f8cca9ba2489356fa6113b95db
+  - enabled: 0
+    path: Assets/Main/GameSecne_Beta_Main.unity
+    guid: ac27a6d10166e5c4dab1f5af82743d0a
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(Success).unity
+    guid: 656d754161ff50748b31a35efc34571a
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(npc02_Fail).unity
+    guid: 1eefa39613b7c794e8833c5a45036c5e
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(npc03_Fail).unity
+    guid: df27be9034428b848b8e94e326850fb2
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(npc04_Fail).unity
+    guid: 1f9d3cf53cc9f274aac249b94db055bd
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(npc05_Fail).unity
+    guid: 23a81373ac356dc43a815aa3f3033fb2
+  - enabled: 1
+    path: Assets/Main/KJY_Test_Ending(npc06_Fail).unity
+    guid: 5e8c9c515d912a64392e54f8efa794b2
   m_configObjects: {}
