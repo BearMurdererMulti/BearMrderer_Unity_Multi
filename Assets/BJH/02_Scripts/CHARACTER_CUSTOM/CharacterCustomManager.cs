@@ -8,7 +8,12 @@ public class CharacterCustomManager : MonoBehaviour
    [SerializeField] private List<Button> bodyButtons = new List<Button>();
 
     [SerializeField] private CharacterCustom_new characterCustom;
-    
+
+    // 플레이어 회전
+    [SerializeField] private Transform playerTransform; // 캐릭터 Transform
+    private float rotationDuration; // 회전하는 시간
+    private Vector3 targetRotationEuler; // 목표 회전값
+
     public void OnClickCustomButton(string keyName)
     {
         int buttonNumber = int.Parse(UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name);
@@ -17,6 +22,39 @@ public class CharacterCustomManager : MonoBehaviour
 
     public void OnClickCategory(int index)
     {
+        // 꼬리 인덱스는 캐릭터 뒤로 돌리기
+        if(index == 4)
+        {
+            rotationDuration = 1f;
+            targetRotationEuler = new Vector3(0, 350, 0);
+            StartCoroutine(CoRotateCharater(targetRotationEuler, rotationDuration));
+        }
+        else
+        {
+            rotationDuration = 1f;
+            targetRotationEuler = new Vector3(0, 150, 0);
+            StartCoroutine(CoRotateCharater(targetRotationEuler, rotationDuration));
+        }
         characterCustom.ActiveCategoryContent(index);
+    }
+
+    IEnumerator CoRotateCharater(Vector3 targetRotation, float duration)
+    {
+        Quaternion initialRotation = playerTransform.rotation; //초기 회전값
+        Quaternion finalRotation = Quaternion.Euler(targetRotation); // 목표 회전값
+
+        float time = 0f;
+
+        while(time < duration)
+        {
+            time += Time.deltaTime;
+
+            playerTransform.rotation = Quaternion.Slerp(initialRotation, finalRotation, time/duration);
+
+            // 한 프레임 대기
+            yield return null;
+        }
+
+        playerTransform.rotation = finalRotation;
     }
 }
