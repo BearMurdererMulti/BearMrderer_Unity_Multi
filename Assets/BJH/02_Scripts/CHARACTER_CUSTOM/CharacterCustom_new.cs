@@ -26,18 +26,27 @@ public class CharacterCustom_new : MonoBehaviour
     
 
     private Dictionary<string, int> customDictionary = new Dictionary<string, int>();
+    [SerializeField] List<GameObject> contents = new List<GameObject>();
+    private int preContentIndex;
+
+    [SerializeField] private ScrollRect scrollRect;
+
+    private void Start()
+    {
+        contents[0].SetActive(true);
+        preContentIndex = 0;
+        for (int i = 1; i < contents.Count; i++)
+        {
+            contents[i].SetActive(false);
+        }
+    }
 
     // 커스텀 기능을 수행하는 버튼이 없으면
     // Instantiate해주는 버튼
-    private void InstantiateCustomButton()
-    {
-        
-    }
-
-    internal void SetCustomDictionary(string keyName, int type)
+    internal void SetCustomDictionary(string keyName, int index)
     {
         // 딕셔너리 설정
-        customDictionary[keyName] = type;
+        customDictionary[keyName] = index;
 
         // 캐릭터에 적용
         var material = bodyRenderer.material; // 임시
@@ -46,49 +55,51 @@ public class CharacterCustom_new : MonoBehaviour
         {
             case "body":
                 material = bodyRenderer.material;
-                material = bodyMaterials[type];
+                material = bodyMaterials[index];
                 bodyRenderer.material = material;
 
                 material = earsRenderer.material;
-                material = bodyMaterials[type];
+                material = bodyMaterials[index];
                 earsRenderer.material = material;
 
                 material = tailRenderer.material;
-                material = bodyMaterials[type];
+                material = bodyMaterials[index];
                 tailRenderer.material = material;
                 break;
             case "eyes":
-                material = eyesRenderer.material;
-                material = eyesMaterials[type];
-                eyesRenderer.material = material;
+                var materials = eyesRenderer.materials;
+                materials[0] = eyesMaterials[index];
+                materials[1] = eyesMaterials[index];
+                eyesRenderer.materials = materials;
                 break;
             case "ears":
                 mesh = earsRenderer.sharedMesh;
-                mesh = earsMesh[type];
+                mesh = earsMesh[index];
                 earsRenderer.sharedMesh = mesh;
                 break;
             case "mouth":
                 material = mouthRenderer.material;
-                material = mouthMaterials[type];
+                material = mouthMaterials[index];
                 mouthRenderer.material = material;
                 break;
             case "tail":
                 mesh = tailRenderer.sharedMesh;
-                mesh = tailMesh[type];
+                mesh = tailMesh[index];
                 tailRenderer.sharedMesh = mesh;
                 break;
         }
     }
 
+    internal void ActiveCategoryContent(int index)
+    {
+        if(preContentIndex == index)
+        {
+            return;
+        }
 
-
-    [SerializeField] Button bodyButton;
-    [SerializeField] Button eyesButton;
-    [SerializeField] Button earsButton;
-    [SerializeField] Button mouthButton;
-    [SerializeField] Button tailButton;
-
-
-
-
+        contents[preContentIndex].SetActive(false);
+        preContentIndex = index;
+        contents[preContentIndex].SetActive(true);
+        scrollRect.content = contents[index].GetComponent<RectTransform>();
+    }
 }
