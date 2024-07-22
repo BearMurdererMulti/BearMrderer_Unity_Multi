@@ -118,8 +118,6 @@ public class CharacterCustom : MonoBehaviour
 
 
 
-
-
     //// Ä³¸¯ÅÍ
     //public Transform characterTr;
     //public Transform tailTr;
