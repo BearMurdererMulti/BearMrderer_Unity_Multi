@@ -36,9 +36,8 @@ public class PlayerMove_BJH : MonoBehaviour
 
         if(dir.magnitude >= 0.1f) // 벡터의 크기
         {
-            // 이동 = 현재 위치 + (방향 * 속도 * Time.DeltaTime)
-            // 현재 위치 += 방향 * 속도 * Time.DeltaTime
-            rigid.MovePosition(transform.position + dir * speed * Time.deltaTime);
+            transform.position += dir * speed * Time.deltaTime;
+            //rigid.MovePosition(transform.position + dir * speed * Time.deltaTime);
         }
     }
 
@@ -52,7 +51,7 @@ public class PlayerMove_BJH : MonoBehaviour
         if (dir.magnitude >= 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(dir); // 목표 회전값 계산
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotSpeed);
         }
     }
 

@@ -1023,8 +1023,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27340e42f47b7364eb8ab92ddcac1a12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  rotSpeed: 3
+  speed: 5
+  rotSpeed: 5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!54 &8768060074490918673
 Rigidbody:
   m_ObjectHideFlags: 0
