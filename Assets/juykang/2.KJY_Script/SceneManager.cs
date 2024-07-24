@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -9,6 +10,12 @@ public class SceneManager : MonoBehaviour
     //유저 토큰을 DontDestroy -> 유저
     //게임 매니저를 로그인
     public static SceneManager instance;
+
+    public enum SceneName
+    {
+        LeaderRoomScene,
+        PostmanLoadingScene,
+    }
 
     private void Awake()
     {
@@ -32,19 +39,10 @@ public class SceneManager : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(num);
     }
 
-
-    public void ChangeMainScene()
+    public void ChangeScene(SceneName scene)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(3);
-    }
+        string sceneName = scene.ToString();
 
-    public void ChangeWinScene()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(3);
-    }
-
-    public void ChangeLoseScene()
-    {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(4);
+        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 }
