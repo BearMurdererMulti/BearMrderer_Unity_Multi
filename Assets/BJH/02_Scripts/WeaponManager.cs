@@ -8,7 +8,6 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private List<Transform> weaponSpawnPoints = new List<Transform>();
     [SerializeField] private List<int> generatedNumbers = new List<int>();
 
-
     private void Awake()
     {
         ReplaceWeapons(weaponList.Count);
