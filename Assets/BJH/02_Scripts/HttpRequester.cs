@@ -3,6 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+
+public enum RequestType
+{
+    GET,
+    POST,
+    PUT,
+    DELETE
+}
+
 public class HttpRequester : MonoBehaviour
 {
 
