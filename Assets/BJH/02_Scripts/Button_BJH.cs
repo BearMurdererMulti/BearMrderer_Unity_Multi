@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
-public class Button_BJH : MonoBehaviour
+public class Button_BJH : Button
 {
     public void OnclickClose(GameObject go)
     {
@@ -13,6 +14,11 @@ public class Button_BJH : MonoBehaviour
         {
             UI.instance.dicChatHistoryState[go.name] = go.activeSelf;
         }
+    }
+
+    public void OnClickCloseAndOpen(GameObject go)
+    {
+        go.SetActive(!go.activeSelf);
     }
 
     public void OnClickNextScene()
