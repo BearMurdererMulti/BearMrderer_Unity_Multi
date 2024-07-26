@@ -9,7 +9,12 @@ public class WeaponPicker : MonoBehaviour
     [SerializeField] private Button pickButton;
     [SerializeField] private float outlineWidth;
     [SerializeField] private Color outlineColor;
-    [SerializeField] private GameObject pickedWeapon;
+    private GameObject pickedWeapon;
+    
+    [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
+    [SerializeField] private InventoryItems inventoryItems; // 하이어라키에 있는 canvas > inventoryItems를 assign
+    //[SerializeField] private Dictionary<string, Sprite> dicWeaponSprite = new Dictionary<string, Sprite>();
+
 
     private void Start()
     {
@@ -34,8 +39,6 @@ public class WeaponPicker : MonoBehaviour
 
         if (renderer.enabled && other.CompareTag("Weapon"))
         {
-            Debug.Log("무기네요");
-
             Material[] materials = renderer.materials;
 
             foreach (var material in materials)
@@ -69,6 +72,16 @@ public class WeaponPicker : MonoBehaviour
 
     public void AddWeaponInInventory()
     {
-        pickedWeapon.gameObject.SetActive(false);
+        pickedWeapon.gameObject.SetActive(false); // 찾은 오브젝트 비활성화
+
+        foreach (var sprite in weaponSprites)
+        {
+            if(pickedWeapon.name == sprite.name)
+            {
+                Debug.Log("일치하는 이름의 sprite를 찾았습니다!");
+                WeaponManager.Instance.UpdateInventoryImage(sprite);
+                break;
+            }
+        }
     }
 }
