@@ -84,16 +84,17 @@ public class InfoManagerKJY : MonoBehaviour
 
     // 변지환이 추가함
     [Header("캐릭터 커스텀")]
-    public string head;
-    public string eye;
-    public string mouth;
-    public string ear;
-    public string body;
-    public string tail;
+    public int head;
+    public int eye;
+    public int mouth;
+    public int ear;
+    public int body;
+    public int tail;
 
     //NpcCustomList
     public List<NpcCustomInfos> npcCustomLists = new List<NpcCustomInfos>();
 
+    public string role;
 
     public void loginDTO()
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BJH_Collider : MonoBehaviour
+public class Collider_BJH : MonoBehaviour
 {
     public bool isTalking = false;
     private void OnTriggerEnter(UnityEngine.Collider other)
@@ -14,13 +14,13 @@ public class BJH_Collider : MonoBehaviour
         //    return;
         //}
 
-        if (other.gameObject.CompareTag("Npc") && other.gameObject.name != gameObject.name && other.gameObject.GetComponent<BJH_Collider>().isTalking == false && isTalking == false)
+        if (other.gameObject.CompareTag("Npc") && other.gameObject.name != gameObject.name && other.gameObject.GetComponent<Collider_BJH>().isTalking == false && isTalking == false)
         {
             // 내가 상대와 닿이면?
             // 나를 대화중인 상태로 변경하고
             // 걷기를 멈추며, 서로를 바라본다.
             isTalking = true;
-            other.gameObject.GetComponent<BJH_Collider>().isTalking = true;
+            other.gameObject.GetComponent<Collider_BJH>().isTalking = true;
 
             gameObject.GetComponent<NPC>().isWalking = false;
             other.gameObject.GetComponent<NPC>().isWalking = false;
@@ -47,7 +47,7 @@ public class BJH_Collider : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
 
-        go.GetComponent<BJH_Collider>().isTalking = false;
+        go.GetComponent<Collider_BJH>().isTalking = false;
         go.GetComponent<NPC>().isWalking = true;
 
 

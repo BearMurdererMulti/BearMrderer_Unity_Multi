@@ -41,8 +41,8 @@ public class KJY_TestHttpManager : MonoBehaviour
             case RequestType.GET:
                 request = UnityWebRequest.Get(requester.url);
                 request.SetRequestHeader("Content-Type", "application/json");
-
                 break;
+
             case RequestType.POST:
                 request = UnityWebRequest.PostWwwForm(requester.url, requester.body);
 
@@ -64,7 +64,15 @@ public class KJY_TestHttpManager : MonoBehaviour
         }
         else
         {
-            requester.Complete(request.downloadHandler);
+            // 오류를 디버깅하기 위해 기록
+            Debug.LogError($"Error: {request.error}");
+            Debug.LogError($"Response Code: {request.responseCode}");
+
+            // 오류 UI를 표시하기 위한 Fail Coroutine 호출
+            StartCoroutine(Fail());
+
+            // 선택사항: 요청자에게 더 많은 피드백 제공
+            requester.Complete(null); // null 또는 오류 메시지를 전달
         }
     }
 

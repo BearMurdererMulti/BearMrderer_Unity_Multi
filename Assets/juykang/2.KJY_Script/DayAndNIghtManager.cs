@@ -346,7 +346,8 @@ public class DayAndNIghtManager : MonoBehaviour
         }
         else
         {
-            KJY_SceneManager.instance.ChangeWinScene();
+            //KJYKJYKJY
+            //KJY_SceneManager.instance.ChangeWinScene();
         }
     }
 

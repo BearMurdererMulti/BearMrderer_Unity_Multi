@@ -7,7 +7,7 @@ using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using UnityEngine;
 
-[RequireComponent(typeof(BJH_Collider))]
+[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
 public class ProximityVoiceTrigger : VoiceComponent
 {
@@ -55,7 +55,7 @@ public class ProximityVoiceTrigger : VoiceComponent
         }
     }
 
-    private void OnTriggerEnter(BJH_Collider other)
+    private void OnTriggerEnter(Collider_BJH other)
     {
         if (this.IsLocalCheck())
         {
@@ -80,7 +80,7 @@ public class ProximityVoiceTrigger : VoiceComponent
         }
     }
 
-    private void OnTriggerExit(BJH_Collider other)
+    private void OnTriggerExit(Collider_BJH other)
     {
         if (this.IsLocalCheck())
         {

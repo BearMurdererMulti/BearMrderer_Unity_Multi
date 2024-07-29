@@ -36,7 +36,7 @@ public class CharacterCustom : MonoBehaviour
             materials[0] = newMaterial;
 
             dollBody.GetComponent<SkinnedMeshRenderer>().materials = materials;
-            InfoManagerKJY.instance.body = newMaterial.name; // body¶û color µ¿ÀÏ½Ã
+            //InfoManagerKJY.instance.body = newMaterial.name; // body¶û color µ¿ÀÏ½Ã
         }
     }
 
@@ -63,7 +63,7 @@ public class CharacterCustom : MonoBehaviour
             }
 
             tailList[i].SetActive(true);
-            InfoManagerKJY.instance.tail = tailList[i].name;
+            //InfoManagerKJY.instance.tail = tailList[i].name;
 
             preTail = tailList[i].name;
             

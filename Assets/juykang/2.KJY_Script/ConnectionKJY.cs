@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,19 +37,19 @@ public class SaveSetting
     public string url;
 
     // 변지환이 추가함
-    public Custom userCustom;
+    //public Custom userCustom;
     public List<NpcCustomInfos> npcCustomInfos;
 }
 
-public class Custom
-{
-    public string head;
-    public string eye;
-    public string mouth;
-    public string ear;
-    public string body;
-    public string tail;
-}
+//public class Custom
+//{
+//    public string head;
+//    public string eye;
+//    public string mouth;
+//    public string ear;
+//    public string body;
+//    public string tail;
+//}
 
 [System.Serializable]
 public class CheckLists
@@ -181,8 +182,6 @@ public class RegisterRequest
     public string account;
     public string password;
     public string nickname;
-    public string name;
-    public string email;
 }
 
 [System.Serializable]
@@ -195,7 +194,7 @@ public class RegisterMessage
 public struct StrTryRegister
 {
     public string url;
-    public string account, password, nickname, name, email;
+    public string account, password, nickname;
 }
 
 [System.Serializable]
@@ -217,8 +216,6 @@ public class TryResgister : ConnectionStratege
         this.account = str.account;
         this.password = str.password;
         this.nickname = str.nickname;
-        this.name = str.name;
-        this.email = str.email;
         CreateJson();
     }
 
@@ -228,8 +225,6 @@ public class TryResgister : ConnectionStratege
         request.account = this.account;
         request.password = this.password;
         request.nickname = this.nickname;
-        request.name = this.name;
-        request.email = this.email;
 
         string jsonData = JsonUtility.ToJson(request);
         OnGetRequest(jsonData);
@@ -312,12 +307,23 @@ public class LoginGameSetDTO
     public int gameDay;
     public string gmaeStatus;
     public string gameResult;
+    public List<Custom> custom;
+}
+
+[System.Serializable]
+public class Custom
+{
+    public int eyes;
+    public int mouth;
+    public int ears;
+    public int body;
+    public int tail;
 }
 
 public class TryLogin : ConnectionStratege
 {
     string url;
-    string account, password;
+    string account, password, nickname;
     ConnectionKJY kjy = GameObject.FindAnyObjectByType<ConnectionKJY>();
     
     public TryLogin(StrTryLogin str)
@@ -352,13 +358,13 @@ public class TryLogin : ConnectionStratege
         reponse = JsonUtility.FromJson<LoginResponse>(result.text);
 
         Debug.Log(reponse.resultCode);
+
         if (reponse.resultCode == "SUCCESS")
         {
             InfoManagerKJY.instance.userToken = reponse.message.token;
             InfoManagerKJY.instance.playerName = reponse.message.name;
             InfoManagerKJY.instance.nickname = reponse.message.nickname;
-            InfoManagerKJY.instance.loginGameSetDTO = reponse.message.loginGameSetDTO;
-            InfoManagerKJY.instance.SetSlot();
+
             kjy.loginUI.SetActive(false);
             kjy.mainUI.SetActive(true);
             kjy.mainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "PI. " + reponse.message.nickname;
@@ -446,84 +452,6 @@ public class TryAccountCheck : ConnectionStratege
             kjy.GetCheckMessage(response.message.message);
             kjy.Check();
             kjy.ResetAccount();
-        }
-    }
-}
-#endregion
-
-#region EmailCheck
-[System.Serializable]
-public class EmailCheckRequest
-{
-    public string email;
-}
-
-public struct StrTryEmailCheck
-{
-    public string url;
-    public string email;
-}
-
-[System.Serializable]
-public class EmailCheckResponse
-{
-    public string resultCode;
-    public EmailCheckMessage message;
-}
-
-[System.Serializable]
-public class EmailCheckMessage
-{
-    public string message;
-    public string answer;
-}
-
-public class TryEmailCheck : ConnectionStratege
-{
-    string url;
-    string email;
-    ConnectionKJY kjy = GameObject.FindAnyObjectByType<ConnectionKJY>();
-
-    public TryEmailCheck(StrTryEmailCheck str)
-    {
-        this.url = str.url;
-        this.email = str.email;
-        CreateJson();
-    }
-    public void CreateJson()
-    {
-        EmailCheckRequest request = new EmailCheckRequest();
-        request.email = this.email;
-
-        string jsonData = JsonUtility.ToJson(request);
-        OnGetRequest(jsonData);
-    }
-    public void OnGetRequest(string jsonData)
-    {
-        HttpRequester request = new HttpRequester();
-
-        request.Settting(RequestType.POST, this.url);
-        request.body = jsonData;
-        request.complete = Complete;
-
-        KJY_TestHttpManager.instance.SendRequest(request);
-    }
-    public void Complete(DownloadHandler result)
-    {
-        EmailCheckResponse response = new EmailCheckResponse();
-        response = JsonUtility.FromJson<EmailCheckResponse>(result.text);
-
-        kjy.emailCheck = true;
-        if (response.resultCode == "SUCCESS")
-        {
-            kjy.GetCheckMessage(response.message.answer);
-            kjy.Check();
-        }
-        else
-        {
-            kjy.GetCheckMessage(response.message.message);
-            kjy.Check();
-            kjy.ResetEmail();
         }
     }
 }
@@ -720,7 +648,8 @@ public class TrySenarioSetting : ConnectionStratege
         InfoManagerKJY.instance.crimeScene = reponse.message.crimeScene;
         InfoManagerKJY.instance.dailySummary = reponse.message.dailySummary;
 
-        KJY_SceneManager.instance.ChangeMainScene();
+        //KJYKJYKJY
+        //KJY_SceneManager.instance.ChangeMainScene();
     }
 }
 #endregion
@@ -840,7 +769,9 @@ public class TryIntroScenarioSetting : ConnectionStratege
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
         }
-        KJY_SceneManager.instance.ChangeScene(2);
+        //PhotonNetwork.LoadLevel(""); -> 언니씨네머신ㄴㄴ
+        //KJYKJYKJY
+        //KJY_SceneManager.instance.ChangeScene(2);
     }
 }
 
@@ -995,7 +926,8 @@ public class TryGameEndSetting : ConnectionStratege
         GameEndResponse reponse = new GameEndResponse();
         reponse = JsonUtility.FromJson<GameEndResponse>(result.text);
 
-        KJY_SceneManager.instance.ChangeLoseScene();
+        //KJYKJYKJY
+        // KJY_SceneManager.instance.ChangeLoseScene();
     }
 }
 #endregion
@@ -1107,13 +1039,13 @@ public class TryLoadSetting : ConnectionStratege
         {
             InfoManagerKJY.instance.body = response.message.gameSet.custom.body;
             InfoManagerKJY.instance.tail = response.message.gameSet.custom.tail;
-            InfoManagerKJY.instance.head = response.message.gameSet.custom.head;
-            InfoManagerKJY.instance.eye = response.message.gameSet.custom.eye;
+            InfoManagerKJY.instance.eye = response.message.gameSet.custom.eyes;
             InfoManagerKJY.instance.mouth = response.message.gameSet.custom.mouth;
-            InfoManagerKJY.instance.ear = response.message.gameSet.custom.ear;
+            InfoManagerKJY.instance.ear = response.message.gameSet.custom.ears;
         }
 
-        KJY_SceneManager.instance.ChangeMainScene();
+        //KJYKJYKJY
+        //KJY_SceneManager.instance.ChangeMainScene();
     }
 }
 #endregion
@@ -1202,30 +1134,18 @@ public class ConnectionKJY : MonoBehaviour
         TryNickNameCheck tryAccountCheck = new TryNickNameCheck(str);
     }
 
-    public void RequestEmailCheck()
-    {
-        StrTryEmailCheck str;
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-email";
-        str.email = email.text;
-
-        TryEmailCheck tryAccountCheck = new TryEmailCheck(str);
-    }
-
-
     #region Register
 
     public void OnclickSend() //요거 내껄로
     {
         
         StrTryRegister str;
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/register";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/register";
         str.account = account.text;
         str.password = password.text;
         str.nickname = nickname.text;
-        str.name = playerName.text;
-        str.email = email.text;
 
-        if (nickNameCheck == true && accountCheck == true && emailCheck == true)
+        if (nickNameCheck == true && accountCheck == true)
         {
             TryResgister tryResgister = new TryResgister(str);
         }
@@ -1234,11 +1154,6 @@ public class ConnectionKJY : MonoBehaviour
             if (accountCheck == false)
             {
                 GetCheckMessage("아이디 중복 체크를 하지 않았습니다.");
-                Check();
-            }
-            else if (emailCheck == false)
-            {
-                GetCheckMessage("이메일 중복 체크를 하지 않았습니다.");
                 Check();
             }
             else

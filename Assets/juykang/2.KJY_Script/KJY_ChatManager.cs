@@ -1,13 +1,14 @@
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class KJY_ChatManager : MonoBehaviourPun
 {
     //InputField 
-    public InputField chatInput;
+    public TMP_InputField chatInput;
 
     //ChatItem Prefab
     public GameObject chatItemFactory;
