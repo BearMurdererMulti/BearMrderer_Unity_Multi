@@ -12,12 +12,11 @@ public class KJY_LoginScnenUI : MonoBehaviour
     {
         if (InfoManagerKJY.instance.nickname == "")
         {
-            LoginUI.SetActive(true);
-            MainUI.SetActive(false);
+           LoginUI.SetActive(true);
+           MainUI.SetActive(false);
         }
         else
         {
-            print(InfoManagerKJY.instance.nickname);
             LoginUI.SetActive(false);
             MainUI.SetActive(true);
         }

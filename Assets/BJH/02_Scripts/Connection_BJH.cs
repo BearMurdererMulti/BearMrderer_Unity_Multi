@@ -398,7 +398,8 @@ public class SecretKeyConnect
             Debug.Log("시크릿키 인증이 완료되었습니다.");
             LoginSceneUI.instance.secretKeyG.SetActive(false);
 
-            KJY_SceneManager.instance.ChangeScene(1);
+            //KJYKJYKJY
+            //KJY_SceneManager.instance.ChangeScene(1);
         }
         else
         {

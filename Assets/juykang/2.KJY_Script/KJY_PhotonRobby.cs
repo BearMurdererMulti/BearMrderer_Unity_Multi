@@ -2,20 +2,23 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
 {
-    //Input Room Name
-    public InputField inputRoomName;
-    //Input Max Player
-    public InputField inputMaxPlayer;
-    //Input Password
-    public InputField inputPassword;
 
-    //방 참여 버튼
-    public Button btnJoinRoom;
+    public static KJY_PhotonRobby Instance;
+
+    //Input Room Name
+    public TMP_InputField inputRoomName;
+    //Input Psassword
+    public TMP_InputField inputPassword;
+    public Image checkImage;
+    public bool isPrivate = false;
+    private string nowRoomCode;
+
     //방 생성 버튼
     public Button btnCreateRoom;
 
@@ -24,62 +27,86 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     //RoomListView -> Content -> RectTransform
     public RectTransform rtContent;
 
+    //비밀번호 설정
+    private static readonly string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     //방 정보 가지고 있는 Dictionary
     Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
-        //방 참여, 생성 비활성화
-        btnJoinRoom.interactable = btnCreateRoom.interactable = false;
+        //방 생성 비활성화
+        btnCreateRoom.interactable = false;
         //inputRoomName 의 내용이 변경될 때 호출되는 함수
         inputRoomName.onValueChanged.AddListener(OnValueChangedRoomName);
-        //inputMaxPlayer 의 내용이 변경될 때 호출되는 함수
-        inputMaxPlayer.onValueChanged.AddListener(OnValueChangedMaxPlayer);
     }
 
     //참여 & 생성 버튼에 관여
     void OnValueChangedRoomName(string room)
     {
-        //참여 버튼 활성/ 비활성
-        btnJoinRoom.interactable = room.Length > 0;
         //생성 버튼 활성 / 비활성
-        btnCreateRoom.interactable = room.Length > 0 && inputMaxPlayer.text.Length > 0;
+        btnCreateRoom.interactable = room.Length > 0;
     }
 
-    //생성 버튼에 관여
-    void OnValueChangedMaxPlayer(string max)
+    public void IsRoomPrivate(bool isPrivates)
     {
-        btnCreateRoom.interactable = max.Length > 0 && inputRoomName.text.Length > 0;
+        if (isPrivate == true)
+        {
+            print("bbbs");
+            checkImage.enabled = false;
+            isPrivate = false;
+        }
+        else
+        {
+            print("aaa");
+            checkImage.enabled = true;
+            isPrivate = true;
+        }
     }
 
     public void CreateRoom()
     {
         //방 옵션을 설정 (최대 인원)
         RoomOptions option = new RoomOptions();
-        option.MaxPlayers = int.Parse(inputMaxPlayer.text);
         //방 목록에 보이게 하냐? 안하냐?
         option.IsVisible = true;
         //방에 참여할 수 있니? 없니?
         option.IsOpen = true;
+        option.MaxPlayers = 2;
 
         //custom 설정
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
         hash["room_name"] = inputRoomName.text;
         hash["map_idx"] = 2;
+        hash["room_master"] = InfoManagerKJY.instance.nickname;
+        hash["room_job"] = "탐정";
+        hash["room_code"] = "";
+        hash["is_private"] = false;
+        // 방의 사용자 정의 속성에 방 코드를 추가
+        if (isPrivate)
+        {
+            hash["is_private"] = true;
+            hash["room_code"] = GenerateRoomCode();
+        }
 
         //custom 설정을 option 에 셋팅
         option.CustomRoomProperties = hash;
 
         //custom 정보를 Lobby 에서 사용할 수 있게 설정
-        string[] customKeys = { "room_name", "map_idx"};
+        string[] customKeys = { "room_name", "room_master", "map_idx", "room_job", "room_code", "is_private"};
         option.CustomRoomPropertiesForLobby = customKeys;
 
         //특정 로비에 방 생성 요청
         //TypedLobby typedLobby = new TypedLobby("Meta Lobby", LobbyType.Default);
         //PhotonNetwork.CreateRoom(inputRoomName.text, option, typedLobby);
-
+        print("bssbs");
         //기본 로비에 방 생성 요청
-        PhotonNetwork.CreateRoom(inputRoomName.text + inputPassword.text, option);
+        PhotonNetwork.CreateRoom(inputRoomName.text, option);
     }
 
     //방 생성 완료시 호출 되는 함수
@@ -96,10 +123,28 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         print("방 생성 실패 : " + message);
     }
 
-    public void JoinRoom()
+    public void JoinRoomNotPrivate()
     {
+
         //방 입장 요청
-        PhotonNetwork.JoinRoom(inputRoomName.text + inputPassword.text);
+        PhotonNetwork.JoinRoom(inputRoomName.text);
+    }
+
+    public void JoinRoomPrivateSetting(string roomCode)
+    {
+        LoginSceneUI.instance.OnsecretKeyG();
+        //방 입장 요청
+        nowRoomCode = roomCode;
+    }
+
+    public void JoinRoomPrivate()
+    {
+        if (LoginSceneUI.instance.secretKeyInput.text == nowRoomCode)
+        {
+            //방 입장 요청
+            PhotonNetwork.JoinRoom(inputRoomName.text);
+            nowRoomCode = null;
+        }
     }
 
     // 방 입장 완료시 호출되는 함수
@@ -107,15 +152,16 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     {
         base.OnJoinedRoom();
         print("방 입장 완료");
-
+        print("방 입장 실패 : ");
         //GameScene 으로 이동
-        PhotonNetwork.LoadLevel("Room_KJY");
+        PhotonNetwork.LoadLevel("02_Room_KJY");
     }
 
     // 방 입장 실패시 호출되는 함수
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         base.OnJoinRoomFailed(returnCode, message);
+        print("방 입장 실패 : ");
         print("방 입장 실패 : " + message);
     }
 
@@ -171,12 +217,16 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
 
             //custom 정보 뽑아오자.
             string roomName = (string)(info.CustomProperties["room_name"]);
+            string roomMaster = (string)(info.CustomProperties["room_master"]);
+            string roomMasterJob = (string)(info.CustomProperties["room_job"]);
             int mapIdx = (int)(info.CustomProperties["map_idx"]);
+            bool isPrivate = (bool)(info.CustomProperties["is_pirvate"]);
+            string roomCode = (string)(info.CustomProperties["room_code"]);
 
             //만들어진 roomItem 에서 RoomItem 컴포넌트 가져온다.
             KJY_RoomItem roomItem = goRoomItem.GetComponent<KJY_RoomItem>();
             //가져온 컴포넌트가 가지고 있는 SetInfo 함수 실행
-            roomItem.SetInfo(roomName, InfoManagerKJY.instance.nickname ,info.PlayerCount, info.MaxPlayers);
+            roomItem.SetInfo(roomName, roomMaster, roomMasterJob,info.PlayerCount, info.MaxPlayers, isPrivate, roomCode);
             //RoomItem 이 클릭 되었을 때 호출되는 함수 등록
             roomItem.onChangeRoomName = OnChangeRoomNameField;
 
@@ -203,5 +253,26 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     public void OnChangeRoomNameField(string roomName)
     {
         inputRoomName.text = roomName;
+    }
+
+    //방 비밀번호 코드 생성
+    public static string GenerateRoomCode(int length = 4)
+    {
+        char[] code = new char[length];
+        System.Random random = new System.Random();
+
+        for (int i = 0; i < length; i++)
+        {
+            code[i] = characters[random.Next(characters.Length)];
+        }
+
+        return new string(code);
+    }
+
+    public void OnRoomReset()
+    {
+        inputRoomName.text = null;
+        isPrivate = false;
+        checkImage.enabled = false;
     }
 }
