@@ -55,7 +55,7 @@ public class ProximityVoiceTrigger : VoiceComponent
         }
     }
 
-    private void OnTriggerEnter(Collider_BJH other)
+    private void OnTriggerEnter(Collider other)
     {
         if (this.IsLocalCheck())
         {
@@ -80,7 +80,7 @@ public class ProximityVoiceTrigger : VoiceComponent
         }
     }
 
-    private void OnTriggerExit(Collider_BJH other)
+    private void OnTriggerExit(Collider other)
     {
         if (this.IsLocalCheck())
         {
