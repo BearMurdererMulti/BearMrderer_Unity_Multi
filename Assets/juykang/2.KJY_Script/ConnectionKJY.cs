@@ -323,7 +323,7 @@ public class Custom
 public class TryLogin : ConnectionStratege
 {
     string url;
-    string account, password, nickname;
+    string account, password;
     ConnectionKJY kjy = GameObject.FindAnyObjectByType<ConnectionKJY>();
     
     public TryLogin(StrTryLogin str)
@@ -365,9 +365,8 @@ public class TryLogin : ConnectionStratege
             InfoManagerKJY.instance.playerName = reponse.message.name;
             InfoManagerKJY.instance.nickname = reponse.message.nickname;
 
-            kjy.loginUI.SetActive(false);
-            kjy.mainUI.SetActive(true);
-            kjy.mainUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "PI. " + reponse.message.nickname;
+            KJY_LobbyConnection.instance.OnClickConnect();
+
         }
         else
         {
@@ -376,6 +375,90 @@ public class TryLogin : ConnectionStratege
         }
     }
 }
+#endregion
+
+#region RoomSaveSetting
+[System.Serializable]
+public class RoomSaveRequest
+{
+    public int roomNumber;
+    public string creatorNickname;
+    public string participantNickname;
+}
+
+public struct StrRoomSave
+{
+    public string url;
+    public string creatorNickname, participantNickname;
+    public int roomNumber;
+}
+
+[System.Serializable]
+public class RoomSaveResponse
+{
+    public string resultCode;
+    public RoomSaveMessage message;
+}
+
+[System.Serializable]
+public class RoomSaveMessage
+{
+    public DateTime saveTime;
+    public bool saved;
+}
+
+public class TryRoomSave : ConnectionStratege
+{
+    string url;
+    public int roomNumber;
+    public string creatorNickname, participantNickname;
+
+    public TryRoomSave(StrRoomSave str)
+    {
+        this.url = str.url;
+        this.roomNumber = str.roomNumber;
+        this.creatorNickname = str.creatorNickname;
+        this.participantNickname = str.participantNickname;
+        CreateJson();
+    }
+    public void CreateJson()
+    {
+        RoomSaveRequest request = new RoomSaveRequest();
+        request.roomNumber = this.roomNumber;
+        request.creatorNickname = this.creatorNickname;
+        request.participantNickname = this.participantNickname;
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        RoomSaveResponse reponse = new RoomSaveResponse();
+        reponse = JsonUtility.FromJson<RoomSaveResponse>(result.text);
+
+        Debug.Log(reponse.resultCode);
+
+        if (reponse.resultCode == "SUCCESS")
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+}
+
 #endregion
 
 #region AccountCheck
@@ -1076,6 +1159,8 @@ public class ConnectionKJY : MonoBehaviour
     [SerializeField] GameObject RegisterUI;
     [SerializeField] TMP_Text checkText;
 
+    public GameObject LobbyLoadingUI;
+
     public bool accountCheck;
     public bool nickNameCheck;
     public bool emailCheck;
@@ -1119,7 +1204,7 @@ public class ConnectionKJY : MonoBehaviour
     public void RequestAccoutCheck()
     {
         StrTryAccountCheck str;
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-account";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-account";
         str.account = account.text;
 
         TryAccountCheck tryAccountCheck = new TryAccountCheck(str);
@@ -1128,7 +1213,7 @@ public class ConnectionKJY : MonoBehaviour
     public void RequestNickNameCheck()
     {
         StrTryNickNameCheck str;
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-nickname";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-nickname";
         str.nickname = nickname.text;
 
         TryNickNameCheck tryAccountCheck = new TryNickNameCheck(str);
@@ -1170,7 +1255,7 @@ public class ConnectionKJY : MonoBehaviour
     public void OnclickSendLogin() //¿ä°Å ³»²¬·Î
     {
         StrTryLogin str;
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/sign-in";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/sign-in";
         str.account = log_id.text;
         str.password = log_password.text;
 
@@ -1181,9 +1266,27 @@ public class ConnectionKJY : MonoBehaviour
         }
         else
         {
+            LobbyLoadingUI.SetActive(true);
             TryLogin trylogin = new TryLogin(str);
         }
 
+    }
+    #endregion
+
+    #region
+    public void OnClickSendRoomSave()
+    {
+        StrRoomSave str;
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/user/room/save";
+        str.roomNumber = InfoManagerKJY.instance.roomIndex;
+        str.creatorNickname = KJY_RoomManageer.instance.masterNickname;
+        str.participantNickname = KJY_RoomManageer.instance.participantNickname;
+
+        print (str.roomNumber);
+        print(str.creatorNickname);   
+        print(str.participantNickname);
+
+        TryRoomSave roomSave = new TryRoomSave(str);
     }
     #endregion
 

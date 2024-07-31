@@ -96,6 +96,9 @@ public class InfoManagerKJY : MonoBehaviour
 
     public string role;
 
+    public KJY_RoomItem roomdata;
+    public int roomIndex;
+
     public void loginDTO()
     {
         gameSetNo = testLoginresponse[testLoginresponse.Count - 1].gameSetNo;

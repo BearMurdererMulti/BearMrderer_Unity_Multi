@@ -3,8 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KJY_TmpLobby : MonoBehaviourPunCallbacks
+public class KJY_LobbyConnection : MonoBehaviourPunCallbacks
 {
+    public static KJY_LobbyConnection instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     public void OnClickConnect()
     {
@@ -17,7 +23,7 @@ public class KJY_TmpLobby : MonoBehaviourPunCallbacks
         base.OnConnectedToMaster();
 
         //닉네임 설정
-        PhotonNetwork.NickName = "웨지감자";
+        PhotonNetwork.NickName = InfoManagerKJY.instance.nickname;
         //특정 Lobby 정보 셋팅
         //TypedLobby typedLobby = new TypedLobby("Meta Lobby", LobbyType.Default);
         //PhotonNetwork.JoinLobby(typedLobby);

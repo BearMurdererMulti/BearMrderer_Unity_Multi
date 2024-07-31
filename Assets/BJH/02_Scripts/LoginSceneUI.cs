@@ -12,6 +12,10 @@ public class LoginSceneUI : MonoBehaviour
     public TMP_InputField secretKeyInput;
     public TMP_Text secretKeyText;
     public GameObject secretkeyFail;
+    public GameObject fullRoomUI;
+
+    [Header("UserNickName")]
+    public TextMeshProUGUI userName;
 
     private void Awake()
     {
@@ -36,5 +40,22 @@ public class LoginSceneUI : MonoBehaviour
     public void OnClickClose(GameObject go)
     {
         go.SetActive(false);
+    }
+
+    public void SetUserName()
+    {
+        userName.text = "PI. " + InfoManagerKJY.instance.nickname;
+    }
+
+    public void OnRoomJoinClickButton() // KJY추가
+    {
+        KJY_PhotonRobby.Instance.JoinPrivateRoom(secretKeyInput.text);
+    }
+
+    public IEnumerator FullRoomUIEvent() // KJY추가
+    {
+        fullRoomUI.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        fullRoomUI.SetActive(false);
     }
 }
