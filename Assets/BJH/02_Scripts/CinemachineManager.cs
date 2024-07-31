@@ -21,7 +21,7 @@ public class CinemachineManager : MonoBehaviour
     private int talkIndex = 0;
     private bool isTalking = false;
 
-    [SerializeField] private PlayableDirector initialTimeline;
+    [SerializeField] private PlayableDirector timeline;
 
     private void Start()
     {
@@ -30,12 +30,30 @@ public class CinemachineManager : MonoBehaviour
         StartCoroutine(CoTurnOffTrafficLight());
 
         // 이벤트 구독
+        SubTimelineEvent();
+    }
+
+    private void SubTimelineEvent()
+    {
+        Debug.Log("SubTimelineEvent called");
+        Debug.Log($"Timeline duration: {timeline.duration} seconds");
+        timeline.stopped += DissubTimelineEvent;
+        timeline.Play();
+        Debug.Log($"Timeline duration: {timeline.duration} seconds");
 
     }
 
-    private void StartInitialTimeLine()
+    private void DissubTimelineEvent(PlayableDirector timeline)
     {
-        //initialTimeline.played += O
+        Debug.Log($"{nameof(DissubTimelineEvent)}을 실행합니다.");
+        Debug.Log($"DissubTimelineEvent called. Timeline state: {timeline.state}");
+        timeline.stopped -= DissubTimelineEvent;
+        ShowUI();
+    }
+
+    private void ShowUI()
+    {
+        talkUi.SetActive(true);
     }
 
     private void Update()
