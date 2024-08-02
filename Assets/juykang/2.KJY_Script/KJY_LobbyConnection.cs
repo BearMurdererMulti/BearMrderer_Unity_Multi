@@ -37,6 +37,7 @@ public class KJY_LobbyConnection : MonoBehaviourPunCallbacks
         base.OnJoinedLobby();
 
         //로비 씬으로 이동
-        PhotonNetwork.LoadLevel("01_Lobby_KJY");
+        string sceneName = SceneName.Lobby_KJY.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
     }
 }

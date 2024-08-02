@@ -852,7 +852,8 @@ public class TryIntroScenarioSetting : ConnectionStratege
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
         }
-        PhotonNetwork.LoadLevel("03_GameScene_NPC_Random");
+        string sceneName = SceneName.Chinemachine_01.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
         //KJYKJYKJY
         //KJY_SceneManager.instance.ChangeScene(2);
     }

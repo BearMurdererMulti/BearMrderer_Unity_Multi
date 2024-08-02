@@ -2,16 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum SceneName
+{
+    LoginScene_KJY,
+    Lobby_KJY,
+    Room_KJY,
+    Chinemachine_01,
+    PostmanLoadingScene,
+    Cinemachine02,
+    CharacterCustom_new,
+    Cinemachine03,
+    GameScene_NPC_Random
+}
+
 public class KJY_SceneManager : MonoBehaviour
 {
-    public enum SceneName
-    {
-        LeaderRoomScene,
-        PostmanLoadingScene,
-        UserRoomScene,
-    }
-
     public static KJY_SceneManager instance;
+    
+
 
     private void Awake()
     {
@@ -28,11 +36,6 @@ public class KJY_SceneManager : MonoBehaviour
 
     // LoaingPopup
     public GameObject loadingPopup;
-    public void ChangeIntroScene()
-    {
-        loadingPopup.SetActive(true);
-        ConnectionKJY.instance.RequestIntroScenarioSetting();
-    }
 
     public void ChangeScene(SceneName scene)
     {

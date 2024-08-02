@@ -137,7 +137,6 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        print("isPrivate");
         if (isPrivate == true)
         {
             //PhotonNetwork.JoinRoom();
@@ -163,7 +162,8 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         base.OnJoinedRoom();
         print("방 입장 완료");
         //GameScene 으로 이동
-        PhotonNetwork.LoadLevel("02_Room_KJY");
+        string roomName = SceneName.Room_KJY.ToString();
+        PhotonNetwork.LoadLevel(roomName);
     }
 
     // 방 입장 실패시 호출되는 함수

@@ -112,16 +112,16 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            //CheckAllPlayersReady();
-            //if (AllPlayersReady())
-           // {
-          //     // 시작 가능한 경우 게임 시작
-                 photonView.RPC("StartGame", RpcTarget.All);
-         //  }
-         //   else
-         //  {
-         //       Debug.Log("모든 플레이어가 준비되지 않았습니다.");
-         // }
+             CheckAllPlayersReady();
+             if (AllPlayersReady())
+             {
+                  // 시작 가능한 경우 게임 시작
+                  photonView.RPC("StartGame", RpcTarget.All);
+             }
+             else
+             {
+                   Debug.Log("모든 플레이어가 준비되지 않았습니다.");
+             }
         }
     }
 
@@ -181,8 +181,8 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
 
     public void saveRole()
     {
-        //ConnectionKJY.instance.OnClickSendRoomSave(); //이거 나중에 해야함
-        ConnectionKJY.instance.RequestGameSet();
+        ConnectionKJY.instance.OnClickSendRoomSave(); //이거 나중에 해야함
+        //ConnectionKJY.instance.RequestGameSet();
     }
 
     // 방장만 역할을 변경할 수 있도록 제한
