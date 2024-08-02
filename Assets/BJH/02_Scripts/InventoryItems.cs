@@ -13,7 +13,7 @@ public class InventoryItems : MonoBehaviour
     {
         foreach (var selector in inventoryItemSelectors)
         {
-            selector.enabled = false;
+            selector.color = Color.white;
         }
     }
 
