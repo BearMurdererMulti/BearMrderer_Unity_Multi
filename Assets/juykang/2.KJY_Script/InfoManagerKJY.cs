@@ -96,8 +96,13 @@ public class InfoManagerKJY : MonoBehaviour
 
     public string role;
 
+    //내방 데이터
     public KJY_RoomItem roomdata;
     public int roomIndex;
+    public string roomMasterNickName;
+    public string roomPartiNickName;
+    public string roomMasterRole;
+    public string roomPartiRole;
 
     public void loginDTO()
     {

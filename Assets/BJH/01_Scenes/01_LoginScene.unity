@@ -5296,6 +5296,8 @@ MonoBehaviour:
   secretKeyInput: {fileID: 133072533}
   secretKeyText: {fileID: 2007696668}
   secretkeyFail: {fileID: 241873951}
+  fullRoomUI: {fileID: 0}
+  userName: {fileID: 0}
 --- !u!1 &620387032
 GameObject:
   m_ObjectHideFlags: 0
@@ -13868,13 +13870,20 @@ MonoBehaviour:
   userName: 
   secretKey: 
   murderObjectNumber: 0
-  head: 
-  eye: 
-  mouth: 
-  ear: 
-  body: 
-  tail: 
+  head: 0
+  eye: 0
+  mouth: 0
+  ear: 0
+  body: 0
+  tail: 0
   npcCustomLists: []
+  role: 
+  roomdata: {fileID: 0}
+  roomIndex: 0
+  roomMasterNickName: 
+  roomPartiNickName: 
+  roomMasterRole: 
+  roomPartiRole: 
 --- !u!1 &1631368759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5285552584920467892, guid: 1a4fe2480463fd24c96c432f59bfb571, type: 3}
@@ -14612,6 +14621,7 @@ MonoBehaviour:
   FailUI: {fileID: 304791238}
   RegisterUI: {fileID: 976456334}
   checkText: {fileID: 642031395}
+  LobbyLoadingUI: {fileID: 0}
   accountCheck: 0
   nickNameCheck: 0
   emailCheck: 0

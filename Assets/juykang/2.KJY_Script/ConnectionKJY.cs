@@ -450,7 +450,7 @@ public class TryRoomSave : ConnectionStratege
 
         if (reponse.resultCode == "SUCCESS")
         {
-
+            ConnectionKJY.instance.RequestGameSet();
         }
         else
         {
@@ -852,7 +852,7 @@ public class TryIntroScenarioSetting : ConnectionStratege
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
         }
-        //PhotonNetwork.LoadLevel(""); -> 언니씨네머신ㄴㄴ
+        PhotonNetwork.LoadLevel("03_GameScene_NPC_Random");
         //KJYKJYKJY
         //KJY_SceneManager.instance.ChangeScene(2);
     }
@@ -1133,6 +1133,202 @@ public class TryLoadSetting : ConnectionStratege
 }
 #endregion
 
+#region Question3Setting
+[System.Serializable]
+public class QuestionRequest
+{
+    public long gameSetNo;
+    public string npcName;
+    public string keyWord;
+    public string keyWordType;
+}
+
+public class QuestionSetting
+{
+    public long gameSetNo;
+    public string npcName;
+    public string keyWord;
+    public string keyWordType;
+
+    public string url;
+}
+
+[System.Serializable]
+public class QuestionResponse
+{
+    public string resultCode;
+    public QuestionMessage message;
+}
+
+[System.Serializable]
+public class QuestionMessage
+{
+    public List<Questions> questions;
+}
+
+[System.Serializable]
+public class Questions
+{
+    public long number;
+    public string question;
+}
+
+[System.Serializable]
+public class TryQeustionSetting : ConnectionStratege
+{
+    long gameSetNo;
+    string npcName;
+    string keyWord;
+    string keyWordType;
+    string url;
+
+    public TryQeustionSetting(QuestionSetting str)
+    {
+        this.gameSetNo = str.gameSetNo;
+        this.npcName = str.npcName;
+        this.keyWord = str.keyWord;
+        this.keyWordType = str.keyWordType;
+
+        this.url = str.url;
+        CreateJson();
+    }
+
+    public void CreateJson()
+    {
+        QuestionRequest request = new QuestionRequest();
+        request.gameSetNo = this.gameSetNo;
+        request.npcName = this.npcName;
+        request.keyWord = this.keyWord;
+        request.keyWordType = this.keyWordType;
+
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        QuestionResponse response = new QuestionResponse();
+        response = JsonUtility.FromJson<QuestionResponse>(result.text);
+
+        if (response.resultCode == "SUCCESS")
+        {
+            Debug.Log(response.message.questions[0].question);
+            ChatManager.instance.ChatButtonList(response.message.questions);
+        }
+
+    }
+}
+#endregion
+
+
+#region QuestionAnswerSetting
+[System.Serializable]
+public class QuestionAnswerRequest
+{
+    public long gameSetNo;
+    public string npcName;
+    public int questionIndex;
+    public string keyWord;
+    public string keyWordType;
+}
+
+public class QuestionAnswerSetting
+{
+    public long gameSetNo;
+    public string npcName;
+    public int questionIndex;
+    public string keyWord;
+    public string keyWordType;
+
+    public string url;
+}
+
+[System.Serializable]
+public class QuestionAnswerResponse
+{
+    public string resultCode;
+
+    public QuestionAnswerMessage message;
+}
+
+[System.Serializable]
+public class QuestionAnswerMessage
+{
+    public string response;
+}
+
+[System.Serializable]
+public class TryQeustionAnswerSetting : ConnectionStratege
+{
+    long gameSetNo;
+    string npcName;
+    int questionIndex;
+    string keyWord;
+    string keyWordType;
+    string url;
+
+    public TryQeustionAnswerSetting(QuestionAnswerSetting str)
+    {
+        this.gameSetNo = str.gameSetNo;
+        this.npcName = str.npcName;
+        this.questionIndex = str.questionIndex;
+        this.keyWord = str.keyWord;
+        this.keyWordType = str.keyWordType;
+
+        this.url = str.url;
+        CreateJson();
+    }
+
+    public void CreateJson()
+    {
+        QuestionAnswerRequest request = new QuestionAnswerRequest();
+        request.gameSetNo = this.gameSetNo;
+        request.npcName = this.npcName;
+        request.questionIndex = this.questionIndex;
+        request.keyWord = this.keyWord;
+        request.keyWordType = this.keyWordType;
+
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        QuestionAnswerResponse response = new QuestionAnswerResponse();
+        response = JsonUtility.FromJson<QuestionAnswerResponse>(result.text);
+
+        if (response.resultCode == "SUCCESS")
+        {
+            ChatManager.instance.talkingName.text = ChatManager.instance.npcdata.npcName;
+            ChatManager.instance.npcText.text = response.message.response;
+            ChatManager.instance.isConnection = true;
+            ChatManager.instance.npctalk = true;
+        }
+
+    }
+}
+#endregion
+
 public class ConnectionKJY : MonoBehaviour
 {
     public static ConnectionKJY instance;
@@ -1278,9 +1474,10 @@ public class ConnectionKJY : MonoBehaviour
     {
         StrRoomSave str;
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/user/room/save";
-        str.roomNumber = InfoManagerKJY.instance.roomIndex;
+        str.roomNumber = 0; // 바꿔야함
         str.creatorNickname = KJY_RoomManageer.instance.masterNickname;
-        str.participantNickname = KJY_RoomManageer.instance.participantNickname;
+        //str.participantNickname = KJY_RoomManageer.instance.participantNickname;
+        str.participantNickname = "Test";
 
         print (str.roomNumber);
         print(str.creatorNickname);   
@@ -1295,7 +1492,7 @@ public class ConnectionKJY : MonoBehaviour
     public void RequestGameSet()
     {
         HttpRequester res = new HttpRequester();
-        res.Settting(RequestType.POST, "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start");
+        res.Settting(RequestType.POST, "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start");
         res.complete = rgComplete;
 
 
@@ -1310,6 +1507,8 @@ public class ConnectionKJY : MonoBehaviour
         {
             InfoManagerKJY.instance.Setting(gsr);
 
+            RequestIntroScenarioSetting();
+
             //KJY_SceneManager.instance.ChangeScene(1);//임시추가
         }
     }
@@ -1321,7 +1520,7 @@ public class ConnectionKJY : MonoBehaviour
     {
         loadingPopup.SetActive(true);
         SenarioSetting str = new SenarioSetting();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/save";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/save";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.secretKey = "mafia";
 
@@ -1454,7 +1653,7 @@ public class ConnectionKJY : MonoBehaviour
     public void RequestGameEnd()
     {
         GameEndSetting str = new GameEndSetting();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/end";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/end";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.secretKey = "mafia";
         str.resultMessage = "FAILURE";
@@ -1470,7 +1669,7 @@ public class ConnectionKJY : MonoBehaviour
         str.introRequest = new IntroRequests();
         str.makeScenarioRequest = new MakeScenarioRequest();
 
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/intro-scenario";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/intro-scenario";
 
         str.introRequest.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.introRequest.secretKey = "mafia";
@@ -1579,6 +1778,51 @@ public class ConnectionKJY : MonoBehaviour
     //        TryNpcCustomSaveSetting setting = new TryNpcCustomSaveSetting(str);
     //    }
     //}
+    #endregion
+
+
+    #region question3 Generate
+
+    public void Request_Question(string npc_name, string keyword)
+    {
+        QuestionSetting str = new QuestionSetting();
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/question/create";
+
+        str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        str.npcName = npc_name;
+        str.keyWord = keyword;
+        str.keyWordType = "weapon";
+
+        print(str.gameSetNo);
+        print(str.npcName);
+        print(str.keyWord);
+        print(str.keyWordType);
+
+        TryQeustionSetting question = new TryQeustionSetting(str);
+    }
+    #endregion
+
+    #region question Answer
+    public void RequestAnswer(int number, string npc_name, string keyword)
+    {
+        QuestionAnswerSetting str = new QuestionAnswerSetting();
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/question/answer";
+
+        str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        str.npcName = npc_name;
+        str.questionIndex = number + 1;
+        str.keyWord = keyword;
+        str.keyWordType = "weapon";
+
+
+        print(str.gameSetNo);
+        print(str.npcName);
+        print(str.questionIndex); 
+        print(str.keyWord);
+
+
+        TryQeustionAnswerSetting answer = new TryQeustionAnswerSetting(str);
+    }
     #endregion
 
     public void GetCheckMessage(string message)

@@ -1,3 +1,4 @@
+using Photon.Realtime;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,12 +52,21 @@ public class KJY_RoomItem : MonoBehaviour
         roomNumber.text = currPlayer + "/" + maxPlayer;
     }
 
+    public void SetMasterInfo(string master)
+    {
+        roomMaster.text = master;
+    }
+
+    public void SetRoomMasterJob(string job)
+    {
+        roomJob.text = job;
+    }
+
     public void OnClick()
     {
         //onChangeRoomName 가 null 이 아니라면
         if (onChangeRoomName != null)
         {
-            print("dada");
             onChangeRoomName(roomName.text, roomCode, isRoomPrivate);
         }
 

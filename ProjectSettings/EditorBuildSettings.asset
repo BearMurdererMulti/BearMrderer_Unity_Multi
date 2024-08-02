@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/juykang/1.KJY_Scene/02_Room_KJY.unity
     guid: d10cefacdfdfbbf4880c9cdee1104fb0
   - enabled: 1
+    path: Assets/juykang/1.KJY_Scene/03_GameScene_NPC_Random.unity
+    guid: 25cab2f64fc04bc40bfe89fd858cebba
+  - enabled: 1
     path: Assets/BJH/01_Scenes/CharacterCustom.unity
     guid: f8de6efe0f6710d45acfc530e6ab772b
   - enabled: 1

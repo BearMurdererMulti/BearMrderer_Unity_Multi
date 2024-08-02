@@ -21,7 +21,7 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     public Image checkImage;
     public bool isPrivate = false;
     private string nowRoomCode;
-
+    int roomindex = 0;
     //방 생성 버튼
     public Button btnCreateRoom;
 
@@ -36,9 +36,10 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     //방 정보 가지고 있는 Dictionary
     Dictionary<string, RoomInfo> roomCache = new Dictionary<string, RoomInfo>();
 
-    private List<KJY_RoomItem> roomList = new List<KJY_RoomItem>();
+    private List<KJY_RoomItem> roomLists = new List<KJY_RoomItem>();
 
     private bool isPrivateSelectedRoom = false;
+    bool value = false;
 
     private void Awake()
     {
@@ -88,7 +89,7 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         //custom 설정
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
         hash["room_name"] = inputRoomName.text;
-        hash["map_idx"] = 2;
+        hash["map_idx"] = roomindex;
         hash["room_master"] = InfoManagerKJY.instance.nickname;
         hash["room_job"] = "탐정";
         hash["room_code"] = "";
@@ -107,13 +108,17 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         string[] customKeys = { "room_name", "room_master", "map_idx", "room_job", "room_code", "is_private"};
         option.CustomRoomPropertiesForLobby = customKeys;
 
-        InfoManagerKJY.instance.roomIndex = 2;
+        InfoManagerKJY.instance.roomIndex = 0;
 
+        roomindex++;
+ 
         //특정 로비에 방 생성 요청
         //TypedLobby typedLobby = new TypedLobby("Meta Lobby", LobbyType.Default);
         //PhotonNetwork.CreateRoom(inputRoomName.text, option, typedLobby);
         //기본 로비에 방 생성 요청
         PhotonNetwork.CreateRoom(inputRoomName.text, option);
+        value = true;
+        print("this2");
     }
 
     //방 생성 완료시 호출 되는 함수
@@ -203,9 +208,25 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
                 //수정
                 else
                 {
+                    var existingRoom = roomCache[info.Name];
                     //방 인원 바꾸기 수정이 필요
                     roomCache[info.PlayerCount.ToString()] = info;
-                    //방 역할 바꾸기 수정
+
+                    if (info.CustomProperties.ContainsKey("room_job"))
+                    {
+                        var roomJob = info.CustomProperties["room_job"].ToString();
+                        // roomCache의 방 정보 업데이트
+                        // 방의 역할 정보 업데이트 로직 추가
+                        existingRoom.CustomProperties["room_job"] = roomJob;
+                    }
+
+                    if (info.CustomProperties.ContainsKey("room_master"))
+                    {
+                        var roomMaster = info.CustomProperties["room_master"].ToString();
+                        // roomCache의 방 정보 업데이트
+                        // 방의 역할 정보 업데이트 로직 추가
+                        existingRoom.CustomProperties["room_master"] = roomMaster;
+                    }
 
                 }
             }
@@ -256,11 +277,12 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     {
         base.OnRoomListUpdate(roomList);
 
+        print(roomList.Count);
         //전체 룸리스트UI 삭제
         RemoveRoomList();
         //내가 따로 관리하는 룸리스트 정보 갱신
         UpdateRoomList(roomList);
-        //룸리스트 정보를 가지고 UI 를 다시 생성
+        //룸리스트 정보를 가지고 UI를 다시 생성
         CreateRoomList();
     }
 
