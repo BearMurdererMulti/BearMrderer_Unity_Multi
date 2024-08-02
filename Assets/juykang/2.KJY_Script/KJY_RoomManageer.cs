@@ -110,19 +110,19 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
 
     private void OnStartGameButtonClicked()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-             CheckAllPlayersReady();
-             if (AllPlayersReady())
-             {
-                  // 시작 가능한 경우 게임 시작
-                  photonView.RPC("StartGame", RpcTarget.All);
-             }
-             else
-             {
-                   Debug.Log("모든 플레이어가 준비되지 않았습니다.");
-             }
-        }
+    //    if (PhotonNetwork.IsMasterClient)
+    //    {
+    //         CheckAllPlayersReady();
+    //         if (AllPlayersReady())
+    //         {
+     //              // 시작 가능한 경우 게임 시작
+                   photonView.RPC("StartGame", RpcTarget.All);
+        //         }
+        //         else
+        // {
+        // Debug.Log("모든 플레이어가 준비되지 않았습니다.");
+        // }
+        // }
     }
 
     private bool AllPlayersReady()
@@ -158,31 +158,31 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         Debug.Log("게임 시작!");
         // 여기에서 실제 게임 시작 로직을 추가합니다.
-        Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
-        Role oppositeRole = GetOppositeRole(currentRole);
-        if (PhotonNetwork.IsMasterClient)
-        {
-            InfoManagerKJY.instance.roomMasterRole = currentRole.ToString();
-            InfoManagerKJY.instance.roomPartiRole = oppositeRole.ToString();
-        }
-        else
-        {
-            InfoManagerKJY.instance.roomMasterRole = oppositeRole.ToString();
-            InfoManagerKJY.instance.roomPartiRole = currentRole.ToString();
-        }
+        //Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
+        //Role oppositeRole = GetOppositeRole(currentRole);
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    InfoManagerKJY.instance.roomMasterRole = currentRole.ToString();
+        //    InfoManagerKJY.instance.roomPartiRole = oppositeRole.ToString();
+        //}
+        //else
+        //{
+        //    InfoManagerKJY.instance.roomMasterRole = oppositeRole.ToString();
+        //    InfoManagerKJY.instance.roomPartiRole = currentRole.ToString();
+        //}
 
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            print(PhotonNetwork.PlayerList[i].NickName + PhotonNetwork.PlayerList[i].CustomProperties["room_job"]);
-        }
+        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        //{
+        //    print(PhotonNetwork.PlayerList[i].NickName + PhotonNetwork.PlayerList[i].CustomProperties["room_job"]);
+        //}
 
         saveRole();
     }
 
     public void saveRole()
     {
-        ConnectionKJY.instance.OnClickSendRoomSave(); //이거 나중에 해야함
-        //ConnectionKJY.instance.RequestGameSet();
+        //ConnectionKJY.instance.OnClickSendRoomSave(); //이거 나중에 해야함
+        ConnectionKJY.instance.RequestGameSet();
     }
 
     // 방장만 역할을 변경할 수 있도록 제한

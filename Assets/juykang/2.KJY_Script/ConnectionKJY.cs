@@ -529,9 +529,8 @@ public class TryAccountCheck : ConnectionStratege
             kjy.GetCheckMessage(response.message.answer);
             kjy.Check();
         }
-        else
+        if (response.resultCode == null)
         {
-            Debug.Log("print");
             kjy.GetCheckMessage(response.message.message);
             kjy.Check();
             kjy.ResetAccount();
