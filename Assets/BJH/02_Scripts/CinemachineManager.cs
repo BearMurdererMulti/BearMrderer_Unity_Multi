@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,16 +19,21 @@ public class CinemachineManager : MonoBehaviour
     [SerializeField] private GameObject talkUi;
     [SerializeField] private TMP_Text talkContent;
     [SerializeField] private List<string> talkList;
-    private int talkIndex = 0;
+    private int talkIndex = 1;
     private bool isTalking = false;
 
     [SerializeField] private PlayableDirector timeline;
+
+    [SerializeField] private CinemachineBlendListCamera blendCamera;
 
     private void Start()
     {
         // 타임라인에서 타이밍 맞게 시작, 끝내야 할 것들을 코루틴으로 구현
         StartCoroutine(CoSpawnDollAndDog());
         StartCoroutine(CoTurnOffTrafficLight());
+
+        // 블랜드 카메라 끄기
+        blendCamera.enabled = false;
 
         // 이벤트 구독
         SubTimelineEvent();
