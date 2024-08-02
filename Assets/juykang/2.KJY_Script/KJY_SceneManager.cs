@@ -18,10 +18,8 @@ public enum SceneName
 public class KJY_SceneManager : MonoBehaviour
 {
     public static KJY_SceneManager instance;
-    
 
-
-    private void Awake()
+    public void Awake()
     {
         if (instance == null)
         {

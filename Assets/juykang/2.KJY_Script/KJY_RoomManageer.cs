@@ -191,7 +191,6 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
-
             // 역할 교환을 위한 변수를 초기화
             Role newMasterRole = (currentRole == Role.Assistant) ? Role.Detective : Role.Assistant;
 
@@ -311,7 +310,7 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
         InfoManagerKJY.instance.roomMasterNickName = null;
         InfoManagerKJY.instance.roomPartiNickName = null;
 
-        PhotonNetwork.LoadLevel("01_Lobby_KJY");
+        PhotonNetwork.LoadLevel(SceneName.Lobby_KJY.ToString());
     }
 
     public void LeaveRoom()
