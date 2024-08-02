@@ -6,7 +6,6 @@ public class KJY_LoginScnenUI : MonoBehaviour
 {
     public GameObject LoginUI;
     public GameObject MainUI;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +24,6 @@ public class KJY_LoginScnenUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+       
     }
 }

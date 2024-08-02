@@ -208,26 +208,26 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
                 //수정
                 else
                 {
-                    var existingRoom = roomCache[info.Name];
-                    //방 인원 바꾸기 수정이 필요
-                    roomCache[info.PlayerCount.ToString()] = info;
+                    roomCache[info.Name] = info;
+                    //var existingRoom = roomCache[info.Name];
+                    ////방 인원 바꾸기 수정이 필요
+                    //roomCache[info.PlayerCount.ToString()] = info;
 
-                    if (info.CustomProperties.ContainsKey("room_job"))
-                    {
-                        var roomJob = info.CustomProperties["room_job"].ToString();
-                        // roomCache의 방 정보 업데이트
-                        // 방의 역할 정보 업데이트 로직 추가
-                        existingRoom.CustomProperties["room_job"] = roomJob;
-                    }
+                    //if (info.CustomProperties.ContainsKey("room_job"))
+                    //{
+                    //    var roomJob = info.CustomProperties["room_job"].ToString();
+                    //    // roomCache의 방 정보 업데이트
+                    //    // 방의 역할 정보 업데이트 로직 추가
+                    //    existingRoom.CustomProperties["room_job"] = roomJob;
+                    //}
 
-                    if (info.CustomProperties.ContainsKey("room_master"))
-                    {
-                        var roomMaster = info.CustomProperties["room_master"].ToString();
-                        // roomCache의 방 정보 업데이트
-                        // 방의 역할 정보 업데이트 로직 추가
-                        existingRoom.CustomProperties["room_master"] = roomMaster;
-                    }
-
+                    //if (info.CustomProperties.ContainsKey("room_master"))
+                    //{
+                    //    var roomMaster = info.CustomProperties["room_master"].ToString();
+                    //    // roomCache의 방 정보 업데이트
+                    //    // 방의 역할 정보 업데이트 로직 추가
+                    //    existingRoom.CustomProperties["room_master"] = roomMaster;
+                    //}
                 }
             }
             else
