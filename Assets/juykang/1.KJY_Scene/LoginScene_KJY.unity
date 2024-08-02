@@ -14474,6 +14474,10 @@ MonoBehaviour:
   role: 
   roomdata: {fileID: 0}
   roomIndex: 0
+  roomMasterNickName: 
+  roomPartiNickName: 
+  roomMasterRole: 
+  roomPartiRole: 
 --- !u!1 &1631368759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5285552584920467892, guid: 1a4fe2480463fd24c96c432f59bfb571, type: 3}
@@ -15279,13 +15283,14 @@ MonoBehaviour:
   RegisterPopUp: {fileID: 4603341908192296393}
   loginUI: {fileID: 1408940852}
   mainUI: {fileID: 1249884930}
-  loadingPopup: {fileID: 0}
+  loadingPopup: {fileID: 1268591457798008105}
+  LoginLoadingUI: {fileID: 1268591457798008105}
   FailUI: {fileID: 304791238}
   RegisterUI: {fileID: 976456334}
   checkText: {fileID: 642031395}
   LobbyLoadingUI: {fileID: 1268591457798008105}
   accountCheck: 0
-  nickNameCheck: 0
+  nickNameCheck: 1
   emailCheck: 0
 --- !u!1 &1801996556
 GameObject:

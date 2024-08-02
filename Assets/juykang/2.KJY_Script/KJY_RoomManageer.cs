@@ -40,7 +40,7 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
 
     public bool isReady = false;
 
-    private string screteKey = "";
+    [SerializeField] string screteKey = "";
 
     // 방장 역할 설정
     private Role currentMasterRole;
@@ -63,20 +63,17 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
             readyButtonText.text = "Start Game";
             readyButton.onClick.AddListener(OnStartGameButtonClicked);
             UpdateScreteKey();
-
-            masterNickname = PhotonNetwork.LocalPlayer.NickName;
-            masterText.text = masterNickname;
-
         }
         else
         {
             readyButtonText.text = "Ready";
             readyButton.onClick.AddListener(OnReadyButtonClicked);
 
-            masterNickname = PhotonNetwork.MasterClient.NickName;
             participantNickname = PhotonNetwork.LocalPlayer.NickName;
             participantText.text = participantNickname;
         }
+        masterNickname = PhotonNetwork.MasterClient.NickName;
+        masterText.text = masterNickname;
         AssignInitialRoles();
     }
 
@@ -98,13 +95,16 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
         {
             player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "IsReady", true } });
             Debug.Log($"SetPlayerReadyState called for {player.NickName} with ready state: {ready}");
-            readyText.text = ready ? "" : "Ready";
+            readyText.text = ready ? "Ready" : "Not Ready";
             CheckAllPlayersReady();
         }
         else
         {
-            readyText.text = ready ? "" : "Ready";
-            Debug.LogWarning("SetPlayerReadyState was called, but this client is not the MasterClient.");
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                readyText.text = ready ? "Ready" : "Not Ready";
+                Debug.LogWarning("SetPlayerReadyState was called, but this client is not the MasterClient.");
+            }
         }
     }
 
@@ -289,16 +289,16 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         base.OnPlayerLeftRoom(otherPlayer);
 
-        secondProfile.enabled = false;
-        participantText.text = null;
-        participantNickname = null;
-        readyText.text = string.Empty;
-        InfoManagerKJY.instance.roomPartiNickName = null;
+        //secondProfile.enabled = false;
+        //participantText.text = null;
+        //participantNickname = null;
+        //readyText.text = null;
+        //InfoManagerKJY.instance.roomPartiNickName = null;
 
         if (otherPlayer.IsMasterClient == false)
         {
-            isReady = false;
-            SetPlayerReadyState(PhotonNetwork.LocalPlayer, false);
+          isReady = false;
+          SetPlayerReadyState(PhotonNetwork.LocalPlayer, false);
         }
     }
 
@@ -378,14 +378,19 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
         ExitGames.Client.Photon.Hashtable ht = PhotonNetwork.CurrentRoom.CustomProperties;
         screteKey = (string)ht["screteKey"];
         screteKeyText.text = screteKey;
-        InfoManagerKJY.instance.roomIndex = (int)ht["roomIndex"];
-
+        InfoManagerKJY.instance.roomIndex = 0;
         InfoManagerKJY.instance.roomMasterNickName = PhotonNetwork.LocalPlayer.NickName;
 
 
         ExitGames.Client.Photon.Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
         properties["room_master"] = PhotonNetwork.LocalPlayer.NickName;
         PhotonNetwork.CurrentRoom.SetCustomProperties(properties);
+
+        secondProfile.enabled = false;
+        participantText.text = null;
+        participantNickname = null;
+        readyText.text = null;
+        InfoManagerKJY.instance.roomPartiNickName = null;
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
@@ -421,14 +426,9 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     // 커스텀 프로퍼티로 방장 정보 업데이트
     private void UpdateScreteKey()
     {
-        RoomOptions option = new RoomOptions();
-        screteKey = InfoManagerKJY.instance.secretKey;
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-
-        hash["screteKey"] = screteKey;
-        hash["roomIndex"] = InfoManagerKJY.instance.roomIndex;
-
-        option.CustomRoomProperties = hash;
+        ExitGames.Client.Photon.Hashtable properties = PhotonNetwork.CurrentRoom.CustomProperties;
+        screteKey = properties["room_code"].ToString();
+        screteKeyText.text = screteKey;
     }
 
 

@@ -355,12 +355,16 @@ public class TryLogin : ConnectionStratege
     public void Complete(DownloadHandler result)
     {
         LoginResponse reponse = new LoginResponse();
-        reponse = JsonUtility.FromJson<LoginResponse>(result.text);
+        if (result.text != null)
+        {
+            reponse = JsonUtility.FromJson<LoginResponse>(result.text);
+        }
 
         Debug.Log(reponse.resultCode);
 
         if (reponse.resultCode == "SUCCESS")
         {
+            kjy.LoginLoadingUI.SetActive(true);
             InfoManagerKJY.instance.userToken = reponse.message.token;
             InfoManagerKJY.instance.playerName = reponse.message.name;
             InfoManagerKJY.instance.nickname = reponse.message.nickname;
@@ -779,7 +783,7 @@ public class IntroScenarioResponse
 public class IntroScenarioMessage
 {
     public IntroAnswer introAnswer;
-    public MessageScenarioResponse scenarioResponse;
+    public MessageScenarioResponse firstScenarioResponse;
 }
 
 [System.Serializable]
@@ -793,9 +797,9 @@ public class IntroAnswer
 [System.Serializable]
 public class MessageScenarioResponse
 {
-    public string crimeScene;
-    public string dailySummary;
     public string victim;
+    public string crimeScene;
+    public string method;
     public List<GameNpcSetting> gameNpcList;
 }
 
@@ -838,15 +842,12 @@ public class TryIntroScenarioSetting : ConnectionStratege
         IntroScenarioResponse reponse = new IntroScenarioResponse();
         reponse = JsonUtility.FromJson<IntroScenarioResponse>(result.text);
 
-
         if(reponse.resultCode == "SUCCESS")
         {
-            InfoManagerKJY.instance.ScenarioOfIntroScenarSetting(reponse.message.scenarioResponse);
+            InfoManagerKJY.instance.ScenarioOfIntroScenarSetting(reponse.message.firstScenarioResponse);
             InfoManagerKJY.instance.IntroOfIntroScenarioSetting(reponse.message.introAnswer);
 
-
-
-            foreach (GameNpcSetting npc in reponse.message.scenarioResponse.gameNpcList)
+            foreach (GameNpcSetting npc in reponse.message.firstScenarioResponse.gameNpcList)
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
@@ -1351,6 +1352,7 @@ public class ConnectionKJY : MonoBehaviour
     public GameObject loginUI;
     public GameObject mainUI;
     public GameObject loadingPopup;
+    public GameObject LoginLoadingUI;
     [SerializeField] GameObject FailUI;
     [SerializeField] GameObject RegisterUI;
     [SerializeField] TMP_Text checkText;
@@ -1462,7 +1464,6 @@ public class ConnectionKJY : MonoBehaviour
         }
         else
         {
-            LobbyLoadingUI.SetActive(true);
             TryLogin trylogin = new TryLogin(str);
         }
 
@@ -1793,11 +1794,6 @@ public class ConnectionKJY : MonoBehaviour
         str.keyWord = keyword;
         str.keyWordType = "weapon";
 
-        print(str.gameSetNo);
-        print(str.npcName);
-        print(str.keyWord);
-        print(str.keyWordType);
-
         TryQeustionSetting question = new TryQeustionSetting(str);
     }
     #endregion
@@ -1813,13 +1809,6 @@ public class ConnectionKJY : MonoBehaviour
         str.questionIndex = number + 1;
         str.keyWord = keyword;
         str.keyWordType = "weapon";
-
-
-        print(str.gameSetNo);
-        print(str.npcName);
-        print(str.questionIndex); 
-        print(str.keyWord);
-
 
         TryQeustionAnswerSetting answer = new TryQeustionAnswerSetting(str);
     }
@@ -1838,7 +1827,7 @@ public class ConnectionKJY : MonoBehaviour
     private IEnumerator CheckCoroutine()
     {
         RegisterUI.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         RegisterUI.SetActive(false);
     }
 
