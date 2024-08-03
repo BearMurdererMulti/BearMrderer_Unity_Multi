@@ -12,7 +12,9 @@ public class SceneController_BJH : MonoBehaviour
     private void Start()
     {
         SubTimelineEvent();
-    }
+
+        AudioManager.Instnace.PlaySound(SoundList.BG);
+}
 
     private void SubTimelineEvent()
     {
