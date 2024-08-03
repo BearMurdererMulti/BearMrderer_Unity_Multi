@@ -41,6 +41,14 @@ public class CharacterCustom_new : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CharacterCustomConnection_BJH connection = new CharacterCustomConnection_BJH(customDictionary);
+        }
+    }
+
     // 커스텀 기능을 수행하는 버튼이 없으면
     // Instantiate해주는 버튼
     internal void SetCustomDictionary(string keyName, int index)

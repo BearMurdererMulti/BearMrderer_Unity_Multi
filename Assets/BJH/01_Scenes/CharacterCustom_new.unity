@@ -3427,6 +3427,64 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 898936619}
   m_CullTransparentMesh: 1
+--- !u!1 &922111564
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 922111567}
+  - component: {fileID: 922111566}
+  - component: {fileID: 922111565}
+  m_Layer: 0
+  m_Name: ConnectionTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &922111565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922111564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdba47049c15ccc4cb1116f28586e93f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZXMiOltdLCJpYXQiOjE3MjE5MDk4NTUsImV4cCI6MTcyMTkxMzQ1NX0.LF1nr6y2Qb3xlYDcQNoNz7XrGJZVbcOPIaDfXUsceBE
+--- !u!114 &922111566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922111564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eada61b7197daff4f92a60533f39bafa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &922111567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922111564}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 540, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &966989191
 GameObject:
   m_ObjectHideFlags: 0
@@ -10455,3 +10513,4 @@ SceneRoots:
   - {fileID: 127098901}
   - {fileID: 337265337}
   - {fileID: 86026690}
+  - {fileID: 922111567}
