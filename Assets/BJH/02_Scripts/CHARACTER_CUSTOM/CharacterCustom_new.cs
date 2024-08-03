@@ -29,6 +29,8 @@ public class CharacterCustom_new : MonoBehaviour
     [SerializeField] List<GameObject> contents = new List<GameObject>();
     private int preContentIndex;
 
+    private string[] categoryNames = { "body", "eyes", "years", "mouth", "tail" };
+
     [SerializeField] private ScrollRect scrollRect;
 
     private void Start()
@@ -39,15 +41,18 @@ public class CharacterCustom_new : MonoBehaviour
         {
             contents[i].SetActive(false);
         }
-    }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.C))
+        foreach(string s in categoryNames)
         {
-            CharacterCustomConnection_BJH connection = new CharacterCustomConnection_BJH(customDictionary);
+            customDictionary[s] = 0;
         }
     }
+
+    public void OnClickCheckButton()
+    {
+        CharacterCustomConnection_BJH connection = new CharacterCustomConnection_BJH(customDictionary);
+    }
+
 
     // 커스텀 기능을 수행하는 버튼이 없으면
     // Instantiate해주는 버튼

@@ -77,6 +77,7 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
         Debug.Log(response.message.saveTime);
         Debug.Log(response.message.saved);
 
+        KJY_SceneManager.instance.ChangeScene(SceneName.Cinemachine03);
     }
 
     private void OnGetFailed(DownloadHandler handler)
