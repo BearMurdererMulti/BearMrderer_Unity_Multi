@@ -15,6 +15,7 @@ public class SceneManager : MonoBehaviour
     {
         LeaderRoomScene,
         PostmanLoadingScene,
+        CharacterCustom_new,
     }
 
     private void Awake()

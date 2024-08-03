@@ -1,16 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class KJY_ChatItem : MonoBehaviour
 {
-    Text chatText;
+    TextMeshProUGUI chatText;
     RectTransform rt;
 
     void Awake()
     {
-        chatText = GetComponent<Text>();
+        chatText = GetComponent<TextMeshProUGUI>();
         rt = GetComponent<RectTransform>();
     }
 

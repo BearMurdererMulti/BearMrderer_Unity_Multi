@@ -170,9 +170,10 @@ public class InfoManagerKJY : MonoBehaviour
     public void ScenarioOfIntroScenarSetting(MessageScenarioResponse response)
     {
         crimeScene = response.crimeScene;
-        dailySummary = response.dailySummary;
+        dailySummary = response.method;
         victim = response.victim;
         gameNpcList = response.gameNpcList;
+        print(crimeScene);
         gameNpcList = SuffleList(gameNpcList);
     }
 
