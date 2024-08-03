@@ -3437,7 +3437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 922111567}
   - component: {fileID: 922111566}
-  - component: {fileID: 922111565}
+  - component: {fileID: 922111568}
   m_Layer: 0
   m_Name: ConnectionTest
   m_TagString: Untagged
@@ -3445,19 +3445,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &922111565
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 922111564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdba47049c15ccc4cb1116f28586e93f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZXMiOltdLCJpYXQiOjE3MjE5MDk4NTUsImV4cCI6MTcyMTkxMzQ1NX0.LF1nr6y2Qb3xlYDcQNoNz7XrGJZVbcOPIaDfXUsceBE
 --- !u!114 &922111566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3485,6 +3472,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &922111568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 922111564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8531a0801987e04589646c0f8cde519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  token: 
 --- !u!1 &966989191
 GameObject:
   m_ObjectHideFlags: 0

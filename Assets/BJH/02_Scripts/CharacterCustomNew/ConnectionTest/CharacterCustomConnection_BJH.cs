@@ -12,7 +12,7 @@ public class UserCustomSaveRequest
     public int mouth;
     public int body;
     public int tail;
-    public int gameSetNo;
+    public long gameSetNo;
 }
 
 [Serializable]
@@ -47,7 +47,7 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
         request.mouth = dic["mouth"];
         request.body = dic["body"];
         request.tail = dic["tail"];
-        request.gameSetNo = 1; // 임시. 테스트용.
+        request.gameSetNo = InfoManagerKJY.instance.gameSetNo;
 
         string createdJson = JsonUtility.ToJson(request);
 
@@ -58,10 +58,12 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
     {
         HttpRequester requester = new HttpRequester();
         requester.requestType = RequestType.POST;
-        requester.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/swagger-ui/index.html#/game-user-custom-controller/customSave";
+        requester.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/custom/save";
         requester.body = createdJson;
+        requester.complete = OnGetComplete;
+        requester.failed = OnGetFailed;
 
-        HttpManagerTest_BJH.instance.SendRequest(requester);
+        HttpManagerKJY.instance.SendRequest(requester);
     }
 
     private void OnGetComplete(DownloadHandler handler)
