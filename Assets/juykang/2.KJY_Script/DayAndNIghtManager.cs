@@ -58,8 +58,11 @@ public class DayAndNIghtManager : MonoBehaviour
     int number;
 
     [SerializeField] GameObject notifyDead;
+    [SerializeField] Transform intellRoom;
+    [SerializeField] Transform intellRoomPlayer;
 
     bool Winner;
+    public int heartRate = 60;
 
     private void Awake()
     {
@@ -531,5 +534,25 @@ public class DayAndNIghtManager : MonoBehaviour
         UI.instance.noteObject.SetActive(value);
         UI.instance.lifeObject.SetActive(value);
         UI.instance.dayObject.SetActive(value);
+    }
+
+    public void GointerrogationRoom()
+    {
+        image.DOFade(1, 0.5f);
+        ChatManager.instance.nowNpc = obj;
+        ChatManager.instance.npcdata = obj.GetComponent<NpcData>();
+        selectUI.SetActive(false);
+        obj.transform.position = intellRoom.transform.position;
+        obj.transform.rotation = intellRoom.transform.rotation;
+        GameObject.FindWithTag("Player").transform.position = intellRoomPlayer.transform.position;
+        UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
+        StartCoroutine(Wait());
+    }
+
+    IEnumerator Wait()
+    {
+        yield return new WaitForSeconds(1);
+        ChatManager.instance.Startinterrogation();
+        image.DOFade(0, 1f);
     }
 }

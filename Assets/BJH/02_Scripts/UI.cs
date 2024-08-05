@@ -59,6 +59,7 @@ public class UI : MonoBehaviour
 
     [Tooltip("Button")]
     public GameObject talkBtn, skipBtn, selectBtn;
+    public Button talkBt;
 
 
     [Tooltip("ChatHistory")]

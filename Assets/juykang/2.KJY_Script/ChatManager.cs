@@ -19,6 +19,7 @@ public class ChatManager : MonoBehaviour
     [SerializeField] CameraBack camBack;
     [SerializeField] GameObject building;
     [SerializeField] TMP_InputField field;
+    [SerializeField] GameObject talkPanel;
     
 
     public GameObject nowNpc;
@@ -45,6 +46,8 @@ public class ChatManager : MonoBehaviour
     public bool isConnection;
 
     string weapon = "칼";
+
+    public bool interrogation = false;
 
     private void Awake()
     {
@@ -84,20 +87,25 @@ public class ChatManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.F6))
         {
             weapon = "칼";
         }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.F7))
         {
             weapon = "뚫어뻥";
         }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
+        if (Input.GetKeyDown(KeyCode.F8))
         {
             weapon = "물총";
         }
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            DayAndNIghtManager.instance.heartRate = 80;
+        }
 
-        if(isConnection)
+
+        if (isConnection)
         {
             npcText.text = content;
             //isConnection = false;
@@ -117,7 +125,23 @@ public class ChatManager : MonoBehaviour
         camTopDown.enabled = false;
         camBack.enabled = true;
         nowNpc.GetComponent<NpcFaceMove>().talking = true;
-        isConnection = true;
+    }
+
+    public void Startinterrogation()
+    {
+        talk = true;
+        interactiveBtn.SetActive(false);
+        interrogation = true;
+        camTopDown.enabled = false;
+        camBack.enabled = true;
+        ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
+        //nowNpc.GetComponent<NpcFaceMove>().talking = true;
+    }
+
+    public void StartTalkinterrogation()
+    {
+        dialog.SetActive(true);
+        ManageField();
     }
 
     //public string GetTalk(int id, int talkIndex)
@@ -161,6 +185,7 @@ public class ChatManager : MonoBehaviour
         isConnection = false;
         
         interactiveBtn.SetActive(true);
+        ButtonObject.SetActive(false);
         dialog.SetActive(false);
         
         camTopDown.enabled = true;
@@ -218,11 +243,20 @@ public class ChatManager : MonoBehaviour
     {
         //talkLengthTmp = 0;
         //field.gameObject.SetActive(true);
-        talkingName.text = npcdata.npcName;
         isConnection = true;
-        talkText.text = "만나서 반가워! 나한테 뭔가 물어볼게 있어?";
-        ConnectionKJY.instance.Request_Question(npcdata.npcName, weapon);
-        npctalk = false;
+        if (interrogation == false)
+        {
+            talkingName.text = npcdata.npcName;
+            npcText.text = "만나서 반가워! 나한테 뭔가 물어볼게 있어?";
+            ConnectionKJY.instance.Request_Question(npcdata.npcName, weapon);
+            npctalk = false;
+        }
+        else
+        {
+            talkingName.text = npcdata.npcName;
+            npcText.text = "전 범인이 아닙니다. 탐정님들";
+            npctalk = false;
+        }
     }
 
     public void EmitChat() 
@@ -240,7 +274,6 @@ public class ChatManager : MonoBehaviour
     // 여기서부터 TalkCode
     public void OnclickSend()
     {
-        UI.instance.MinusLife();
         inputText.gameObject.SetActive(false);
         // 임시
         string url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/chat/send";
@@ -275,24 +308,34 @@ public class ChatManager : MonoBehaviour
     // 버튼을 누르면 플레이어 input filed가 활성화
     public void OnClickNext()
     {
-        if (UI.instance.lifeCount < 0)
+        if (interrogation == false)
         {
-            if (npctalk == true)
+            if (UI.instance.lifeCount < 0)
             {
-                FinishTalk();
-                UI.instance.DayAndNight(false);
-                StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
+                if (npctalk == true)
+                {
+                    FinishTalk();
+                    UI.instance.DayAndNight(false);
+                    StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
+                }
+                return;
             }
-            return;
+        }
+        else
+        {
+            if (DayAndNIghtManager.instance.heartRate >= 120)
+            {
+                print("stop");
+                //FinishTalk();
+            }
+            field.gameObject.SetActive(true);
         }
 
         //KJY - bool값 제어
         npctalk = false;
-
         isConnection = false;
-
+        talkPanel.gameObject.SetActive(false);
         talkingName.text = InfoManagerKJY.instance.nickname;
-        ButtonObject.SetActive(true);
     }
 
     public void OnClickChat(int index)
@@ -300,6 +343,9 @@ public class ChatManager : MonoBehaviour
         //ConnectionKJY.instance.re
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
         UI.instance.MinusLife();
+        isConnection = false;
+        talkPanel.gameObject.SetActive(false);
+        ButtonObject.SetActive(false);
     }
 
     public void ChatButtonList(List<Questions> questions)
@@ -308,5 +354,22 @@ public class ChatManager : MonoBehaviour
         {
             buttonTexts[i].text = questions[i].question;
         }
+        ButtonObject.SetActive(true);
+    }
+
+    public void OnClickInterrogation()
+    {
+        //KJY - bool값 제어
+        npctalk = true;
+
+        ConnectionKJY.instance.RequestInterrogationConversation(npcdata.npcName, talkText.text);
+
+        isConnection = false;
+        // text 제어
+        talkingName.text = npcdata.npcName;
+        talkPanel.gameObject.SetActive(true);
+        field.gameObject.SetActive(false);
+        //inputText.text = "";
+
     }
 }
