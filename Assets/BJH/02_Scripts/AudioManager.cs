@@ -5,7 +5,9 @@ using UnityEngine;
 // enum 순서에 맞에 _audioSources에 assign 해주세요.
 public enum SoundList
 {
-    BG
+    BG,
+    Ending_Positive01,
+    Ending_Positive02,
 }
 
 public class AudioManager : MonoBehaviour
@@ -39,16 +41,35 @@ public class AudioManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlaySound(SoundList soundList)
+    public void PlaySound(SoundList soundList, float durationTime)
     {
-        index = ((int)soundList);
-        _audioSource.clip = _ausioClips[index];
-        _audioSource.Play();
+        StartCoroutine(CoPlayMusicWithFadeIn(soundList, durationTime));
     }
 
     public void StopSound()
     {
         _audioSource.Stop();
+    }
+
+    IEnumerator CoPlayMusicWithFadeIn(SoundList soundList, float durationTime)
+    {
+        index = ((int)soundList);
+        _audioSource.clip = _ausioClips[index];
+        _audioSource.volume = 0f;
+        _audioSource.Play();
+
+        float startVolume = 0f;
+        float targetVolume = 1f;
+        float currentTime = 0f;
+
+        while(currentTime < durationTime)
+        {
+            currentTime += Time.deltaTime;
+            _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, currentTime / durationTime);
+            yield return null;
+        }
+
+        _audioSource.volume = targetVolume;
     }
 
 }
