@@ -61,7 +61,7 @@ public class AudioManager : MonoBehaviour
         _audioSource.Play();
 
         float startVolume = 0f;
-        float targetVolume = 1f;
+        float targetVolume = volume;
         float currentTime = 0f;
 
         while(currentTime < durationTime)

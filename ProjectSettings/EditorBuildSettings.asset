@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/juykang/1.KJY_Scene/GameScene_NPC_Random.unity
     guid: 25cab2f64fc04bc40bfe89fd858cebba
+  - enabled: 1
+    path: Assets/BJH/01_Scenes/EndingCredit.unity
+    guid: ef4ff56f6875dcc449fc4d1f4cb1deb9
   m_configObjects: {}

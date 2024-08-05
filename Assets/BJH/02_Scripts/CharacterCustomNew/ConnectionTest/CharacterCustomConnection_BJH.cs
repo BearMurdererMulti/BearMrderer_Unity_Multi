@@ -63,6 +63,8 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
         requester.complete = OnGetComplete;
         requester.failed = OnGetFailed;
 
+        // юс╫ц
+        HttpManagerKJY.instance.token = "";
         HttpManagerKJY.instance.SendRequest(requester);
     }
 

@@ -12,7 +12,8 @@ public enum SceneName
     Cinemachine02,
     CharacterCustom_new,
     Cinemachine03,
-    GameScene_NPC_Random
+    GameScene_NPC_Random,
+    EndingCredit
 }
 
 public class KJY_SceneManager : MonoBehaviour

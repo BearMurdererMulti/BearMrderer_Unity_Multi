@@ -13,7 +13,7 @@ public class SceneController_BJH : MonoBehaviour
     {
         SubTimelineEvent();
 
-        AudioManager.Instnace.PlaySound(SoundList.BG, 1f, 2f);
+        AudioManager.Instnace.PlaySound(SoundList.BG, 0.3f, 2f);
 }
 
     private void SubTimelineEvent()
@@ -25,11 +25,14 @@ public class SceneController_BJH : MonoBehaviour
     private void DissubTimelineEvent(PlayableDirector timeline)
     {
         timeline.stopped -= DissubTimelineEvent;
-        MoveScene(sceneName);
+        // MoveScene(sceneName);
+        // юс╫ц
+        MoveScene(SceneName.EndingCredit);
     }
 
     public void MoveScene(SceneName sceneName)
     {
         KJY_SceneManager.instance.ChangeScene(sceneName);
+
     }
 }

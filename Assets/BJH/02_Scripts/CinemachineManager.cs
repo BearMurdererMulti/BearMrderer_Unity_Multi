@@ -29,7 +29,7 @@ public class CinemachineManager : MonoBehaviour
     private void Start()
     {
         // 음악 실행
-        AudioManager.Instnace.PlaySound(SoundList.Play_BG, 0.7f, 2f);
+        AudioManager.Instnace.PlaySound(SoundList.Play_BG, 0.3f, 2f);
 
         // 타임라인에서 타이밍 맞게 시작, 끝내야 할 것들을 코루틴으로 구현
         StartCoroutine(CoSpawnDollAndDog());
