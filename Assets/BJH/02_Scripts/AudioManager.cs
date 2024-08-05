@@ -8,12 +8,14 @@ public enum SoundList
     BG,
     Ending_Positive01,
     Ending_Positive02,
+    Ending_Negative03,
+    Play_BG
 }
 
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
-    [SerializeField] private List<AudioClip> _ausioClips = new List<AudioClip>(); // 오디오 소스 담기
+    [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>(); // 오디오 소스 담기
     [SerializeField] private AudioSource _audioSource;
     private int index;
 
@@ -41,9 +43,9 @@ public class AudioManager : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
     }
 
-    public void PlaySound(SoundList soundList, float durationTime)
+    public void PlaySound(SoundList soundList, float volume, float durationTime)
     {
-        StartCoroutine(CoPlayMusicWithFadeIn(soundList, durationTime));
+        StartCoroutine(CoPlayMusicWithFadeIn(soundList, volume, durationTime));
     }
 
     public void StopSound()
@@ -51,10 +53,10 @@ public class AudioManager : MonoBehaviour
         _audioSource.Stop();
     }
 
-    IEnumerator CoPlayMusicWithFadeIn(SoundList soundList, float durationTime)
+    IEnumerator CoPlayMusicWithFadeIn(SoundList soundList, float volume, float durationTime)
     {
         index = ((int)soundList);
-        _audioSource.clip = _ausioClips[index];
+        _audioSource.clip = _audioClips[index];
         _audioSource.volume = 0f;
         _audioSource.Play();
 

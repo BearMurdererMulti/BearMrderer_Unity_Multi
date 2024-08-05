@@ -13733,7 +13733,7 @@ Transform:
   m_GameObject: {fileID: 616504874}
   serializedVersion: 2
   m_LocalRotation: {x: -0.0078059845, y: 0.033588525, z: -0.00026082984, w: -0.99940526}
-  m_LocalPosition: {x: -0.043901443, y: 0.6172991, z: -19.086706}
+  m_LocalPosition: {x: 0.02, y: 0.63, z: -20.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -32229,7 +32229,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 15
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

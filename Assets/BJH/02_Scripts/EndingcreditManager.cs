@@ -16,7 +16,7 @@ public class EndingcreditManager : MonoBehaviour
     private void Start()
     {
         // bgm
-        AudioManager.Instnace.PlaySound(SoundList.Ending_Positive01, 2f);
+        AudioManager.Instnace.PlaySound(SoundList.Ending_Positive01, 1f, 2f);
         creditTr = bg.GetComponent<EndingcreditUI>().credit.transform; // ending credit의 tr값 받아오기
         creditTr.gameObject.SetActive(false); // ending credit 끄기
 

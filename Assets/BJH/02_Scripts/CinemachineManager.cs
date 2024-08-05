@@ -19,8 +19,6 @@ public class CinemachineManager : MonoBehaviour
     [SerializeField] private GameObject talkUi;
     [SerializeField] private TMP_Text talkContent;
     [SerializeField] private List<string> talkList;
-    private int talkIndex = 1;
-    private bool isTalking = false;
 
     [SerializeField] private PlayableDirector timeline;
 
@@ -30,6 +28,9 @@ public class CinemachineManager : MonoBehaviour
 
     private void Start()
     {
+        // 음악 실행
+        AudioManager.Instnace.PlaySound(SoundList.Play_BG, 0.7f, 2f);
+
         // 타임라인에서 타이밍 맞게 시작, 끝내야 할 것들을 코루틴으로 구현
         StartCoroutine(CoSpawnDollAndDog());
         StartCoroutine(CoTurnOffTrafficLight());
@@ -43,18 +44,12 @@ public class CinemachineManager : MonoBehaviour
 
     private void SubTimelineEvent()
     {
-        Debug.Log("SubTimelineEvent called");
-        Debug.Log($"Timeline duration: {timeline.duration} seconds");
         timeline.stopped += DissubTimelineEvent;
         timeline.Play();
-        Debug.Log($"Timeline duration: {timeline.duration} seconds");
-
     }
 
     private void DissubTimelineEvent(PlayableDirector timeline)
     {
-        Debug.Log($"{nameof(DissubTimelineEvent)}을 실행합니다.");
-        Debug.Log($"DissubTimelineEvent called. Timeline state: {timeline.state}");
         timeline.stopped -= DissubTimelineEvent;
         ShowUI();
     }
@@ -91,18 +86,6 @@ public class CinemachineManager : MonoBehaviour
     }
 
 
-    public void StartTalking()
-    {
-        isTalking = true;
-        talkUi.SetActive(true);
-        talkContent.text = talkList[talkIndex];
-        talkIndex++;
-    }
-    private void ShowNextTalkScript()
-    {
-        
-    }
-
     private IEnumerator CoStartHeadmanScriptUI()
     {
         isHeadmanSpeaking = false; // 업데이트 문에서 한번만 호출되기 위해서 설정한 bool 값
@@ -113,8 +96,6 @@ public class CinemachineManager : MonoBehaviour
                 blendCamera.enabled = true;
             }
             talkContent.text = talkList[i];
-            Debug.Log(talkContent.text);
-            Debug.Log($"i값은 {i}입니다.");
             yield return new WaitForSeconds(5f);
         }
         KJY_SceneManager.instance.ChangeScene(SceneName.GameScene_NPC_Random);

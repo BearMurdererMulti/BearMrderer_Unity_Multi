@@ -77,6 +77,7 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
         Debug.Log(response.message.saveTime);
         Debug.Log(response.message.saved);
 
+        AudioManager.Instnace.StopSound();
         KJY_SceneManager.instance.ChangeScene(SceneName.Cinemachine03);
     }
 
