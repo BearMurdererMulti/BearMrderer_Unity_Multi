@@ -9,30 +9,27 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/BJH/01_Scenes/DogTestScnene.unity
-    guid: 598109f9c2eb7ce40bd512aee7cbc787
-  - enabled: 0
     path: Assets/juykang/1.KJY_Scene/LoginScene_KJY.unity
     guid: 99f8f988c2d308c4e92c928680a25434
-  - enabled: 0
+  - enabled: 1
     path: Assets/juykang/1.KJY_Scene/Lobby_KJY.unity
     guid: 4ea494af14ad4a14db646f36e724e524
-  - enabled: 0
+  - enabled: 1
     path: Assets/juykang/1.KJY_Scene/Room_KJY.unity
     guid: d10cefacdfdfbbf4880c9cdee1104fb0
-  - enabled: 0
+  - enabled: 1
     path: Assets/Chinemachine_01.unity
     guid: b3942dfde30270241b15fb318cd90123
-  - enabled: 0
+  - enabled: 1
     path: Assets/BJH/01_Scenes/Cinemachine02.unity
     guid: 8b2cce5d87f945d4e8ba20b83582a67a
-  - enabled: 0
+  - enabled: 1
     path: Assets/BJH/01_Scenes/CharacterCustom_new.unity
     guid: 9adb26f021a17b54999f1bcaf5626600
-  - enabled: 0
+  - enabled: 1
     path: Assets/BJH/01_Scenes/Cinemachine03.unity
     guid: a0bfa589cc55c8c4ab99a3a33722e71b
-  - enabled: 0
+  - enabled: 1
     path: Assets/juykang/1.KJY_Scene/GameScene_NPC_Random.unity
     guid: 25cab2f64fc04bc40bfe89fd858cebba
   m_configObjects: {}

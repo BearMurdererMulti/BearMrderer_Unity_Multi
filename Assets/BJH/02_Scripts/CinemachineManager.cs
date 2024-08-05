@@ -26,6 +26,8 @@ public class CinemachineManager : MonoBehaviour
 
     [SerializeField] private CinemachineBlendListCamera blendCamera;
 
+    private bool isHeadmanSpeaking = false;
+
     private void Start()
     {
         // 타임라인에서 타이밍 맞게 시작, 끝내야 할 것들을 코루틴으로 구현
@@ -60,13 +62,14 @@ public class CinemachineManager : MonoBehaviour
     private void ShowUI()
     {
         talkUi.SetActive(true);
+        isHeadmanSpeaking = true;
     }
 
     private void Update()
     {
-        if(talkUi.activeSelf && Input.GetKeyDown(KeyCode.KeypadEnter) && Input.GetKeyDown(KeyCode.K))
+        if (isHeadmanSpeaking) // 촌장님 대화 UI 시작
         {
-            ShowNextTalkScript();
+            StartCoroutine(CoStartHeadmanScriptUI());
         }
     }
 
@@ -81,13 +84,13 @@ public class CinemachineManager : MonoBehaviour
     IEnumerator CoTurnOffTrafficLight()
     {
         yield return new WaitForSeconds(setTrafficLightTime);
-        foreach(Animator animator in trafficLightAnimators)
+        foreach (Animator animator in trafficLightAnimators)
         {
             animator.SetBool("isExit", true);
         }
     }
 
-    
+
     public void StartTalking()
     {
         isTalking = true;
@@ -97,7 +100,24 @@ public class CinemachineManager : MonoBehaviour
     }
     private void ShowNextTalkScript()
     {
-        talkContent.text = talkList[talkIndex];
-        talkIndex++;
+        
     }
+
+    private IEnumerator CoStartHeadmanScriptUI()
+    {
+        isHeadmanSpeaking = false; // 업데이트 문에서 한번만 호출되기 위해서 설정한 bool 값
+        for (int i = 0; i < talkList.Count; i++)
+        {
+            if(i == 1) // 두번째 대사부터 카메라가 Blend되면서 촌장으로 이동
+            {
+                blendCamera.enabled = true;
+            }
+            talkContent.text = talkList[i];
+            Debug.Log(talkContent.text);
+            Debug.Log($"i값은 {i}입니다.");
+            yield return new WaitForSeconds(5f);
+        }
+        KJY_SceneManager.instance.ChangeScene(SceneName.GameScene_NPC_Random);
+    }
+
 }
