@@ -73,6 +73,7 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
 
             participantNickname = PhotonNetwork.LocalPlayer.NickName;
             participantText.text = participantNickname;
+            changeBtn.interactable = false;
         }
         masterNickname = PhotonNetwork.MasterClient.NickName;
         masterText.text = masterNickname;
@@ -83,7 +84,13 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         isReady = !isReady;
 
-        photonView.RPC("SetPlayerReadyState", RpcTarget.MasterClient, PhotonNetwork.LocalPlayer, isReady);
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            playerReady = isReady;
+        }
+
+        photonView.RPC("SetPlayerReadyState", RpcTarget.All, PhotonNetwork.LocalPlayer, isReady);
+        photonView.RPC("SetPlayerReadyUI", RpcTarget.All, PhotonNetwork.LocalPlayer, playerReady);
 
         Debug.Log($"Setting ready state for {PhotonNetwork.LocalPlayer.NickName} to {isReady}");
     }
@@ -95,34 +102,40 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
         {
             player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "IsReady", true } });
             Debug.Log($"SetPlayerReadyState called for {player.NickName} with ready state: {ready}");
+            readyText.text = playerReady ? "Ready" : "Not Ready";
             CheckAllPlayersReady();
         }
         else
         {
-            playerReady = ready;
+            player.SetCustomProperties(new ExitGames.Client.Photon.Hashtable { { "IsReady", ready } });
         }
+    }
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
-        {
-            readyText.text = playerReady ? "Ready" : "Not Ready";
-        }
+    [PunRPC]
+    public void SetPlayerReadyUI(Player player, bool ready)
+    {
+        readyText.text = playerReady ? "Ready" : "Not Ready";
     }
 
     private void OnStartGameButtonClicked()
     {
-    //    if (PhotonNetwork.IsMasterClient)
-    //    {
-    //         CheckAllPlayersReady();
-    //         if (AllPlayersReady())
-    //         {
-     //              // 시작 가능한 경우 게임 시작
-                   photonView.RPC("StartGame", RpcTarget.All);
-        //         }
-        //         else
-        // {
-        // Debug.Log("모든 플레이어가 준비되지 않았습니다.");
-        // }
-        // }
+        if (PhotonNetwork.IsMasterClient)
+        {
+             CheckAllPlayersReady();
+             if (AllPlayersReady())
+             {
+                   // 시작 가능한 경우 게임 시작
+                 photonView.RPC("StartGame", RpcTarget.All);
+              if (PhotonNetwork.IsMasterClient)
+              {
+                  saveRole();
+              }
+             }
+             else
+             {
+                Debug.Log("모든 플레이어가 준비되지 않았습니다.");
+             }
+         }
     }
 
     private bool AllPlayersReady()
@@ -156,27 +169,23 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     [PunRPC]
     private void StartGame()
     {
-        Debug.Log("게임 시작!");
-        // 여기에서 실제 게임 시작 로직을 추가합니다.
-        //Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
-        //Role oppositeRole = GetOppositeRole(currentRole);
-        //if (PhotonNetwork.IsMasterClient)
-        //{
-        //    InfoManagerKJY.instance.roomMasterRole = currentRole.ToString();
-        //    InfoManagerKJY.instance.roomPartiRole = oppositeRole.ToString();
-        //}
-        //else
-        //{
-        //    InfoManagerKJY.instance.roomMasterRole = oppositeRole.ToString();
-        //    InfoManagerKJY.instance.roomPartiRole = currentRole.ToString();
-        //}
+        Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
+        Role oppositeRole = GetOppositeRole(currentRole);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            InfoManagerKJY.instance.roomMasterRole = currentRole.ToString();
+            InfoManagerKJY.instance.roomPartiRole = oppositeRole.ToString();
+        }
+        else
+        {
+            InfoManagerKJY.instance.roomMasterRole = oppositeRole.ToString();
+            InfoManagerKJY.instance.roomPartiRole = currentRole.ToString();
+        }
 
-        //for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        //{
-        //    print(PhotonNetwork.PlayerList[i].NickName + PhotonNetwork.PlayerList[i].CustomProperties["room_job"]);
-        //}
-
-        saveRole();
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            print(PhotonNetwork.PlayerList[i].NickName + PhotonNetwork.PlayerList[i].CustomProperties["room_job"]);
+        }
     }
 
     public void saveRole()
@@ -352,7 +361,9 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         // 방장이 변경되었을 때 호출됨
         Debug.Log($"새로운 방장이 되었습니다: {newMasterClient.NickName}");
-        
+        readyButtonText.text = "Start Game";
+        readyButton.onClick.AddListener(OnStartGameButtonClicked);
+
         Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
         currentMasterRole = currentRole;
         firstProfile.sprite = Resources.Load<Sprite>("RoomJobProfile/"+currentRole.ToString());

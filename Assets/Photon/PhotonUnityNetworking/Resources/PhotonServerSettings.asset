@@ -46,6 +46,8 @@ MonoBehaviour:
   - UpdateRoleInRoom
   - SetPlayerReadyState
   - StartGame
+  - UpdateScenario
+  - SetPlayerReadyUI
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -839,26 +840,15 @@ public class TryIntroScenarioSetting : ConnectionStratege
     public void Complete(DownloadHandler result)
     {
 
-        IntroScenarioResponse reponse = new IntroScenarioResponse();
-        reponse = JsonUtility.FromJson<IntroScenarioResponse>(result.text);
+        IntroScenarioResponse response = new IntroScenarioResponse();
+        response = JsonUtility.FromJson<IntroScenarioResponse>(result.text);
 
-        if(reponse.resultCode == "SUCCESS")
+        if (response != null && response.resultCode == "SUCCESS")
         {
-            InfoManagerKJY.instance.ScenarioOfIntroScenarSetting(reponse.message.firstScenarioResponse);
-            InfoManagerKJY.instance.IntroOfIntroScenarioSetting(reponse.message.introAnswer);
-
-            foreach (GameNpcSetting npc in reponse.message.firstScenarioResponse.gameNpcList)
-            {
-                InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
-            }
+            KJY_PhotonConnection.Instance.IntroScenarioPhoton(response);
         }
-        string sceneName = SceneName.GameScene_NPC_Random.ToString();
-        PhotonNetwork.LoadLevel(sceneName);
-        //KJYKJYKJY
-        //KJY_SceneManager.instance.ChangeScene(2);
     }
 }
-
 #endregion
 
 #region FinalSetting

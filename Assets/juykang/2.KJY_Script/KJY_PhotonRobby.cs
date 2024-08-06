@@ -53,8 +53,6 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         btnCreateRoom.interactable = false;
         //inputRoomName 의 내용이 변경될 때 호출되는 함수
         inputRoomName.onValueChanged.AddListener(OnValueChangedRoomName);
-
-        print("count" + roomCache.Count);
     }
 
     //참여 & 생성 버튼에 관여
@@ -260,8 +258,6 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
         base.OnRoomListUpdate(roomList);
 
         print("lobby");
-        print(roomList.Count);
-        print(roomList[0].Name);
         //전체 룸리스트UI 삭제
         RemoveRoomList();
         //내가 따로 관리하는 룸리스트 정보 갱신
