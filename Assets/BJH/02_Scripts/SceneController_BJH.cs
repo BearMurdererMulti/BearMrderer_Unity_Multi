@@ -25,9 +25,7 @@ public class SceneController_BJH : MonoBehaviour
     private void DissubTimelineEvent(PlayableDirector timeline)
     {
         timeline.stopped -= DissubTimelineEvent;
-        // MoveScene(sceneName);
-        // юс╫ц
-        MoveScene(SceneName.EndingCredit);
+        MoveScene(sceneName);
     }
 
     public void MoveScene(SceneName sceneName)
