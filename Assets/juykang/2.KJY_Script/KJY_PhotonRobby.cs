@@ -257,7 +257,7 @@ public class KJY_PhotonRobby : MonoBehaviourPunCallbacks
     {
         base.OnRoomListUpdate(roomList);
 
-        print(roomList.Count);
+        print("lobby");
         //전체 룸리스트UI 삭제
         RemoveRoomList();
         //내가 따로 관리하는 룸리스트 정보 갱신

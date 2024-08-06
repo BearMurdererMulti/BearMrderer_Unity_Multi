@@ -1,3 +1,4 @@
+using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using System;
 using System.Collections;
@@ -839,26 +840,15 @@ public class TryIntroScenarioSetting : ConnectionStratege
     public void Complete(DownloadHandler result)
     {
 
-        IntroScenarioResponse reponse = new IntroScenarioResponse();
-        reponse = JsonUtility.FromJson<IntroScenarioResponse>(result.text);
+        IntroScenarioResponse response = new IntroScenarioResponse();
+        response = JsonUtility.FromJson<IntroScenarioResponse>(result.text);
 
-        if(reponse.resultCode == "SUCCESS")
+        if (response != null && response.resultCode == "SUCCESS")
         {
-            InfoManagerKJY.instance.ScenarioOfIntroScenarSetting(reponse.message.firstScenarioResponse);
-            InfoManagerKJY.instance.IntroOfIntroScenarioSetting(reponse.message.introAnswer);
-
-            foreach (GameNpcSetting npc in reponse.message.firstScenarioResponse.gameNpcList)
-            {
-                InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
-            }
+            KJY_PhotonConnection.Instance.IntroScenarioPhoton(response);
         }
-        string sceneName = SceneName.Chinemachine_01.ToString();
-        PhotonNetwork.LoadLevel(sceneName);
-        //KJYKJYKJY
-        //KJY_SceneManager.instance.ChangeScene(2);
     }
 }
-
 #endregion
 
 #region FinalSetting
@@ -1223,14 +1213,12 @@ public class TryQeustionSetting : ConnectionStratege
 
         if (response.resultCode == "SUCCESS")
         {
-            Debug.Log(response.message.questions[0].question);
             ChatManager.instance.ChatButtonList(response.message.questions);
         }
 
     }
 }
 #endregion
-
 
 #region QuestionAnswerSetting
 [System.Serializable]
@@ -1322,6 +1310,176 @@ public class TryQeustionAnswerSetting : ConnectionStratege
         {
             ChatManager.instance.talkingName.text = ChatManager.instance.npcdata.npcName;
             ChatManager.instance.npcText.text = response.message.response;
+            ChatManager.instance.isConnection = true;
+            ChatManager.instance.npctalk = true;
+        }
+
+    }
+}
+#endregion
+
+#region InterrogationStartSetting
+[System.Serializable]
+public class InterrogationStartRequest
+{
+    public long gameSetNo;
+    public string npcName;
+    public string weapon;
+}
+
+public class InterrogationStartSetting
+{
+    public long gameSetNo;
+    public string npcName;
+    public string weapon;
+
+    public string url;
+}
+
+[System.Serializable]
+public class InterrogationStartResponse
+{
+    public string resultCode;
+    public InterrogationStartMessage message;
+}
+
+[System.Serializable]
+public class InterrogationStartMessage
+{
+    public string message;
+}
+
+[System.Serializable]
+public class TryInterrogationStartSetting : ConnectionStratege
+{
+    long gameSetNo;
+    string npcName;
+    string weapon;
+    string url;
+
+    public TryInterrogationStartSetting (InterrogationStartSetting str)
+    {
+        this.gameSetNo = str.gameSetNo;
+        this.npcName = str.npcName;
+        this.weapon = str.weapon;
+
+        this.url = str.url;
+        CreateJson();
+    }
+
+    public void CreateJson()
+    {
+        InterrogationStartRequest request = new InterrogationStartRequest();
+        request.gameSetNo = this.gameSetNo;
+        request.npcName = this.npcName;
+        request.weapon = this.weapon;
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        InterrogationStartResponse response = new InterrogationStartResponse();
+        response = JsonUtility.FromJson<InterrogationStartResponse>(result.text);
+
+        if (response.resultCode == "SUCCESS")
+        {
+            ChatManager.instance.StartTalkinterrogation();
+        }
+
+    }
+}
+#endregion
+
+#region InterrogationConversationSetting
+[System.Serializable]
+public class InterrogationConversationRequest
+{
+    public long gameSetNo;
+    public string npcName;
+    public string content;
+}
+
+public class InterrogationConversationSetting
+{
+    public long gameSetNo;
+    public string npcName;
+    public string content;
+
+    public string url;
+}
+
+[System.Serializable]
+public class InterrogationConversationResponse
+{
+    public string resultCode;
+    public InterrogationConversationMessage message;
+}
+
+[System.Serializable]
+public class InterrogationConversationMessage
+{
+    public string response;
+    public int heartRate;
+}
+
+[System.Serializable]
+public class TryInterrogationConversationSetting : ConnectionStratege
+{
+    long gameSetNo;
+    string npcName;
+    string content;
+    string url;
+
+    public TryInterrogationConversationSetting(InterrogationConversationSetting str)
+    {
+        this.gameSetNo = str.gameSetNo;
+        this.npcName = str.npcName;
+        this.content = str.content;
+
+        this.url = str.url;
+        CreateJson();
+    }
+
+    public void CreateJson()
+    {
+        InterrogationConversationRequest request = new InterrogationConversationRequest();
+        request.gameSetNo = this.gameSetNo;
+        request.npcName = this.npcName;
+        request.content= this.content;
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        InterrogationConversationResponse response = new InterrogationConversationResponse();
+        response = JsonUtility.FromJson<InterrogationConversationResponse>(result.text);
+
+        if (response.resultCode == "SUCCESS")
+        {
+            ChatManager.instance.npcText.text = response.message.response;
+
             ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;
         }
@@ -1811,6 +1969,38 @@ public class ConnectionKJY : MonoBehaviour
         str.keyWordType = "weapon";
 
         TryQeustionAnswerSetting answer = new TryQeustionAnswerSetting(str);
+    }
+    #endregion
+
+    #region InterrogationStart
+    public void RequestInterrogationStart(string name, string weapon)
+    {
+        InterrogationStartSetting str = new InterrogationStartSetting();
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/interrogation/start";
+
+        str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        str.npcName = name;
+        str.weapon = weapon;
+
+        TryInterrogationStartSetting question = new TryInterrogationStartSetting(str);
+    }
+    #endregion Interrogation Conversation
+
+    #region
+    public void RequestInterrogationConversation(string name, string content)
+    {
+        InterrogationConversationSetting str = new InterrogationConversationSetting();
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/interrogation/proceed";
+
+        str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        str.npcName = name;
+        str.content = content;
+
+        print(str.gameSetNo);
+        print(str.npcName);
+        print(str.content);
+
+        TryInterrogationConversationSetting question = new TryInterrogationConversationSetting(str);
     }
     #endregion
 

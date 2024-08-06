@@ -501,7 +501,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -728,10 +728,12 @@ MonoBehaviour:
   roomMaster: {fileID: 1195838414206861048}
   roomJob: {fileID: 4905898588426086893}
   roomNumber: {fileID: 7207844736939143507}
+  roomIndex: 0
   roomCode: 
   isPrivateImg: {fileID: 8159176926320639129}
   isRoomPrivate: 0
   myRoomBtn: {fileID: 0}
+  participant: 
 --- !u!1 &7445393726699512978
 GameObject:
   m_ObjectHideFlags: 0
