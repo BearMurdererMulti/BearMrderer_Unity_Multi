@@ -126,10 +126,10 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
              {
                    // 시작 가능한 경우 게임 시작
                  photonView.RPC("StartGame", RpcTarget.All);
-              if (PhotonNetwork.IsMasterClient)
-              {
-                  saveRole();
-              }
+                  if (PhotonNetwork.IsMasterClient)
+                  {
+                      saveRole();
+                  }
              }
              else
              {
@@ -171,6 +171,8 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
     {
         Role currentRole = (Role)PhotonNetwork.LocalPlayer.CustomProperties["room_job"];
         Role oppositeRole = GetOppositeRole(currentRole);
+        InfoManagerKJY.instance.roomPartiNickName = participantNickname;
+        InfoManagerKJY.instance.roomMasterNickName = masterNickname;
         if (PhotonNetwork.IsMasterClient)
         {
             InfoManagerKJY.instance.roomMasterRole = currentRole.ToString();
@@ -280,6 +282,7 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
 
         participantNickname = newPlayer.NickName;
         participantText.text = participantNickname;
+        
 
         secondProfile.enabled = true;
         secondProfile.sprite = Resources.Load<Sprite>("RoomJobProfile/" + GetOppositeRole(currentMasterRole).ToString());

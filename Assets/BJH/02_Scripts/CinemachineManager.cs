@@ -98,7 +98,8 @@ public class CinemachineManager : MonoBehaviour
             talkContent.text = talkList[i];
             yield return new WaitForSeconds(5f);
         }
-        KJY_SceneManager.instance.ChangeScene(SceneName.GameScene_NPC_Random);
+        PhotonConnection.Instance.InGameResponsePhoton();
+        //KJY_SceneManager.instance.ChangeScene(SceneName.GameScene_NPC_Random);
     }
 
 }
