@@ -845,7 +845,7 @@ public class TryIntroScenarioSetting : ConnectionStratege
 
         if (response != null && response.resultCode == "SUCCESS")
         {
-            KJY_PhotonConnection.Instance.IntroScenarioPhoton(response);
+            PhotonConnection.Instance.IntroScenarioPhoton(response);
         }
     }
 }

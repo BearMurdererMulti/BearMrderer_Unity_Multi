@@ -48,6 +48,7 @@ MonoBehaviour:
   - StartGame
   - UpdateScenario
   - SetPlayerReadyUI
+  - UpdateUserCustomSave
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

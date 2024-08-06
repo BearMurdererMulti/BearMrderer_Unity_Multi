@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KJY_PhotonConnection : MonoBehaviourPunCallbacks
+public class PhotonConnection : MonoBehaviourPunCallbacks
 {
-    public static KJY_PhotonConnection Instance;
+    public static PhotonConnection Instance;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    #region IntroScenarioResponse
     public void IntroScenarioPhoton(IntroScenarioResponse response)
     {
         string jsonResponse = JsonUtility.ToJson(response);
@@ -35,4 +36,24 @@ public class KJY_PhotonConnection : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel(sceneName);
         }
     }
+    #endregion
+
+    #region CharacterCustom
+    public void UserCustomSaveResponsePhoton(UserCustomSaveResponse response)
+    {
+        string jsonResponse = JsonUtility.ToJson(response);
+        photonView.RPC("UpdateUserCustomSave", RpcTarget.All, jsonResponse);
+    }
+
+    [PunRPC]
+    private void UpdateUserCustomSave(string jsonResponse)
+    {
+        UserCustomSaveResponse response = JsonUtility.FromJson<UserCustomSaveResponse>(jsonResponse);
+
+        string sceneName = SceneName.GameScene_NPC_Random.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+
+    #endregion
+
 }

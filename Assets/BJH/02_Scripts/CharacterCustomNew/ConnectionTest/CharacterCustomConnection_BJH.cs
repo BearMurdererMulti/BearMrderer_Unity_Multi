@@ -80,7 +80,7 @@ public class CharacterCustomConnection_BJH : MonoBehaviour
         Debug.Log(response.message.saved);
 
         AudioManager.Instnace.StopSound();
-        KJY_SceneManager.instance.ChangeScene(SceneName.Cinemachine03);
+        PhotonConnection.Instance.UserCustomSaveResponsePhoton(response);
     }
 
     private void OnGetFailed(DownloadHandler handler)
