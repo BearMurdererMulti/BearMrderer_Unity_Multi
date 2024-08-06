@@ -50,6 +50,20 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     {
         UserCustomSaveResponse response = JsonUtility.FromJson<UserCustomSaveResponse>(jsonResponse);
 
+        string sceneName = SceneName.Cinemachine03.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+    #endregion
+
+    #region InGame
+    public void InGameResponsePhoton()
+    {
+        photonView.RPC("GoInGame", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void GoInGame()
+    {
         string sceneName = SceneName.GameScene_NPC_Random.ToString();
         PhotonNetwork.LoadLevel(sceneName);
     }

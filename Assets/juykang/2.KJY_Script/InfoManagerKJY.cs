@@ -173,7 +173,6 @@ public class InfoManagerKJY : MonoBehaviour
         dailySummary = response.method;
         victim = response.victim;
         gameNpcList = response.gameNpcList;
-        print(crimeScene);
         gameNpcList = SuffleList(gameNpcList);
     }
 

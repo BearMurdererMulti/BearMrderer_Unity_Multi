@@ -624,6 +624,18 @@ public class TryNickNameCheck : ConnectionStratege
 
 #region GameStartSetting
 [System.Serializable]
+public class GameStartRequest
+{
+    public string participantNickname;
+}
+
+public class GameStartSetting
+{
+    public string url;
+    public string participantNickname;
+}
+
+[System.Serializable]
 public class gameSetingResopnse
 {
     public string resultCode;
@@ -657,6 +669,49 @@ public class GameNpcSetting
     public Material npcMouth;
     public Mesh earCollider;
     public Mesh tailCollider;
+}
+
+
+public class TryGameStart : ConnectionStratege
+{
+    string url;
+    string participantNickname;
+
+    public TryGameStart(GameStartSetting str)
+    {
+        this.url = str.url;
+        this.participantNickname = str.participantNickname;
+        CreateJson();
+    }
+    public void CreateJson()
+    {
+        GameStartRequest request = new GameStartRequest();
+        request.participantNickname = this.participantNickname;
+
+        string jsonData = JsonUtility.ToJson(request);
+        OnGetRequest(jsonData);
+    }
+    public void OnGetRequest(string jsonData)
+    {
+        HttpRequester request = new HttpRequester();
+
+        request.Settting(RequestType.POST, this.url);
+        request.body = jsonData;
+        request.complete = Complete;
+
+        HttpManagerKJY.instance.SendRequest(request);
+    }
+    public void Complete(DownloadHandler result)
+    {
+        gameSetingResopnse response = new gameSetingResopnse();
+        response = JsonUtility.FromJson<gameSetingResopnse>(result.text);
+
+        if (response.resultCode == "SUCCESS")
+        {
+            InfoManagerKJY.instance.Setting(response);
+            ConnectionKJY.instance.rgComplete();
+        }
+    }
 }
 #endregion
 
@@ -1650,26 +1705,17 @@ public class ConnectionKJY : MonoBehaviour
 
     public void RequestGameSet()
     {
-        HttpRequester res = new HttpRequester();
-        res.Settting(RequestType.POST, "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start");
-        res.complete = rgComplete;
 
+        GameStartSetting res = new GameStartSetting();
+        res.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start";
+        res.participantNickname = InfoManagerKJY.instance.roomPartiNickName;
 
-        HttpManagerKJY.instance.SendRequest(res);
+        TryGameStart tryGameStart = new TryGameStart(res);
     }
 
-    public void rgComplete(DownloadHandler result)
+    public void rgComplete()
     {
-        gameSetingResopnse gsr = new gameSetingResopnse();
-        gsr = JsonUtility.FromJson<gameSetingResopnse>(result.text); //담겨있는 상태
-        if (gsr.resultCode == "SUCCESS")
-        {
-            InfoManagerKJY.instance.Setting(gsr);
-
-            RequestIntroScenarioSetting();
-
-            //KJY_SceneManager.instance.ChangeScene(1);//임시추가
-        }
+        RequestIntroScenarioSetting();
     }
     #endregion
 
