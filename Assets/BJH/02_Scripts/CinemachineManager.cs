@@ -1,16 +1,18 @@
 using Cinemachine;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-public class CinemachineManager : MonoBehaviour
+public class CinemachineManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] private GameObject doll, dog;
+    [SerializeField] public GameObject doll, dog; 
     [SerializeField] private float setSpawnTime;
 
     [SerializeField] private List<Animator> trafficLightAnimators;
@@ -24,7 +26,9 @@ public class CinemachineManager : MonoBehaviour
 
     [SerializeField] private CinemachineBlendListCamera blendCamera;
 
-    private bool isHeadmanSpeaking = false;
+    private bool isActiveEnter = false;
+    private int scriptIndex = 0;
+
 
     private void Start()
     {
@@ -57,14 +61,19 @@ public class CinemachineManager : MonoBehaviour
     private void ShowUI()
     {
         talkUi.SetActive(true);
-        isHeadmanSpeaking = true;
+        photonView.RPC("SetTargetScript", RpcTarget.AllBuffered);
     }
 
     private void Update()
     {
-        if (isHeadmanSpeaking) // 촌장님 대화 UI 시작
+        // 대화가 진행되는 중에
+        // 엔터 가능 + 엔터를 누르면 (다음 스크립트를 찾아(메서드) 타이핑 효과로 출력(코루틴))
+        if(talkUi.activeSelf)
         {
-            StartCoroutine(CoStartHeadmanScriptUI());
+            if(PhotonNetwork.IsMasterClient && isActiveEnter && Input.GetKeyDown(KeyCode.Return)) // 클라이언트만 엔터 치기 가능!!
+            {
+                photonView.RPC("SetTargetScript", RpcTarget.AllBuffered);
+            }
         }
     }
 
@@ -72,7 +81,11 @@ public class CinemachineManager : MonoBehaviour
     IEnumerator CoSpawnDollAndDog()
     {
         yield return new WaitForSeconds(setSpawnTime);
-        doll.SetActive(true);
+        doll = Resources.Load<GameObject>("CustomDoll");
+        Instantiate(doll);
+        doll.transform.position = new Vector3(-24.4f, 1.6f, -24.7f);
+        doll.transform.eulerAngles = new Vector3(0, 0, 0.5f);
+
         dog.SetActive(true);
     }
 
@@ -85,20 +98,36 @@ public class CinemachineManager : MonoBehaviour
         }
     }
 
-
-    private IEnumerator CoStartHeadmanScriptUI()
+    [PunRPC]
+    private void SetTargetScript()
     {
-        isHeadmanSpeaking = false; // 업데이트 문에서 한번만 호출되기 위해서 설정한 bool 값
-        for (int i = 0; i < talkList.Count; i++)
+        isActiveEnter = false;
+        // 두번째 대사부터 카메라가 Blend되면서 촌장으로 이동
+        if (scriptIndex == 1)
         {
-            if(i == 1) // 두번째 대사부터 카메라가 Blend되면서 촌장으로 이동
-            {
-                blendCamera.enabled = true;
-            }
-            talkContent.text = talkList[i];
-            yield return new WaitForSeconds(5f);
+            blendCamera.enabled = true;
         }
-        PhotonConnection.Instance.InGameResponsePhoton();
+
+        if(scriptIndex >= talkList.Count)
+        {
+            PhotonConnection.Instance.InGameResponsePhoton();
+        }
+
+        StartCoroutine(CoSpeakHeadmanScripts());
     }
 
+
+    private IEnumerator CoSpeakHeadmanScripts()
+    {
+        talkContent.text = "";
+
+        string script = talkList[scriptIndex];
+        foreach (char c in script)
+        {
+            talkContent.text += c;
+            yield return new WaitForSeconds(0.1f);
+        }
+        scriptIndex++;
+        isActiveEnter = true;
+    }
 }
