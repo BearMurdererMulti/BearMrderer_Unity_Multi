@@ -50,6 +50,10 @@ MonoBehaviour:
   - SetPlayerReadyUI
   - UpdateUserCustomSave
   - GoInGame
+  - SetTargetScript
+  - UpdateDollSkin
+  - AssignToCinemachineManager
+  - dontDestroy
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

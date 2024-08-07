@@ -1,13 +1,17 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
-public class CharacterCustom_new : MonoBehaviour
+public class CharacterCustom_new : MonoBehaviourPunCallbacks
 {
+    [SerializeField] private GameObject doll;
+
     [SerializeField] List<Material> bodyMaterials = new List<Material>();
     [SerializeField] SkinnedMeshRenderer bodyRenderer;
 
@@ -30,6 +34,7 @@ public class CharacterCustom_new : MonoBehaviour
     private int preContentIndex;
 
     private string[] categoryNames = { "body", "eyes", "years", "mouth", "tail" };
+    
 
     [SerializeField] private ScrollRect scrollRect;
 
@@ -50,8 +55,40 @@ public class CharacterCustom_new : MonoBehaviour
 
     public void OnClickCheckButton()
     {
+        // doll 캐릭터 정보 업데이트 동기화 후 통신 진행
+        //photonView.RPC("UpdateDollSkin", RpcTarget.AllBuffered);
+
+        PrefabUtility.SaveAsPrefabAsset(doll, "Assets/BJH/Resources/CustomDoll.prefab");
+
         CharacterCustomConnection_BJH connection = new CharacterCustomConnection_BJH(customDictionary);
     }
+
+    [PunRPC]
+    private void UpdateDollSkin()
+    {
+        foreach(string keyName in customDictionary.Keys)
+        {
+            switch(keyName)
+            {
+                case "body":
+                    bodyRenderer.material = bodyMaterials[customDictionary[keyName]];
+                    continue;
+                case "ears":
+                    earsRenderer.sharedMesh = earsMesh[customDictionary[keyName]];
+                    continue;
+                case "motuh":
+                    mouthRenderer.material = mouthMaterials[customDictionary[keyName]];
+                    continue;
+                case "eyes":
+                    eyesRenderer.material = eyesMaterials[customDictionary[keyName]];
+                    continue;
+                case "tail":
+                    tailRenderer.sharedMesh = tailMesh[customDictionary[keyName]];
+                    continue;
+            }
+        }
+    }
+
 
 
     // 커스텀 기능을 수행하는 버튼이 없으면
