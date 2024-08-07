@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class KJY_InterAction : MonoBehaviour
 {
-    [SerializeField] Button button;
+    [SerializeField] private Button button;
     public bool isOccupy;
 
     private void Start()
     {
+        button = GameObject.Find("Talk_Btn").GetComponent<Button>();
         button.interactable = false;
     }
 
@@ -34,7 +35,6 @@ public class KJY_InterAction : MonoBehaviour
             button.interactable = false;
             ChatManager.instance.npcdata = null;
             other.gameObject.GetComponent<NPC>().isWalking = true;
-
         }
     }
 

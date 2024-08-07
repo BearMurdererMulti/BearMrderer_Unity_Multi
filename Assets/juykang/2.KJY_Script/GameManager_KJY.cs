@@ -9,9 +9,9 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using static ConnectionKJY;
 
-public class DayAndNIghtManager : MonoBehaviour
+public class GameManager_KJY : MonoBehaviour
 {
-    public static DayAndNIghtManager instance;
+    public static GameManager_KJY instance;
 
     public List<GameObject> npcList;
     public List<GameObject> dieNpcList;
@@ -67,6 +67,7 @@ public class DayAndNIghtManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        
     }
 
     private void Start()
@@ -544,7 +545,7 @@ public class DayAndNIghtManager : MonoBehaviour
         selectUI.SetActive(false);
         obj.transform.position = intellRoom.transform.position;
         obj.transform.rotation = intellRoom.transform.rotation;
-        GameObject.FindWithTag("Player").transform.position = intellRoomPlayer.transform.position;
+        GameObject.FindWithTag("Detective").transform.position = intellRoomPlayer.transform.position;
         UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
         StartCoroutine(Wait());
     }

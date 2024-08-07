@@ -1,6 +1,8 @@
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class CameraBack : MonoBehaviour
 {
@@ -12,9 +14,18 @@ public class CameraBack : MonoBehaviour
 
     private void Start()
     {
-        initRot = transform.eulerAngles;
-        playerTr = GameObject.FindWithTag("Player").transform;
-        this.enabled = false;
+        if (InfoManagerKJY.instance.role == "Assistant")
+        {
+            initRot = transform.eulerAngles;
+            playerTr = GameObject.FindWithTag("Assistant").transform;
+            this.enabled = false;
+        }
+        else
+        {
+            initRot = transform.eulerAngles;
+            playerTr = GameObject.FindWithTag("Detective").transform;
+            this.enabled = false;
+        }
     }
     // Update is called once per frame
     void Update()

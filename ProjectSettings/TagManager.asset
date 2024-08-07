@@ -16,6 +16,8 @@ TagManager:
   - Hellper
   - Bullet
   - Weapon
+  - Detective
+  - Assistant
   layers:
   - Default
   - TransparentFX

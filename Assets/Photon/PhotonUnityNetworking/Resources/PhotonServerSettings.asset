@@ -50,6 +50,12 @@ MonoBehaviour:
   - SetPlayerReadyUI
   - UpdateUserCustomSave
   - GoInGame
+  - UpdateGonePlayer
+  - UpdateTouchDestination
+  - UpdateTouchPlayer
+  - Updateint
+  - SetNumber
+  - SetNpcCustomization
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

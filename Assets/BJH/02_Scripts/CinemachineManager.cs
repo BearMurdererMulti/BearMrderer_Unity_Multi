@@ -99,7 +99,6 @@ public class CinemachineManager : MonoBehaviour
             yield return new WaitForSeconds(5f);
         }
         PhotonConnection.Instance.InGameResponsePhoton();
-        //KJY_SceneManager.instance.ChangeScene(SceneName.GameScene_NPC_Random);
     }
 
 }

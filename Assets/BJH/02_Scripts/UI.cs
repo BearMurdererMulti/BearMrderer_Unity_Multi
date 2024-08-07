@@ -69,6 +69,8 @@ public class UI : MonoBehaviour
     public GameObject playerChatGroup;
     public Dictionary<string, bool> dicChatHistoryState = new Dictionary<string, bool>(); // NCP1ChatHistoryImg : true
 
+    [Tooltip("weaponList")]
+    public GameObject weaponListObject;
 
 
     public Transform ox;

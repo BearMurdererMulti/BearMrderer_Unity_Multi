@@ -47,7 +47,6 @@ public class KJY_PlayerMove : MonoBehaviour
 
         Vector3 dir = -dirH + -dirV;
         dir.Normalize();
-        //body.forward = dir;
         if (dirH != Vector3.zero || dirV != Vector3.zero)
         {
             body.forward = dir;

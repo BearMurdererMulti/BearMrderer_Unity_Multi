@@ -111,7 +111,7 @@ public class KJY_SenarioConnection : MonoBehaviour
             //InfoManagerBJH.instance.crimeScene = reponse.message.crimeScene;
             //InfoManagerBJH.instance.dailySummary = reponse.message.dailySummary;
 
-            DayAndNIghtManager.instance.DieResidentSet();
+            GameManager_KJY.instance.DieResidentSet();
         }
     }
 

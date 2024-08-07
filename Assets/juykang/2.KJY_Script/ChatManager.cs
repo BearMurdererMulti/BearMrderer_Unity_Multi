@@ -101,7 +101,7 @@ public class ChatManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F9))
         {
-            DayAndNIghtManager.instance.heartRate = 80;
+            GameManager_KJY.instance.heartRate = 80;
         }
 
 
@@ -323,7 +323,7 @@ public class ChatManager : MonoBehaviour
         }
         else
         {
-            if (DayAndNIghtManager.instance.heartRate >= 120)
+            if (GameManager_KJY.instance.heartRate >= 120)
             {
                 print("stop");
                 //FinishTalk();

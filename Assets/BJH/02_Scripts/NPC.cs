@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine.AI;
 
 
 
-public class NPC : MonoBehaviour
+public class NPC : MonoBehaviourPunCallbacks, IPunObservable
 {
     public GameObject destination;
     [SerializeField] private Transform[] destinations;
@@ -34,7 +35,10 @@ public class NPC : MonoBehaviour
 
     public bool isUpdate = false;
 
-    
+    //KJY 추가
+    private Vector3 networkPosition;
+    private Quaternion networkRotation;
+    private float networkMovementSpeed;
 
     private void Awake()
     {
@@ -66,39 +70,66 @@ public class NPC : MonoBehaviour
         
         if(GetComponent<NpcData>().status == "ALIVE")
         {
-            // nac에 목적지를 지정
-            nav.SetDestination(target.position);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // nac에 목적지를 지정
+                nav.SetDestination(target.position);
+            }
+        }
+
+        //KJY 추가
+        if (!photonView.IsMine) // 동기화할 때 초기 위치 설정
+        {
+            networkPosition = transform.position;
+            networkRotation = transform.rotation;
+            networkMovementSpeed = nav.speed;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //if (nav.isOnNavMesh == true && transform.GetComponent<NpcData>().status == "ALIVE")
-        //{
-        //    // 걸을 수 있으면
-        //    if(isWalk == true)
-        //    {
-        //        // 이동
-        //        nav.isStopped = false;
+        if (photonView.IsMine)
+        {
+            UpdateMovement();
+        }
+        else
+        {
+            SmoothlySyncTransform();
+        }
+    }
 
-        //        if (isTarget == true && transform.GetComponent<NpcData>().status == "ALIVE") //KJY 코드 추가 
-        //        {
-        //            isTarget = false;
-        //            SetTarget();
-        //            nav.SetDestination(target.position);
-        //            animator.SetBool("Walk", true);
-        //        }
+    private void SmoothlySyncTransform()
+    {
+        float lerpRate = 5f; // Adjust for smoother or faster interpolation
+        ts.position = Vector3.Lerp(ts.position, networkPosition, Time.deltaTime * lerpRate);
+        ts.rotation = Quaternion.Lerp(ts.rotation, networkRotation, Time.deltaTime * lerpRate);
+    }
 
-        //    }
-        //    // 걷는 중이 아니라면?
-        //    else
-        //    {
-        //        // 멈춤
-        //        nav.isStopped = true;
-        //        animator.SetBool("Walk", false);
-        //    }
-        //}
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(ts.position);
+            stream.SendNext(ts.rotation);
+            stream.SendNext(nav.velocity.magnitude); // Send movement speed for animation sync
+        }
+        else
+        {
+            networkPosition = (Vector3)stream.ReceiveNext();
+            networkRotation = (Quaternion)stream.ReceiveNext();
+            networkMovementSpeed = (float)stream.ReceiveNext();
+        }
+    }
+
+    private void UpdateMovement()
+    {
+        if (isWalking)
+        {
+            if (Vector3.Distance(ts.position, target.position) < 0.1f)
+            {
+                StartCoroutine(coWaitForASec());
+            }
+        }
     }
 
 
@@ -107,19 +138,31 @@ public class NPC : MonoBehaviour
     {
         while(true)
         {
-            System.Random random = new System.Random();
-
-            int num = random.Next(1, destinations.Length);
-
-            if (preTarget != num)
+            if (PhotonNetwork.IsMasterClient)
             {
-                target = destinations[num];
-                preTarget = num;
-                break;
+                System.Random random = new System.Random();
+
+                int num = random.Next(1, destinations.Length);
+
+                if (preTarget != num)
+                {
+                   photonView.RPC("SetNumber", RpcTarget.All, num);
+                   break;
+                }
+            }
+            else
+            {
+                return;
             }
         }
     }
 
+    [PunRPC]
+    private void SetNumber(int num)
+    {
+        target = destinations[num];
+        preTarget = num;
+    }
 
 
     // 목적이에 닿이면 10초 대기 후 다음 목적지 탐색
@@ -136,67 +179,45 @@ public class NPC : MonoBehaviour
         }
 
         // 플레이어와 닿으면 이동을 멈춤
-        if(other.gameObject.tag == "Player" && other.GetComponent<KJY_InterAction>().isOccupy == false && isTalking == false)
+        if (ChatManager.instance.talk == false)
         {
-            other.GetComponent<KJY_InterAction>().isOccupy = true;
-            isTalking = true;
-            NavIsStooped(true);
-            isWalking = false;
-            animator.SetBool("Walk", false);
+            if (other.gameObject.tag == "Player" && other.GetComponent<KJY_InterAction>().isOccupy == false)
+            {
+                other.GetComponent<KJY_InterAction>().isOccupy = true;
+                NavIsStooped(true);
+                isWalking = false;
+                animator.SetBool("Walk", false);
+            }
         }
+    }
 
+    [PunRPC]
+    private void UpdateTouchDestination(UnityEngine.Collider other)
+    {
+        isWalking = false;
+        animator.SetBool("Walk", false);
 
-        // 다른 NPC랑 부딪히면 서로 10초가량 마주보기
-        // 만약 10초가 초과하면 갈 길 가고
-        // 10초 이내로 사용자가 인터렉션하면
-        // 통신하여 서로 대화한다.
-        //if (other.gameObject.tag == "NPC" && npcface.talking == false)
+        prePosition = transform.position;
+        StartCoroutine(nameof(coWaitForASec)); // 7초 대기
+    }
 
-        // NPC 대화
-        // 추후 버전에서 진행 할 예정
-        //if (other.gameObject.tag == "Npc")
-        //{
-        //    Debug.Log("NPC끼리 닿였습니다.");
-        //    if (!isTalking)
-        //    {
-        //        Debug.Log($"{gameObject.name} 대화를 시작합니다.");
+    [PunRPC]
+    private void UpdateTouchPlayer(UnityEngine.Collider other)
+    {
+        other.GetComponent<KJY_InterAction>().isOccupy = true;
+        NavIsStooped(true);
+        isWalking = false;
+        animator.SetBool("Walk", false);
+    }
 
-        //        isTalking = true;
-        //        isWalking = false;
-        //        animator.SetBool("Walk", false);
-        //        NavIsStooped(true);
-        //        transform.LookAt(other.gameObject.transform.position);
-        //        StartCoroutine(nameof(WaitForNpcInterection));
-        //    }
-        //}
-
-
-
-
-        //if (!isTalking)
-        //{
-        //    isTalking = true;
-        //    animator.SetBool("Walk", false);
-
-            //    if (other.gameObject.tag == "NPC" && npcface.talking == false)
-            //    {
-
-
-            //        StartCoroutine(nameof(WaitForPlayerInteraction));
-
-            //        //if (cheating == true)
-            //        //{
-            //        //    StopCoroutine(nameof(WaitForPlayerInteraction));
-            //        //    StartCommunication();
-            //        //}
-            //    }
-
-            //}
-
-
-
-
-
+    [PunRPC]
+    private void UpdateGonePlayer(UnityEngine.Collider other)
+    {
+        other.GetComponent<KJY_InterAction>().isOccupy = false;
+        isTalking = false;
+        NavIsStooped(false);
+        isWalking = true;
+        animator.SetBool("Walk", true);
     }
 
     private void OnTriggerExit(UnityEngine.Collider other)
@@ -245,7 +266,6 @@ public class NPC : MonoBehaviour
         isWalking = true;
         animator.SetBool("Walk", true);
         NavIsStooped(false);
-
     }
 
 
