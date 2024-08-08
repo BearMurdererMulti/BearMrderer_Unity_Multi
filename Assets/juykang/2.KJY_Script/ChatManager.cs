@@ -255,7 +255,7 @@ public class ChatManager : MonoBehaviour
         {
             if (npctalk == true)
             {
-                UI.instance.DayAndNight(false);
+                PhotonConnection.Instance.UpdateDayAndNight(false);
                 StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
             }
         }
@@ -274,31 +274,16 @@ public class ChatManager : MonoBehaviour
         nowNpc.GetComponent<Collider_BJH>().isTalking = false;
         nowNpc.GetComponent<NpcFaceMove>().talking = false;
 
+        for (int i = 0; i <buttons.Count; i++)
+        {
+            buttons[i].interactable = true;
+        }
+
         if (building != null)
         {
             building.SetActive(true);
         }
     }
-
-    //void Talk(long id, bool isNpc)
-    //{
-
-    //    string data = GetTalk((int)id, talkLength);
-    //    if (UI.instance.lifeCount < 0)
-    //    {
-    //        FinishTalk();
-    //    }
-    //    else if (data == null)
-    //    {
-    //        ManageField();
-    //    }
-    //    else
-    //    {
-    //        name.text = npcdata.npcName;
-    //        talkText.text = data;
-    //        talkLength++;
-    //    }
-    //}
 
     void TalkTmp(string value)
     {
@@ -376,7 +361,7 @@ public class ChatManager : MonoBehaviour
                 if (npctalk == true)
                 {
                     FinishTalk();
-                    UI.instance.DayAndNight(false);
+                    PhotonConnection.Instance.UpdateDayAndNight(false);
                     StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
                 }
                 return;
@@ -388,7 +373,8 @@ public class ChatManager : MonoBehaviour
         {
             if (GameManager_KJY.instance.heartRate >= 120)
             {
-                print("stop");
+                GameManager_KJY.instance.interrogationBtn(true);
+                //print("stop");
                 //FinishTalk();
             }
             field.gameObject.SetActive(true);
@@ -404,9 +390,9 @@ public class ChatManager : MonoBehaviour
     {
         //ConnectionKJY.instance.re
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
-        UI.instance.MinusLife();
+        PhotonConnection.Instance.UpdateMinusLife();
         ButtonObject.SetActive(false);
-        transform.GetComponent<Button>().interactable = false;
+        buttons[index].interactable = false;
     }
 
     public void ChatButtonList(List<Questions> questions)
@@ -430,6 +416,5 @@ public class ChatManager : MonoBehaviour
         talkPanel.gameObject.SetActive(true);
         field.gameObject.SetActive(false);
         //inputText.text = "";
-
     }
 }

@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 using static ConnectionKJY;
 using static System.Net.WebRequestMethods;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviourPunCallbacks
 {
 
 
@@ -193,8 +194,9 @@ public class UI : MonoBehaviour
 
     }
 
+    [PunRPC]
     // ��, ���� �����ϴ� �Լ�
-    public void DayAndNight(bool b)
+    private void DayAndNight(bool b)
     {
         // true == ��
         if(b)
@@ -239,7 +241,8 @@ public class UI : MonoBehaviour
 
     }
 
-    public void MinusLife()
+    [PunRPC]
+    private void MinusLife()
     {
         lifes[lifeCount].gameObject.SetActive(false);
         lifeCount--;
@@ -282,7 +285,7 @@ public class UI : MonoBehaviour
     // �÷��̾ npc�� �������� �ʾ��� ��
     public void DeathInfo()
     {
-        string text = "아무일도 일어나지 않았습니다.";
+        string text = "구속시키지 않고 풀어줬습니다.";
 
         StartCoroutine(CoText(text));
 

@@ -7,10 +7,18 @@ using static KJY_SenarioConnection;
 public class PhotonConnection : MonoBehaviourPunCallbacks
 {
     public static PhotonConnection Instance;
+    [SerializeField] private UI ui;
+    [SerializeField] private GameManager_KJY gameManager;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        ui = UI.instance; 
+        gameManager = GameManager_KJY.instance;
     }
 
     #region IntroScenarioResponse
@@ -36,7 +44,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random.ToString();
             PhotonNetwork.LoadLevel(sceneName);
         }
     }
@@ -78,4 +86,34 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region SetNpc
     #endregion
 
+    #region MinusLife
+
+    public void UpdateMinusLife()
+    {
+        PhotonView photonView = PhotonView.Get(ui);
+
+        photonView.RPC("MinusLife", RpcTarget.All);
+    }
+    #endregion
+
+
+    #region MorningAndNight
+
+    public void UpdateDayAndNight(bool value)
+    {
+        PhotonView photonView = PhotonView.Get(ui);
+
+        photonView.RPC("DayAndNight", RpcTarget.All, value);
+    }
+
+    #endregion
+
+    #region SelectNpc
+    public void UpdateChooseNpc()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+
+        photonView.RPC("ChooseNpc", RpcTarget.All);
+    }
+    #endregion
 }

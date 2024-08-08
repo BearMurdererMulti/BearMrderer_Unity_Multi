@@ -59,6 +59,9 @@ MonoBehaviour:
   - SetNpcCustomization
   - SetNumber
   - SetTriggerRpc
+  - MinusLife
+  - DayAndNight
+  - ChooseNpc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

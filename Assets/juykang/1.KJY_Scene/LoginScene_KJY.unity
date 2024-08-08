@@ -6647,6 +6647,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 651404551}
   m_CullTransparentMesh: 1
+--- !u!114 &661642314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8689408859376203634, guid: 3d81e3c44ad3ed347a64e2dbe4549e4e, type: 3}
+  m_PrefabInstance: {fileID: 4603341908192296392}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &664582702
 GameObject:
   m_ObjectHideFlags: 0
@@ -15198,8 +15209,8 @@ MonoBehaviour:
   loadingPopup: {fileID: 1268591457798008105}
   LoginLoadingUI: {fileID: 1268591457798008105}
   FailUI: {fileID: 304791238}
-  RegisterUI: {fileID: 1248140264}
-  checkText: {fileID: 0}
+  RegisterUI: {fileID: 4603341908192296393}
+  checkText: {fileID: 661642314}
   LobbyLoadingUI: {fileID: 1268591457798008105}
   accountCheck: 0
   nickNameCheck: 1
