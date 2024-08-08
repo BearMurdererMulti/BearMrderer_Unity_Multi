@@ -14505,7 +14505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   token: 
   FailUI: {fileID: 304791238}
-  RegisterUI: {fileID: 0}
+  RegisterUI: {fileID: 1335912309}
   checkText: {fileID: 0}
 --- !u!4 &1659152047
 Transform:

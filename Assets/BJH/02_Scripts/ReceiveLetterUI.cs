@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,35 +8,30 @@ using UnityEngine.Playables;
 using UnityEngine.UI;
 using static Photon.Voice.OpusCodec;
 
-public class TextManager : MonoBehaviour
+public class ReceiveLetterUI : MonoBehaviourPunCallbacks
 {
-    public static TextManager Instance;
-
+    [Header("UI")]
     [SerializeField] private GameObject letterBG;
     [SerializeField] private TMP_Text senderText, contentText, receiverText;
-    [SerializeField] private TMP_Text pressEnter;
-
+    [SerializeField] private TMP_Text pressEnterMasterText;
+    [SerializeField] private TMP_Text pressEnterClientText;
+    
+    private TMP_Text targetText;
     private string content;
-
     private bool isDone;
 
     [SerializeField] private float durationTime;
 
     [SerializeField] private PlayableDirector timeline;
 
-
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }    
-    }
+    private bool isReadyClient;
 
     // Start is called before the first frame update
     void Start()
     {
-        pressEnter.enabled = false;
+
+        pressEnterClientText.enabled = false;
+        pressEnterClientText.enabled = false;
         letterBG.SetActive(false);
 
         content = InfoManagerKJY.instance.content;
@@ -50,11 +46,33 @@ public class TextManager : MonoBehaviour
 
     void Update()
     {
-        if(isDone && Input.GetKeyDown(KeyCode.Return))
+        if(PhotonNetwork.IsMasterClient)
         {
-            KJY_SceneManager.instance.ChangeScene(SceneName.CharacterCustom_new);
+            if (isDone && Input.GetKeyDown(KeyCode.Return) && isReadyClient)
+            {
+                photonView.RPC("NextScene", RpcTarget.All);
+            }
+        }
+        else
+        {
+            if (isDone && Input.GetKeyDown(KeyCode.Return))
+            {
+                photonView.RPC("SendRead", RpcTarget.All);
+            }
         }
 
+    }
+
+    [PunRPC]
+    private void SendRead()
+    {
+        isReadyClient = true;
+    }
+
+    [PunRPC]
+    private void NextScene()
+    {
+        KJY_SceneManager.instance.ChangeScene(SceneName.CharacterCustom_new);
     }
 
     private void SubTimelineEvent()
@@ -87,7 +105,19 @@ public class TextManager : MonoBehaviour
             yield return new WaitForSeconds(0.06f);
         }
         isDone = true;
-        pressEnter.enabled = true;
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            pressEnterClientText.enabled = true;
+            targetText = pressEnterClientText;
+        }
+        else
+        {
+            pressEnterClientText.enabled = true;
+            targetText = pressEnterClientText;
+        }
+        yield return null;
+
         StartCoroutine(Blink());
     }
 
@@ -111,10 +141,12 @@ public class TextManager : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
-            pressEnter.alpha = alpha;
+            
+            targetText.alpha = alpha;
             yield return null;
         }
-        pressEnter.alpha = endAlpha;
+        pressEnterClientText.alpha = endAlpha;
+        pressEnterClientText.alpha = endAlpha;
     }
 
 }
