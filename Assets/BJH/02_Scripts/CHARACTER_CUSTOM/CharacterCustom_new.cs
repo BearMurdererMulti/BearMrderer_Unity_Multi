@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -33,7 +34,7 @@ public class CharacterCustom_new : MonoBehaviourPunCallbacks
     [SerializeField] List<GameObject> contents = new List<GameObject>();
     private int preContentIndex;
 
-    private string[] categoryNames = { "body", "eyes", "years", "mouth", "tail" };
+    private string[] categoryNames = { "body", "eyes", "ears", "mouth", "tail" };
     
 
     [SerializeField] private ScrollRect scrollRect;
@@ -50,53 +51,51 @@ public class CharacterCustom_new : MonoBehaviourPunCallbacks
         foreach(string s in categoryNames)
         {
             customDictionary[s] = 0;
+            InfoManagerKJY.instance.customDictionary[s] = 0;
         }
+    }
+
+    private void Update()
+    {
+        if (InfoManagerKJY.instance.customDictionary["eyes"] == 4)
+        {
+            Debug.Log("4로 바꼈어요");
+        }
+
+        Debug.Log(InfoManagerKJY.instance.customDictionary["eyes"]);
     }
 
     public void OnClickCheckButton()
     {
-        // doll 캐릭터 정보 업데이트 동기화 후 통신 진행
-        //photonView.RPC("UpdateDollSkin", RpcTarget.AllBuffered);
-
-        PrefabUtility.SaveAsPrefabAsset(doll, "Assets/BJH/Resources/CustomDoll.prefab");
-
+        // 빌드에선 실행 안되는 이슈
+        //PrefabUtility.SaveAsPrefabAsset(doll, "Assets/BJH/Resources/CustomDoll.prefab");
+        foreach(string s in InfoManagerKJY.instance.customDictionary.Keys)
+        {
+            Debug.Log("최종 선택된 dictionary"); // 왜 여기서 eyes가 4로 될까.. 밑에선 잘 들어가는데
+            Debug.Log(s + "    " + InfoManagerKJY.instance.customDictionary[s]);
+        }
         CharacterCustomConnection_BJH connection = new CharacterCustomConnection_BJH(customDictionary);
     }
 
     [PunRPC]
-    private void UpdateDollSkin()
+    private void UpdateDollSkin(string keyName, int index)
     {
-        foreach(string keyName in customDictionary.Keys)
-        {
-            switch(keyName)
-            {
-                case "body":
-                    bodyRenderer.material = bodyMaterials[customDictionary[keyName]];
-                    continue;
-                case "ears":
-                    earsRenderer.sharedMesh = earsMesh[customDictionary[keyName]];
-                    continue;
-                case "motuh":
-                    mouthRenderer.material = mouthMaterials[customDictionary[keyName]];
-                    continue;
-                case "eyes":
-                    eyesRenderer.material = eyesMaterials[customDictionary[keyName]];
-                    continue;
-                case "tail":
-                    tailRenderer.sharedMesh = tailMesh[customDictionary[keyName]];
-                    continue;
-            }
-        }
+        InfoManagerKJY.instance.customDictionary[keyName] = index;
+        Debug.Log(keyName + "    " + index);
+        Debug.Log(InfoManagerKJY.instance.customDictionary[keyName]);
     }
 
 
 
     // 커스텀 기능을 수행하는 버튼이 없으면
     // Instantiate해주는 버튼
-    internal void SetCustomDictionary(string keyName, int index)
+    public void SetCustomDictionary(string keyName, int index)
     {
         // 딕셔너리 설정
         customDictionary[keyName] = index;
+
+        // doll 캐릭터 정보 업데이트 동기화
+        photonView.RPC("UpdateDollSkin", RpcTarget.All, keyName, index);
 
         // 캐릭터에 적용
         var material = bodyRenderer.material; // 임시

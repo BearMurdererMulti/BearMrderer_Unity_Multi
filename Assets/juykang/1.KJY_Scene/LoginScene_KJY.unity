@@ -14593,6 +14593,7 @@ MonoBehaviour:
   ear: 0
   body: 0
   tail: 0
+  CustomMaterialsAndMesh: {fileID: 9023257584250017791, guid: 54cc26df1b9b1e04cbff48f030001c76, type: 3}
   npcCustomLists: []
   role: 
   roomdata: {fileID: 0}

@@ -91,6 +91,10 @@ public class InfoManagerKJY : MonoBehaviour
     public int body;
     public int tail;
 
+    [Header("캐릭터 커스텀 머터리얼, 메쉬")]
+    public CustomMaterialsAndMesh CustomMaterialsAndMesh;
+    public Dictionary<string, int> customDictionary = new Dictionary<string, int>();
+
     //NpcCustomList
     public List<NpcCustomInfos> npcCustomLists = new List<NpcCustomInfos>();
 

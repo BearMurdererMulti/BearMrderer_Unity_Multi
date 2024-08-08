@@ -29743,7 +29743,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da4c98207c76eda4c98999bd378bf989, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  doll: {fileID: 4267873242135968127}
+  dollPrefab: {fileID: 4003370437025561025, guid: 65c921c70bc52764a8e57be20b42be81, type: 3}
+  doll: {fileID: 0}
   dog: {fileID: 3617581296459143098}
   setSpawnTime: 7
   trafficLightAnimators:

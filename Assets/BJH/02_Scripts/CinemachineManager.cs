@@ -12,6 +12,7 @@ using UnityEngine.UI;
 
 public class CinemachineManager : MonoBehaviourPunCallbacks
 {
+    [SerializeField] GameObject dollPrefab;
     [SerializeField] public GameObject doll, dog; 
     [SerializeField] private float setSpawnTime;
 
@@ -32,6 +33,35 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
 
     private void Start()
     {
+        // Ä³¸¯ÅÍ ½ºÆù ÈÄ
+        // Ä¿½ºÅÒ¿¡ ¸Â°Ô Àû¿ë
+        this.doll = Instantiate(dollPrefab);
+        var custom = doll.GetComponent<Doll>();
+        var info = InfoManagerKJY.instance;
+        Debug.Log(info.customDictionary["ears"]); // ¶ä
+        Debug.Log(info.CustomMaterialsAndMesh.bodyMaterials[info.customDictionary["body"]]); // ¶ä
+
+        // ¸ö »ö ¼³Á¤
+        custom.bodyRenderer.material = info.CustomMaterialsAndMesh.bodyMaterials[info.customDictionary["body"]];
+        custom.earsRenderer.material = info.CustomMaterialsAndMesh.bodyMaterials[info.customDictionary["body"]];
+        custom.tailRenderer.material = info.CustomMaterialsAndMesh.bodyMaterials[info.customDictionary["body"]];
+
+        Material[] eyesMaterialArray = custom.eyesRenderer.materials;
+        eyesMaterialArray[0] = info.CustomMaterialsAndMesh.eyesMaterials[info.customDictionary["eyes"]];
+        eyesMaterialArray[1] = info.CustomMaterialsAndMesh.eyesMaterials[info.customDictionary["eyes"]];
+        custom.eyesRenderer.materials = eyesMaterialArray;
+
+        Debug.Log("µÆ³Ä " + info.CustomMaterialsAndMesh.eyesMaterials[info.customDictionary["eyes"]]);
+        Debug.Log(custom.eyesRenderer.materials[1]);
+
+
+        custom.earsRenderer.sharedMesh = info.CustomMaterialsAndMesh.earsMesh[info.customDictionary["ears"]];
+        custom.mouthRenderer.material = info.CustomMaterialsAndMesh.mouthMaterials[info.customDictionary["mouth"]];
+        custom.tailRenderer.sharedMesh = info.CustomMaterialsAndMesh.tailMesh[info.customDictionary["tail"]];
+        doll.transform.position = new Vector3(-24.4f, 1.6f, -24.7f);
+        doll.transform.eulerAngles = new Vector3(0f, 0f, 0.5f);
+        doll.SetActive(false);
+
         // À½¾Ç ½ÇÇà
         AudioManager.Instnace.PlaySound(SoundList.Play_BG, 0.3f, 2f);
 
@@ -61,7 +91,9 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
     private void ShowUI()
     {
         talkUi.SetActive(true);
-        photonView.RPC("SetTargetScript", RpcTarget.AllBuffered);
+        isActiveEnter = false;
+        StartCoroutine(CoSpeakHeadmanScripts());
+        //photonView.RPC("SetTargetScript", RpcTarget.AllBuffered);
     }
 
     private void Update()
@@ -81,11 +113,7 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
     IEnumerator CoSpawnDollAndDog()
     {
         yield return new WaitForSeconds(setSpawnTime);
-        doll = Resources.Load<GameObject>("CustomDoll");
-        Instantiate(doll);
-        doll.transform.position = new Vector3(-24.4f, 1.6f, -24.7f);
-        doll.transform.eulerAngles = new Vector3(0, 0, 0.5f);
-
+        doll.SetActive(true);
         dog.SetActive(true);
     }
 
