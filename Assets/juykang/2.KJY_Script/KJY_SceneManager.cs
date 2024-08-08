@@ -9,10 +9,12 @@ public enum SceneName
     Room_KJY,
     Chinemachine_01,
     PostmanLoadingScene,
+    Cinemachine_ReceiveLetter,
     Cinemachine02,
     CharacterCustom_new,
     Cinemachine03,
-    GameScene_NPC_Random
+    GameScene_NPC_Random,
+    EndingCredit
 }
 
 public class KJY_SceneManager : MonoBehaviour

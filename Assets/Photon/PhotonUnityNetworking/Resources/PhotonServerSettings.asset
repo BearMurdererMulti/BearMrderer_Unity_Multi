@@ -46,6 +46,19 @@ MonoBehaviour:
   - UpdateRoleInRoom
   - SetPlayerReadyState
   - StartGame
+  - UpdateScenario
+  - SetPlayerReadyUI
+  - UpdateUserCustomSave
+  - GoInGame
+  - SetTargetScript
+  - UpdateDollSkin
+  - AssignToCinemachineManager
+  - dontDestroy
+  - SetBoolRpc
+  - SetBoolRpc_NPC
+  - SetNpcCustomization
+  - SetNumber
+  - SetTriggerRpc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

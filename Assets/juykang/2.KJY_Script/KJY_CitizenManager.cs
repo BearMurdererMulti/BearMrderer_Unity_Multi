@@ -5,9 +5,10 @@ using DG.Tweening;
 using UnityEngine.UI;
 using static ConnectionKJY;
 using Unity.VisualScripting;
+using Photon.Pun;
 
 
-public class KJY_CitizenManager : MonoBehaviour
+public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 {
     public static KJY_CitizenManager Instance;
 
@@ -55,7 +56,7 @@ public class KJY_CitizenManager : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Detective");
 
         SetNpcList();
 
@@ -65,12 +66,12 @@ public class KJY_CitizenManager : MonoBehaviour
             dummyNpcList[i].GetComponent<KJY_NPCHighlight>().TmpName();
         }
 
-        DayAndNIghtManager.instance.npcList = npcList;
-        DayAndNIghtManager.instance.dieNpcList = dieNpcList;
+        GameManager_KJY.instance.npcList = npcList;
+        GameManager_KJY.instance.dieNpcList = dieNpcList;
 
-        UI.instance.SetNoteUI(); // note ui를 셋팅하는 메서드입니다. 이따가 삭제
         call = false;
         FirstVictim();
+        //UI.instance.SetNoteUI(); // note ui를 셋팅하는 메서드입니다. 이따가 삭제
         buttonInterAction = FindFirstObjectByType<KJY_InterAction>();
     }
 
@@ -112,19 +113,24 @@ public class KJY_CitizenManager : MonoBehaviour
                 InfoManagerKJY.instance.murderObjectNumber = j;
             }
 
-            if (npcInfoList[j].npcMaterial == null)
+            if (PhotonNetwork.IsMasterClient)
             {
-                SetNpcRandomModel(data, j);
+                SetNpcRandomization(); // Randomize NPCs only on the Master Client
             }
-            else
-            {
-                data.npcMaterial = npcInfoList[j].npcMaterial;
-                data.mouthMaterial = npcInfoList[j].npcMaterial;
-                data.earCollider = npcInfoList[j].earCollider;
-                data.tailCollider = npcInfoList[j].tailCollider;
 
-                npcList[j].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
-            }
+            //if (npcInfoList[j].npcMaterial == null)
+            //{
+            //    SetNpcRandomModel(data, j);
+            //}
+            //else
+            //{
+            //    data.npcMaterial = npcInfoList[j].npcMaterial;
+            //    data.mouthMaterial = npcInfoList[j].npcMaterial;
+            //    data.earCollider = npcInfoList[j].earCollider;
+            //    data.tailCollider = npcInfoList[j].tailCollider;
+
+            //    npcList[j].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
+            //}
         }
     }
 
@@ -140,12 +146,12 @@ public class KJY_CitizenManager : MonoBehaviour
         FadeOut();
         yield return new WaitForSeconds(1);
         player.GetComponent<CharacterController>().enabled = false;
-        player.transform.position = playerSpots.position; 
+        player.transform.position = playerSpots.position;
         player.transform.GetChild(0).rotation = playerSpots.rotation;
 
         SetnpcSpot(true);
 
-        for (int i = 0; i < npcList.Count; i++) 
+        for (int i = 0; i < npcList.Count; i++)
         {
             npcList[i].GetComponent<KJY_NPCHighlight>().SetActiveMaterial(false);
             //npcList[i].gameObject.SetActive(false);
@@ -184,7 +190,7 @@ public class KJY_CitizenManager : MonoBehaviour
 
     public void DieNpcSpotSet()
     {
-        for(int i = 0;i < dieSpotList.Count;i++) 
+        for (int i = 0; i < dieSpotList.Count; i++)
         {
             if (InfoManagerKJY.instance.crimeScene == dieSpotList[i].name)
             {
@@ -238,33 +244,32 @@ public class KJY_CitizenManager : MonoBehaviour
         }
     }
 
-    private void SetNpcRandomModel(NpcData data, int j)
+    private void SetNpcRandomization()
     {
-        NpcCustomInfos npcCustom = new NpcCustomInfos();
-        npcCustom.npcName = data.npcName;
+        for (int i = 0; i < npcList.Count; i++)
+        {
+            int randomBody = Random.Range(0, bodyColor.Count - 1);
+            int randomMouth = Random.Range(0, mouth.Length - 1);
+            int randomEar = Random.Range(0, earCollider.Length - 1);
+            int randomTail = Random.Range(0, tailCollider.Length - 1);
 
-        int random = Random.Range(0, bodyColor.Count - 1);
-        data.npcMaterial = bodyColor[random];
-        
-        npcCustom.body = random;
-        bodyColor.RemoveAt(random);
+            photonView.RPC("SetNpcCustomization", RpcTarget.AllBuffered, i, randomBody, randomMouth, randomEar, randomTail);
+        }
+    }
 
-        random = Random.Range(0, mouth.Length - 1);
-        data.mouthMaterial = mouth[random];
-        npcCustom.mouth = random;
+    [PunRPC]
+    public void SetNpcCustomization(int npcIndex, int bodyIndex, int mouthIndex, int earIndex, int tailIndex)
+    {
+        if (npcIndex < 0 || npcIndex >= npcList.Count) return;
 
-        random = Random.Range(0, earCollider.Length - 1);
-        data.earCollider = earCollider[random];
-        npcCustom.ear = random;
+        NpcData data = npcList[npcIndex].GetComponent<NpcData>();
 
-        random = Random.Range(0, tailCollider.Length - 1);
-        data.tailCollider = tailCollider[random];
-        npcCustom.tail = random;
+        data.npcMaterial = bodyColor[bodyIndex];
+        data.mouthMaterial = mouth[mouthIndex];
+        data.earCollider = earCollider[earIndex];
+        data.tailCollider = tailCollider[tailIndex];
 
-        InfoManagerKJY.instance.npcCustomLists.Add(npcCustom);
-        print(InfoManagerKJY.instance.npcCustomLists[j].npcName);
-
-        npcList[j].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
-        dummyNpcList[j].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
+        npcList[npcIndex].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
+        dummyNpcList[npcIndex].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
     }
 }

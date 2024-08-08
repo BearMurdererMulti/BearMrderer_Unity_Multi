@@ -35,10 +35,10 @@ public class HttpManagerBJH : MonoBehaviour
 
     IEnumerator SendProcess(HttpRequester requester)
     {
-        //if (InfoManagerBJH.instance.token != null)
-        //{
-        //    token = InfoManagerBJH.instance.token;
-        //}
+        if (InfoManagerKJY.instance.userToken != null)
+        {
+            token = InfoManagerKJY.instance.userToken;
+        }
 
         if (InfoManagerKJY.instance.userToken != null)
         {

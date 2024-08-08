@@ -85,7 +85,7 @@ public class KJY_NPCHighlight : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        if (KJY_CitizenManager.Instance.call == true && DayAndNIghtManager.instance.click == false)
+        if (KJY_CitizenManager.Instance.call == true && GameManager_KJY.instance.click == false)
         {
             material.SetFloat("_Outline", changevalue);
             material.SetColor("_OutlineColor", Color.yellow);

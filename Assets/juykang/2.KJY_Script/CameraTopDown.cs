@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,8 +26,16 @@ public class CameraTopDown : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player").transform;
-        first = transform.rotation;
+        if (InfoManagerKJY.instance.role == "Assistant")
+        {
+            player = GameObject.FindWithTag("Assistant").transform;
+            first = transform.rotation;
+        }
+        else
+        {
+            player = GameObject.FindWithTag("Detective").transform;
+            first = transform.rotation;
+        }
     }
 
     private void LateUpdate()

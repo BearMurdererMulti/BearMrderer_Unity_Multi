@@ -12,7 +12,9 @@ public class SceneController_BJH : MonoBehaviour
     private void Start()
     {
         SubTimelineEvent();
-    }
+
+        AudioManager.Instnace.PlaySound(SoundList.BG, 0.3f, 2f);
+}
 
     private void SubTimelineEvent()
     {
@@ -29,5 +31,6 @@ public class SceneController_BJH : MonoBehaviour
     public void MoveScene(SceneName sceneName)
     {
         KJY_SceneManager.instance.ChangeScene(sceneName);
+
     }
 }

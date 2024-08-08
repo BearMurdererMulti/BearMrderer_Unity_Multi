@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,33 @@ public class CharacterCustomManager : MonoBehaviour
     [SerializeField] private Transform playerTransform; // 캐릭터 Transform
     private float rotationDuration; // 회전하는 시간
     private Vector3 targetRotationEuler; // 목표 회전값
+
+    [SerializeField] private GameObject doll, dog;
+    [SerializeField] private GameObject dollCanvas, dogCanvas;
+
+    private void Awake()
+    {
+        doll.SetActive(false);
+        dog.SetActive(false);
+        dollCanvas.SetActive(false);
+        dogCanvas.SetActive(false);
+    }
+
+    private void Start()
+    {
+        // 탐정, 강아지별로 다른 캔버스 활성화
+        if(PhotonNetwork.IsMasterClient)
+        {
+            doll.SetActive(true);
+            dollCanvas.SetActive(true);
+        }
+        else
+        {
+            dog.SetActive(true);
+            dogCanvas.SetActive(true);
+        }
+    }
+
 
     public void OnClickCustomButton(string keyName)
     {
@@ -57,4 +85,5 @@ public class CharacterCustomManager : MonoBehaviour
 
         playerTransform.rotation = finalRotation;
     }
+
 }

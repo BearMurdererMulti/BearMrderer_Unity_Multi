@@ -10,6 +10,7 @@ public class HttpRequester : MonoBehaviour
     public string url;
     public string body = "{}";
     public Action<DownloadHandler> complete;
+    public Action<DownloadHandler> failed;
     public void Settting(RequestType requestType, string url)
     {
         this.requestType = requestType;
@@ -19,6 +20,14 @@ public class HttpRequester : MonoBehaviour
     public void Complete(DownloadHandler result)
     {
         if(complete != null)
+        {
+            complete(result);
+        }
+    }
+
+    public void Failed(DownloadHandler result)
+    {
+        if (complete != null)
         {
             complete(result);
         }
