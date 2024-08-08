@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 using static ConnectionKJY;
 using static System.Net.WebRequestMethods;
 
-public class UI : MonoBehaviour
+public class UI : MonoBehaviourPunCallbacks
 {
 
 
@@ -239,6 +240,7 @@ public class UI : MonoBehaviour
 
     }
 
+    [PunRPC]
     public void MinusLife()
     {
         lifes[lifeCount].gameObject.SetActive(false);

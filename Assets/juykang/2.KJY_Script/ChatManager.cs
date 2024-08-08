@@ -280,26 +280,6 @@ public class ChatManager : MonoBehaviour
         }
     }
 
-    //void Talk(long id, bool isNpc)
-    //{
-
-    //    string data = GetTalk((int)id, talkLength);
-    //    if (UI.instance.lifeCount < 0)
-    //    {
-    //        FinishTalk();
-    //    }
-    //    else if (data == null)
-    //    {
-    //        ManageField();
-    //    }
-    //    else
-    //    {
-    //        name.text = npcdata.npcName;
-    //        talkText.text = data;
-    //        talkLength++;
-    //    }
-    //}
-
     void TalkTmp(string value)
     {
 
@@ -406,7 +386,7 @@ public class ChatManager : MonoBehaviour
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
         UI.instance.MinusLife();
         ButtonObject.SetActive(false);
-        transform.GetComponent<Button>().interactable = false;
+        buttons[index].interactable = false;
     }
 
     public void ChatButtonList(List<Questions> questions)

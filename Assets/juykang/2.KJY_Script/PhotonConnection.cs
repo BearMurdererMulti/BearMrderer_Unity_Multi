@@ -7,10 +7,16 @@ using static KJY_SenarioConnection;
 public class PhotonConnection : MonoBehaviourPunCallbacks
 {
     public static PhotonConnection Instance;
+    [SerializeField] private UI ui;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        ui = UI.instance;    
     }
 
     #region IntroScenarioResponse
@@ -36,7 +42,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random.ToString();
             PhotonNetwork.LoadLevel(sceneName);
         }
     }
@@ -78,4 +84,14 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region SetNpc
     #endregion
 
+    #region MinusLife
+
+    public void UpdateMinusLife()
+    {
+        PhotonView photonView = PhotonView.Get(ui);
+
+        photonView.RPC("MinusLife", RpcTarget.All);
+    }
+
+    #endregion
 }
