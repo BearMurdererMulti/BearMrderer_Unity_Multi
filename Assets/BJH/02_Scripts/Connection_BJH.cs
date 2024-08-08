@@ -128,7 +128,7 @@ public class ChatConnection : MonoBehaviour, ConnectionStratege
         if (response.resultCode == "SUCCESS")
         {
             ChatManager.instance.talkingName.text = ChatManager.instance.npcdata.npcName;
-            ChatManager.instance.npcText.text = response.message.chatContent;
+            ChatManager.instance.dialog.text = response.message.chatContent;
             //ChatManager.instance.EmitChat();
 
             ChatManager.instance.content = response.message.chatContent;

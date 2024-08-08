@@ -16,8 +16,9 @@ public class KJY_InterAction : MonoBehaviour
 
     private void OnTriggerStay(UnityEngine.Collider other)
     {
-        if (other.gameObject.CompareTag("Npc"))
+        if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
         {
+            print(other.gameObject.GetComponent<NpcData>().npcName);
             button.interactable = true;
             if (ChatManager.instance.talk == false)
             {

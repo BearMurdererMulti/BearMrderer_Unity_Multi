@@ -13,8 +13,9 @@ public class Collider_BJH : MonoBehaviour
         //{
         //    return;
         //}
+        //if (other.gameObject.CompareTag("Npc") && other.gameObject.name != gameObject.name && other.gameObject.GetComponent<Collider_BJH>().isTalking == false && isTalking == false)
 
-        if (other.gameObject.CompareTag("Npc") && other.gameObject.name != gameObject.name && other.gameObject.GetComponent<Collider_BJH>().isTalking == false && isTalking == false)
+        if (other.gameObject.CompareTag("Npc") && other.gameObject.name != gameObject.name && other.gameObject.GetComponent<Collider_BJH>().isTalking == false)
         {
             // 내가 상대와 닿이면?
             // 나를 대화중인 상태로 변경하고

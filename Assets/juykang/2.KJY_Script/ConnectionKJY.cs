@@ -1364,9 +1364,10 @@ public class TryQeustionAnswerSetting : ConnectionStratege
         if (response.resultCode == "SUCCESS")
         {
             ChatManager.instance.talkingName.text = ChatManager.instance.npcdata.npcName;
-            ChatManager.instance.npcText.text = response.message.response;
+            ChatManager.instance.dialog.text = response.message.response;
             ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;
+            ChatManager.instance.talkButton.SetActive(true);
         }
 
     }
@@ -1533,7 +1534,7 @@ public class TryInterrogationConversationSetting : ConnectionStratege
 
         if (response.resultCode == "SUCCESS")
         {
-            ChatManager.instance.npcText.text = response.message.response;
+            ChatManager.instance.dialog.text = response.message.response;
 
             ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;

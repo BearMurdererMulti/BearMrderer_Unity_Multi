@@ -66,7 +66,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         // 걷기 상태 변경
         // 걷기 상태에 따라서 애니메이션 실행 여부 결정
         isWalking = true;
-        animator.SetBool("Walk", true);
+        photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", true);
         
         if(GetComponent<NpcData>().status == "ALIVE")
         {
@@ -164,6 +164,11 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         preTarget = num;
     }
 
+    [PunRPC]
+    void SetTriggerRpc(string parameter, bool value)
+    {
+        animator.SetBool(parameter, value);
+    }
 
     // 목적이에 닿이면 10초 대기 후 다음 목적지 탐색
     private void OnTriggerEnter(UnityEngine.Collider other)
@@ -172,7 +177,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         if (other.gameObject.tag == "Destination" && other.gameObject.name == destinations[preTarget].gameObject.name)
         {
             isWalking = false;
-            animator.SetBool("Walk", false);
+            photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", false);
 
             prePosition = transform.position;
             StartCoroutine(nameof(coWaitForASec)); // 7초 대기
@@ -186,38 +191,9 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
                 other.GetComponent<KJY_InterAction>().isOccupy = true;
                 NavIsStooped(true);
                 isWalking = false;
-                animator.SetBool("Walk", false);
+                photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", false);
             }
         }
-    }
-
-    [PunRPC]
-    private void UpdateTouchDestination(UnityEngine.Collider other)
-    {
-        isWalking = false;
-        animator.SetBool("Walk", false);
-
-        prePosition = transform.position;
-        StartCoroutine(nameof(coWaitForASec)); // 7초 대기
-    }
-
-    [PunRPC]
-    private void UpdateTouchPlayer(UnityEngine.Collider other)
-    {
-        other.GetComponent<KJY_InterAction>().isOccupy = true;
-        NavIsStooped(true);
-        isWalking = false;
-        animator.SetBool("Walk", false);
-    }
-
-    [PunRPC]
-    private void UpdateGonePlayer(UnityEngine.Collider other)
-    {
-        other.GetComponent<KJY_InterAction>().isOccupy = false;
-        isTalking = false;
-        NavIsStooped(false);
-        isWalking = true;
-        animator.SetBool("Walk", true);
     }
 
     private void OnTriggerExit(UnityEngine.Collider other)
@@ -230,7 +206,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
             isTalking = false;
             NavIsStooped(false);
             isWalking = true;
-            animator.SetBool("Walk", true);
+            photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", true);
         }
     }
 
@@ -253,7 +229,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         // 걷기 상태 변경
         // 걷기 상태에 따라서 애니메이션 실행 여부 결정
         isWalking = true;
-        animator.SetBool("Walk", true);
+        photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", true);
 
         // nac에 목적지를 지정
         nav.SetDestination(target.position);
@@ -264,7 +240,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         yield return new WaitForSeconds(10f);
         isTalking = false;
         isWalking = true;
-        animator.SetBool("Walk", true);
+        photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", true);
         NavIsStooped(false);
     }
 
@@ -274,18 +250,19 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         Debug.Log("NPC가 통신을 시작");
     }
 
-    public void GoAway()
+    [PunRPC]
+    private void SetBoolRpc_NPC(string parameter, bool value)
     {
-
+        animator.SetBool(parameter, value);
     }
 
     // NPC가 죽으면?
     // 죽음 애니메이션을 실행시키고 콜라이더와 컨트롤러, navi mesh를 종료한다.
     public void Die() // KJY 추가한 코드
     {
-        animator.SetBool("Walk", false);
+        photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", false);
         isWalking = false;
-        animator.SetBool("Dead", true);
+        photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Dead", true);
 
         GetComponent<SphereCollider>().enabled = false;
         GetComponent<CharacterController>().enabled = false;
