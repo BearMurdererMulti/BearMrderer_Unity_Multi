@@ -16,7 +16,7 @@ public class TestManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            UIManagerBJH.MinusLife();
+            PhotonConnection.Instance.UpdateMinusLife();
         }
 
         if(UIManagerBJH.lifeCount < 0)
@@ -39,13 +39,13 @@ public class TestManager : MonoBehaviour
         // ¹ã
         if(Input.GetKey(KeyCode.U))
         {
-            UI.instance.DayAndNight(false);
+            PhotonConnection.Instance.UpdateDayAndNight(false);
         }
 
         // ³·
         if (Input.GetKey(KeyCode.Y))
         {
-            UI.instance.DayAndNight(true);
+            PhotonConnection.Instance.UpdateDayAndNight(true);
         }
     }
 }

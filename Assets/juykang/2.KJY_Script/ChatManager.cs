@@ -255,7 +255,7 @@ public class ChatManager : MonoBehaviour
         {
             if (npctalk == true)
             {
-                UI.instance.DayAndNight(false);
+                PhotonConnection.Instance.UpdateDayAndNight(false);
                 StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
             }
         }
@@ -273,6 +273,11 @@ public class ChatManager : MonoBehaviour
 
         nowNpc.GetComponent<Collider_BJH>().isTalking = false;
         nowNpc.GetComponent<NpcFaceMove>().talking = false;
+
+        for (int i = 0; i <buttons.Count; i++)
+        {
+            buttons[i].interactable = true;
+        }
 
         if (building != null)
         {
@@ -356,7 +361,7 @@ public class ChatManager : MonoBehaviour
                 if (npctalk == true)
                 {
                     FinishTalk();
-                    UI.instance.DayAndNight(false);
+                    PhotonConnection.Instance.UpdateDayAndNight(false);
                     StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
                 }
                 return;
@@ -368,7 +373,8 @@ public class ChatManager : MonoBehaviour
         {
             if (GameManager_KJY.instance.heartRate >= 120)
             {
-                print("stop");
+                GameManager_KJY.instance.interrogationBtn(true);
+                //print("stop");
                 //FinishTalk();
             }
             field.gameObject.SetActive(true);
@@ -384,7 +390,7 @@ public class ChatManager : MonoBehaviour
     {
         //ConnectionKJY.instance.re
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
-        UI.instance.MinusLife();
+        PhotonConnection.Instance.UpdateMinusLife();
         ButtonObject.SetActive(false);
         buttons[index].interactable = false;
     }
@@ -410,6 +416,5 @@ public class ChatManager : MonoBehaviour
         talkPanel.gameObject.SetActive(true);
         field.gameObject.SetActive(false);
         //inputText.text = "";
-
     }
 }

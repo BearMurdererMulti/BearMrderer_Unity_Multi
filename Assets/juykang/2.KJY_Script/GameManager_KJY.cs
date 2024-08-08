@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,7 +10,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using static ConnectionKJY;
 
-public class GameManager_KJY : MonoBehaviour
+public class GameManager_KJY : MonoBehaviourPun
 {
     public static GameManager_KJY instance;
 
@@ -34,6 +35,8 @@ public class GameManager_KJY : MonoBehaviour
     Quaternion rotation;
 
     [SerializeField] GameObject selectBtn;
+
+    [SerializeField] GameObject selectInBtn;
     
     [SerializeField] GameObject checkUI;
 
@@ -90,23 +93,37 @@ public class GameManager_KJY : MonoBehaviour
 
     private void Update()
     {
-        ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+        if (PhotonNetwork.IsMasterClient)
         {
-            if (Input.GetMouseButtonDown(0) && KJY_CitizenManager.Instance.call == true && click == false)
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                if (Input.GetMouseButtonDown(0) && KJY_CitizenManager.Instance.call == true && click == false)
                 {
-                    obj = hit.collider.gameObject;
-                    rotation = obj.transform.rotation;
-                    OnOffUI(false);
-                    skipBtn.SetActive(false);
-                    selectBtn.SetActive(true);
-                    selectUI.SetActive(true);
-                    FollowNpc();
+                    if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                    {
+                        ChooseNpc();
+                    }
                 }
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            interrogationBtn(true);
+        }
+    }
+
+    [PunRPC]
+    private void ChooseNpc()
+    {
+        obj = hit.collider.gameObject;
+        rotation = obj.transform.rotation;
+        OnOffUI(false);
+        skipBtn.SetActive(false);
+        selectBtn.SetActive(true);
+        selectUI.SetActive(true);
+        FollowNpc();
     }
 
     void FollowNpc()
@@ -269,13 +286,14 @@ public class GameManager_KJY : MonoBehaviour
     IEnumerator EffectNight()
     {
         image.DOFade(1, 1f);
+        interrogationBtn(false);
         InfoManagerKJY.instance.voteNightNumber = 0;
         InfoManagerKJY.instance.voteNpcName = null;
         InfoManagerKJY.instance.voteNpcName = null;
         UI.instance.DeathInfo();
 
         RequestSave requst = new RequestSave();
-        requst.Request();
+        requst.Request(false);
 
         yield return new WaitForSeconds(2f);
 
@@ -283,7 +301,7 @@ public class GameManager_KJY : MonoBehaviour
         StartCoroutine(UIReset());
     }
 
-    public void CheckMafiaUI()
+    public void CheckMafiaUI(string answer)
     {
         TextMeshProUGUI text = checkUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
@@ -291,18 +309,18 @@ public class GameManager_KJY : MonoBehaviour
 
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
-        if (obj.GetComponent<NpcData>().isMafia == true)
+        if (answer == "FOUND")
         {
             text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
             InfoManagerKJY.instance.voteResult = "FOUND";
             InfoManagerKJY.instance.voteNpcObjectName = obj.name;
             Winner = true;
         }
-        else
-        {
-            text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
-            InfoManagerKJY.instance.voteResult = "NOTFOUND";
-        }
+        //else
+        //{
+        //    text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
+        //    InfoManagerKJY.instance.voteResult = "NOTFOUND";
+        //}
         checkUI.SetActive(true);
     }
 
@@ -327,10 +345,9 @@ public class GameManager_KJY : MonoBehaviour
     IEnumerator SelectEffect()
     {
         image.DOFade(1, 1f);
-        CheckMafiaUI();
+        interrogationBtn(false);
         RequestSave requst = new RequestSave();
-        requst.Request();
-
+        requst.Request(true);
         yield return new WaitForSeconds(2f);
         TurnNpcList(false, 2);
         if (obj != null)
@@ -555,5 +572,10 @@ public class GameManager_KJY : MonoBehaviour
         yield return new WaitForSeconds(1);
         ChatManager.instance.Startinterrogation();
         image.DOFade(0, 1f);
+    }
+
+    public void interrogationBtn(bool value)
+    {
+        selectInBtn.SetActive(value);
     }
 }

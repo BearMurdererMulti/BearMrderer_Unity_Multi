@@ -12,15 +12,13 @@ using static ConnectionKJY;
 using static KJY_SenarioConnection;
 
 #region Save
-
-
 [System.Serializable]
 public class SaveRequest
 {
     public long gameSetNo;
     public int gameDay;
     public string voteNpcName;
-    public string voteResult;
+    public bool voteResult;
     public int voteNightNumber;
     public List<CheckLists> checkList;
     public List<NpcCustomInfos> npcCustomInfos;
@@ -32,13 +30,13 @@ public class SaveSetting
     public long gameSetNo;
     public int gameDay;
     public string voteNpcName;
-    public string voteResult;
+    public bool voteResult;
     public int voteNightNumber;
     public List<CheckLists> checkList;
     public string url;
 
     // 변지환이 추가함
-    //public Custom userCustom;
+    public Custom userCustom;
     public List<NpcCustomInfos> npcCustomInfos;
 }
 
@@ -81,6 +79,7 @@ public class SaveResponse
 [System.Serializable]
 public class SaveMessage
 {
+    public string mafiaArrest;
     DateTime saveTime;
     int saveDay;
     bool saved;
@@ -91,7 +90,7 @@ public class TrySaveSetting : ConnectionStratege
     public long gameSetNo;
     public int gameDay;
     public string voteNpcName;
-    public string voteResult;
+    public bool voteResult;
     public int voteNightNumber;
     public List<CheckLists> checkList;
     public List<NpcCustomInfos> npcCustomInfos;
@@ -107,6 +106,7 @@ public class TrySaveSetting : ConnectionStratege
         this.voteResult = str.voteResult;
         this.voteNightNumber = str.voteNightNumber;
         this.checkList = str.checkList;
+        
         this.npcCustomInfos = str.npcCustomInfos;
 
         CreateJson();
@@ -143,27 +143,27 @@ public class TrySaveSetting : ConnectionStratege
         SaveResponse reponse = new SaveResponse();
         reponse = JsonUtility.FromJson<SaveResponse>(result.text);
         Debug.Log("success");
+
+        if (reponse.resultCode == "SUCCESS")
+        {
+            GameManager_KJY.instance.CheckMafiaUI(reponse.message.mafiaArrest);
+        }
     }
 }
+#endregion
 
+#region SaveSetting
 public class RequestSave
 {
-    public void Request()
+    public void Request(bool value)
     {
         SaveSetting str = new SaveSetting();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/save";
-        //str.gameSetNo = InfoManagerBJH.instance.gameSetNo;
-        //str.gameDay = UI.instance.dayInt;
-        //str.voteNpcName = InfoManagerBJH.instance.voteNpcName;
-        //str.voteNightNumber = InfoManagerBJH.instance.voteNightNumber;
-        //str.voteResult = InfoManagerBJH.instance.voteResult;
-        //InfoManagerBJH.instance.DicToCheckList();
-        //str.checkList = InfoManagerBJH.instance.checkList;
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/save";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.gameDay = UI.instance.dayInt;
         str.voteNpcName = InfoManagerKJY.instance.voteNpcName;
         str.voteNightNumber = InfoManagerKJY.instance.voteNightNumber;
-        str.voteResult = InfoManagerKJY.instance.voteResult;
+        str.voteResult = value;
         str.npcCustomInfos = InfoManagerKJY.instance.npcCustomLists;
 
         // 체크리스트 dic을 list로 변환하는 메서드
@@ -536,7 +536,7 @@ public class TryAccountCheck : ConnectionStratege
         }
         if (response.resultCode == null)
         {
-            kjy.GetCheckMessage(response.message.message);
+           // kjy.GetCheckMessage(response.message.message);
             kjy.Check();
             kjy.ResetAccount();
         }
@@ -1633,7 +1633,7 @@ public class ConnectionKJY : MonoBehaviour
 
     public void OnclickSend() //요거 내껄로
     {
-        
+
         StrTryRegister str;
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/register";
         str.account = account.text;
@@ -1692,8 +1692,8 @@ public class ConnectionKJY : MonoBehaviour
         //str.participantNickname = KJY_RoomManageer.instance.participantNickname;
         str.participantNickname = "Test";
 
-        print (str.roomNumber);
-        print(str.creatorNickname);   
+        print(str.roomNumber);
+        print(str.creatorNickname);
         print(str.participantNickname);
 
         TryRoomSave roomSave = new TryRoomSave(str);
@@ -1774,7 +1774,7 @@ public class ConnectionKJY : MonoBehaviour
     //        this.url = str.url;
     //        this.gameSetNo = str.gameSetNo;
     //        this.secretKey = str.secretKey;
-          
+
     //        CreateJson();
     //    }
     //    public void CreateJson()
@@ -1824,7 +1824,6 @@ public class ConnectionKJY : MonoBehaviour
 
     #endregion
 
-
     #region FinalConnection
 
     public void RequestFinal()
@@ -1840,7 +1839,6 @@ public class ConnectionKJY : MonoBehaviour
 
     #endregion
 
-
     #region GameLodad
     public void RequestLoad()
     {
@@ -1851,7 +1849,6 @@ public class ConnectionKJY : MonoBehaviour
         TryLoadSetting load = new TryLoadSetting(str);
     }
     #endregion
-
 
     #region GameEnd
     public void RequestGameEnd()
@@ -1984,7 +1981,6 @@ public class ConnectionKJY : MonoBehaviour
     //}
     #endregion
 
-
     #region question3 Generate
 
     public void Request_Question(string npc_name, string keyword)
@@ -2076,8 +2072,8 @@ public class ConnectionKJY : MonoBehaviour
         nickname1.text = string.Empty;
     }
 
-    public void ResetEmail() 
-    { 
+    public void ResetEmail()
+    {
         email1.text = string.Empty;
     }
 }

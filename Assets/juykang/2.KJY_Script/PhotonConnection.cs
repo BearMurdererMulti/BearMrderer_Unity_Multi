@@ -8,6 +8,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 {
     public static PhotonConnection Instance;
     [SerializeField] private UI ui;
+    [SerializeField] private GameManager_KJY gameManager;
 
     private void Awake()
     {
@@ -16,7 +17,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        ui = UI.instance;    
+        ui = UI.instance; 
+        gameManager = GameManager_KJY.instance;
     }
 
     #region IntroScenarioResponse
@@ -92,6 +94,26 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
         photonView.RPC("MinusLife", RpcTarget.All);
     }
+    #endregion
 
+
+    #region MorningAndNight
+
+    public void UpdateDayAndNight(bool value)
+    {
+        PhotonView photonView = PhotonView.Get(ui);
+
+        photonView.RPC("DayAndNight", RpcTarget.All, value);
+    }
+
+    #endregion
+
+    #region SelectNpc
+    public void UpdateChooseNpc()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+
+        photonView.RPC("ChooseNpc", RpcTarget.All);
+    }
     #endregion
 }

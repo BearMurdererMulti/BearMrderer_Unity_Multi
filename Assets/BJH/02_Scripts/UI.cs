@@ -194,8 +194,9 @@ public class UI : MonoBehaviourPunCallbacks
 
     }
 
+    [PunRPC]
     // ��, ���� �����ϴ� �Լ�
-    public void DayAndNight(bool b)
+    private void DayAndNight(bool b)
     {
         // true == ��
         if(b)
@@ -241,7 +242,7 @@ public class UI : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void MinusLife()
+    private void MinusLife()
     {
         lifes[lifeCount].gameObject.SetActive(false);
         lifeCount--;
@@ -284,7 +285,7 @@ public class UI : MonoBehaviourPunCallbacks
     // �÷��̾ npc�� �������� �ʾ��� ��
     public void DeathInfo()
     {
-        string text = "아무일도 일어나지 않았습니다.";
+        string text = "구속시키지 않고 풀어줬습니다.";
 
         StartCoroutine(CoText(text));
 

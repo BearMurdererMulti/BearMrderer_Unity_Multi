@@ -14,9 +14,11 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     public List<GameObject> npcList;
     public GameObject player;
+    public GameObject dog;
     public GameObject npcSpots;
     [SerializeField] Transform[] npcSpotList;
     [SerializeField] Transform playerSpots;
+    [SerializeField] Transform dogSpot;
     [SerializeField] Image image;
     [SerializeField] private List<Material> bodyColor;
     [SerializeField] private Material[] mouth;
@@ -57,6 +59,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Detective");
+        dog = GameObject.FindGameObjectWithTag("Assistant");
 
         SetNpcList();
 
@@ -148,6 +151,8 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         player.GetComponent<CharacterController>().enabled = false;
         player.transform.position = playerSpots.position;
         player.transform.GetChild(0).rotation = playerSpots.rotation;
+        //dog.transform.position = dogSpot.position;
+        //dog.transform.root.rotation = dogSpot.rotation;
 
         SetnpcSpot(true);
 
