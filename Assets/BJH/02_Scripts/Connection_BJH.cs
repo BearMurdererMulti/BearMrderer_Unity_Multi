@@ -132,7 +132,6 @@ public class ChatConnection : MonoBehaviour, ConnectionStratege
             //ChatManager.instance.EmitChat();
 
             ChatManager.instance.content = response.message.chatContent;
-            ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;
         }
     }

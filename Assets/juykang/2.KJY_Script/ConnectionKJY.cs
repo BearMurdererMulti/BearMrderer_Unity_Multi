@@ -1365,7 +1365,6 @@ public class TryQeustionAnswerSetting : ConnectionStratege
         {
             ChatManager.instance.talkingName.text = ChatManager.instance.npcdata.npcName;
             ChatManager.instance.dialog.text = response.message.response;
-            ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;
             ChatManager.instance.talkButton.SetActive(true);
         }
@@ -1536,7 +1535,6 @@ public class TryInterrogationConversationSetting : ConnectionStratege
         {
             ChatManager.instance.dialog.text = response.message.response;
 
-            ChatManager.instance.isConnection = true;
             ChatManager.instance.npctalk = true;
         }
 

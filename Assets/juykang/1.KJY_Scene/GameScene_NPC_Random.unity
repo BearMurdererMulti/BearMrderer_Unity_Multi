@@ -5933,8 +5933,8 @@ RectTransform:
   m_Children:
   - {fileID: 490350433}
   - {fileID: 726302063}
-  - {fileID: 911286193}
   - {fileID: 489529605}
+  - {fileID: 911286193}
   - {fileID: 1864508927}
   m_Father: {fileID: 113047231}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16373,7 +16373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &489529605
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31794,7 +31794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &911286193
 RectTransform:
   m_ObjectHideFlags: 0
@@ -37193,6 +37193,7 @@ MonoBehaviour:
   interactiveBtn: {fileID: 1834834734}
   talkingName: {fileID: 859304891}
   dialog: {fileID: 726302064}
+  nameObject: {fileID: 562743674}
   chat: {fileID: 113047230}
   talkPanel: {fileID: 169506431}
   ButtonObject: {fileID: 2065561116}
@@ -37213,6 +37214,7 @@ MonoBehaviour:
   npctalk: 0
   interrogation: 0
   field: {fileID: 489529606}
+  inputFieldObject: {fileID: 489529604}
   inputButton: {fileID: 1864508926}
   talkText: {fileID: 726302064}
   nowNpc: {fileID: 0}
@@ -37220,7 +37222,6 @@ MonoBehaviour:
   action: 2
   sender: 
   content: 
-  isConnection: 0
 --- !u!4 &1068849658
 Transform:
   m_ObjectHideFlags: 0
@@ -71390,7 +71391,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2065561117
 RectTransform:
   m_ObjectHideFlags: 0

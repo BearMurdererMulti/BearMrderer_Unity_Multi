@@ -90,12 +90,6 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
                 transform.position = tmp;
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
-            {
-                yVeclocity = jumpPower;
-                isJump = true;
-            }
-
             yVeclocity += gravity * Time.deltaTime;
 
             dir.y = yVeclocity;

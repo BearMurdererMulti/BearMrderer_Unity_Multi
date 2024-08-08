@@ -15,6 +15,7 @@ public class ChatManager : MonoBehaviour
     [Header("talkTextList")]
     public Text talkingName;
     public TextMeshProUGUI dialog;
+    [SerializeField] private GameObject nameObject;
     [SerializeField] private GameObject chat;
     [SerializeField] private GameObject talkPanel;
 
@@ -39,6 +40,7 @@ public class ChatManager : MonoBehaviour
 
     [Header("talkTextList_Interr")]
     [SerializeField] private TMP_InputField field;
+    public GameObject inputFieldObject;
     public GameObject inputButton;
     public TMP_Text talkText;
 
@@ -52,14 +54,12 @@ public class ChatManager : MonoBehaviour
     int talkLengthTmp;
     public string sender;
     public string content;
-    public bool isConnection;
 
     private void Awake()
     {
         instance = this;
         talkData = new Dictionary<int, string[]>();
-        talkPanel.SetActive(false);
-        field.gameObject.SetActive(false);
+        chat.SetActive(false);
         ButtonObject.SetActive(false);
         talk = false;
     }
@@ -201,6 +201,7 @@ public class ChatManager : MonoBehaviour
         camTopDown.enabled = false;
         camBack.enabled = true;
         nowNpc.GetComponent<NpcFaceMove>().talking = true;
+        nowNpc.GetComponent<Collider_BJH>().isTalking = true;
     }
 
     public void Startinterrogation()
@@ -222,7 +223,6 @@ public class ChatManager : MonoBehaviour
 
     public string ShowDialogue(string npcName)
     {
-        print(npcName);
         if (npc_dialog.TryGetValue(npcName, out List<string> lines))
         {
             int randomIndex = Random.Range(0, lines.Count);
@@ -262,15 +262,16 @@ public class ChatManager : MonoBehaviour
 
         talk = false;
         npctalk = false;
-        isConnection = false;
         
         interactiveBtn.SetActive(true);
+        chat.SetActive(false);
         ButtonObject.SetActive(false);
-        talkPanel.SetActive(false);
         
         camTopDown.enabled = true;
         camBack.enabled = false;
+        interrogation = false;
 
+        nowNpc.GetComponent<Collider_BJH>().isTalking = false;
         nowNpc.GetComponent<NpcFaceMove>().talking = false;
 
         if (building != null)
@@ -322,18 +323,12 @@ public class ChatManager : MonoBehaviour
     public void ManageField()
     {
         //talkLengthTmp = 0;
-        isConnection = true;
         dialog.text = ShowDialogue(npcdata.npcName);
+        talkingName.text = npcdata.npcName;
+        npctalk = false;
         if (interrogation == false)
         {
-            talkingName.text = npcdata.npcName;
             ConnectionKJY.instance.Request_Question(npcdata.npcName, weapon);
-            npctalk = false;
-        }
-        else
-        {
-            talkingName.text = npcdata.npcName;
-            npctalk = false;
         }
     }
 
@@ -386,6 +381,8 @@ public class ChatManager : MonoBehaviour
                 }
                 return;
             }
+            dialog.text = ShowDialogue(npcdata.npcName);
+            ButtonObject.SetActive(true);
         }
         else
         {
@@ -399,7 +396,6 @@ public class ChatManager : MonoBehaviour
 
         //KJY - bool값 제어
         npctalk = false;
-        isConnection = false;
         //talkPanel.gameObject.SetActive(false);
         //talkingName.text = InfoManagerKJY.instance.nickname;
     }
@@ -411,7 +407,6 @@ public class ChatManager : MonoBehaviour
         UI.instance.MinusLife();
         ButtonObject.SetActive(false);
         transform.GetComponent<Button>().interactable = false;
-        isConnection = false;
     }
 
     public void ChatButtonList(List<Questions> questions)
@@ -430,7 +425,6 @@ public class ChatManager : MonoBehaviour
 
         ConnectionKJY.instance.RequestInterrogationConversation(npcdata.npcName, talkText.text);
 
-        isConnection = false;
         // text 제어
         talkingName.text = npcdata.npcName;
         talkPanel.gameObject.SetActive(true);

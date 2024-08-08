@@ -184,23 +184,23 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         // 플레이어와 닿으면 이동을 멈춤
-        if (ChatManager.instance.talk == false)
-        {
-            if (other.gameObject.tag == "Player" && other.GetComponent<KJY_InterAction>().isOccupy == false)
+        //if (ChatManager.instance.talk == false)
+        //{
+            if (other.gameObject.tag == "Detective" && ChatManager.instance.talk == false)
             {
                 other.GetComponent<KJY_InterAction>().isOccupy = true;
                 NavIsStooped(true);
                 isWalking = false;
                 photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", false);
             }
-        }
+        //}
     }
 
     private void OnTriggerExit(UnityEngine.Collider other)
     {
         // 플레이어와 멀어지면
         // 다시 걷는다.
-        if(other.gameObject.tag == "Player")
+        if(other.gameObject.tag == "Detective")
         {
             other.GetComponent<KJY_InterAction>().isOccupy = false;
             isTalking = false;

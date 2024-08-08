@@ -20,10 +20,7 @@ public class KJY_InterAction : MonoBehaviour
         {
             print(other.gameObject.GetComponent<NpcData>().npcName);
             button.interactable = true;
-            if (ChatManager.instance.talk == false)
-            {
-                ChatManager.instance.nowNpc = other.gameObject;
-            }
+            ChatManager.instance.nowNpc = other.gameObject;
             ChatManager.instance.npcdata = other.GetComponent<NpcData>();
             other.gameObject.GetComponent<NPC>().isWalking = false;
         }
