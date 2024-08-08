@@ -13,6 +13,6 @@ public class NextScene_Test : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        KJY_SceneManager.instance.ChangeScene(SceneName.CharacterCustom_new);
+        KJY_SceneManager.instance.ChangeScene(SceneName.Cinemachine_ReceiveLetter);
     }
 }

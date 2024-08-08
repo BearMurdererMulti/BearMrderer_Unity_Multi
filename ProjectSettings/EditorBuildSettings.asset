@@ -21,8 +21,11 @@ EditorBuildSettings:
     path: Assets/BJH/01_Scenes/Chinemachine_01.unity
     guid: b3942dfde30270241b15fb318cd90123
   - enabled: 1
-    path: Assets/BJH/01_Scenes/Cinemachine02.unity
+    path: Assets/BJH/01_Scenes/PostmanLoadingScene.unity
     guid: 8b2cce5d87f945d4e8ba20b83582a67a
+  - enabled: 1
+    path: Assets/BJH/01_Scenes/Cinemachine_ReceiveLetter.unity
+    guid: ae1fd7b3d1ec5dc40a0ceb24ee96ef54
   - enabled: 1
     path: Assets/BJH/01_Scenes/CharacterCustom_new.unity
     guid: 9adb26f021a17b54999f1bcaf5626600

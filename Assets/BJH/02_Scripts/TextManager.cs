@@ -3,23 +3,26 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
+using static Photon.Voice.OpusCodec;
 
 public class TextManager : MonoBehaviour
 {
     public static TextManager Instance;
 
+    [SerializeField] private GameObject letterBG;
+    [SerializeField] private TMP_Text senderText, contentText, receiverText;
+    [SerializeField] private TMP_Text pressEnter;
 
-    public TMP_Text tmp01;
-    public TMP_Text tmp02;
-    public TMP_Text tmp03;
+    private string content;
 
-    public string greeting;
-    public string content;
-    public string closing;
+    private bool isDone;
 
-    public Button nextBtn;
-    public bool isSkip;
+    [SerializeField] private float durationTime;
+
+    [SerializeField] private PlayableDirector timeline;
+
 
     private void Awake()
     {
@@ -32,49 +35,86 @@ public class TextManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        greeting = InfoManagerKJY.instance.greeting;
-        content = InfoManagerKJY.instance.content;
-        closing = InfoManagerKJY.instance.closing;
+        pressEnter.enabled = false;
+        letterBG.SetActive(false);
 
-        tmp01.text = InfoManagerKJY.instance.greeting;
-        StartCoroutine(nameof(CoTyping));
+        content = InfoManagerKJY.instance.content;
+        senderText.text = InfoManagerKJY.instance.greeting;
+        receiverText.text = InfoManagerKJY.instance.closing;
+
+
+        senderText.text = InfoManagerKJY.instance.greeting;
+
+        SubTimelineEvent();
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if(isDone && Input.GetKeyDown(KeyCode.Return))
         {
-            isSkip = true;
+            KJY_SceneManager.instance.ChangeScene(SceneName.CharacterCustom_new);
         }
+
+    }
+
+    private void SubTimelineEvent()
+    {
+        timeline.stopped += DissubTimelineEvent;
+        timeline.Play();
+    }
+
+    private void DissubTimelineEvent(PlayableDirector timeline)
+    {
+        timeline.stopped -= DissubTimelineEvent;
+        StartCoroutine(CoTyping());
     }
 
     IEnumerator CoTyping()
     {
+        letterBG.SetActive(true);
+
         yield return null;
         
         for(int i =  0; i < content.Length; i++)
         {
-            if(isSkip)
+            if(isDone)
             {
-                tmp02.text = content;
-                isSkip = false;
+                contentText.text = content;
+                isDone = false;
                 break;
             }
-            tmp02.text = content.Substring(0, i+1);
+            contentText.text = content.Substring(0, i+1);
             yield return new WaitForSeconds(0.06f);
         }
-
-        for (int i = 0; i < closing.Length; i++)
-        {
-            if (isSkip)
-            {
-                tmp03.text = closing;
-                isSkip = false;
-                break;
-            }
-            tmp03.text = closing.Substring(0, i+1);
-            yield return new WaitForSeconds(0.06f);
-        }
-        nextBtn.gameObject.SetActive(true);
+        isDone = true;
+        pressEnter.enabled = true;
+        StartCoroutine(Blink());
     }
+
+    IEnumerator Blink()
+    {
+        while (true)
+        {
+            // 서서히 사라지기
+            yield return StartCoroutine(Fade(1f, 0f, durationTime));
+
+            // 서서히 나타나기
+            yield return StartCoroutine(Fade(0f, 1f, durationTime));
+        }
+    }
+
+    IEnumerator Fade(float startAlpha, float endAlpha, float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            pressEnter.alpha = alpha;
+            yield return null;
+        }
+        pressEnter.alpha = endAlpha;
+    }
+
 }
