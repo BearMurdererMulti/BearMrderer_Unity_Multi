@@ -9,6 +9,7 @@ public enum SceneName
     Room_KJY,
     Chinemachine_01,
     PostmanLoadingScene,
+    Cinemachine_ReceiveLetter,
     Cinemachine02,
     CharacterCustom_new,
     Cinemachine03,
