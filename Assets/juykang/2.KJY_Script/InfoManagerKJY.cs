@@ -177,7 +177,7 @@ public class InfoManagerKJY : MonoBehaviour
         dailySummary = response.method;
         victim = response.victim;
         gameNpcList = response.gameNpcList;
-        gameNpcList = SuffleList(gameNpcList);
+        //gameNpcList = SuffleList(gameNpcList);
     }
 
     public void IntroOfIntroScenarioSetting(IntroAnswer response)

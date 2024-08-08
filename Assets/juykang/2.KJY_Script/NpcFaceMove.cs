@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
-public class NpcFaceMove : MonoBehaviour
+public class NpcFaceMove : MonoBehaviourPunCallbacks
 {
     [SerializeField] Transform target;
     public float speed = 1f;
@@ -13,7 +14,10 @@ public class NpcFaceMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        target = GameObject.FindWithTag("Player").transform;
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            target = GameObject.FindWithTag("Detective").transform;
+        }
     }
 
     // Update is called once per frame

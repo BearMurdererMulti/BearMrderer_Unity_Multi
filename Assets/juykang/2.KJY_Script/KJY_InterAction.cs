@@ -5,18 +5,20 @@ using UnityEngine.UI;
 
 public class KJY_InterAction : MonoBehaviour
 {
-    [SerializeField] Button button;
+    [SerializeField] private Button button;
     public bool isOccupy;
 
     private void Start()
     {
+        button = GameObject.Find("Talk_Btn").GetComponent<Button>();
         button.interactable = false;
     }
 
     private void OnTriggerStay(UnityEngine.Collider other)
     {
-        if (other.gameObject.CompareTag("Npc"))
+        if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
         {
+            print(other.gameObject.GetComponent<NpcData>().npcName);
             button.interactable = true;
             if (ChatManager.instance.talk == false)
             {
@@ -34,7 +36,6 @@ public class KJY_InterAction : MonoBehaviour
             button.interactable = false;
             ChatManager.instance.npcdata = null;
             other.gameObject.GetComponent<NPC>().isWalking = true;
-
         }
     }
 

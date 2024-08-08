@@ -2,6 +2,7 @@ using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static KJY_SenarioConnection;
 
 public class PhotonConnection : MonoBehaviourPunCallbacks
 {
@@ -15,6 +16,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region IntroScenarioResponse
     public void IntroScenarioPhoton(IntroScenarioResponse response)
     {
+        List<GameNpcSetting> list = response.message.firstScenarioResponse.gameNpcList;
+        response.message.firstScenarioResponse.gameNpcList = InfoManagerKJY.instance.SuffleList(list);
         string jsonResponse = JsonUtility.ToJson(response);
         photonView.RPC("UpdateScenario", RpcTarget.All, jsonResponse);
     }
@@ -26,13 +29,14 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
         if (response != null)
         {
+            
             InfoManagerKJY.instance.ScenarioOfIntroScenarSetting(response.message.firstScenarioResponse);
             InfoManagerKJY.instance.IntroOfIntroScenarioSetting(response.message.introAnswer);
             foreach (GameNpcSetting npc in response.message.firstScenarioResponse.gameNpcList)
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random.ToString();
             PhotonNetwork.LoadLevel(sceneName);
         }
     }
@@ -58,7 +62,9 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region InGame
     public void InGameResponsePhoton()
     {
-        photonView.RPC("GoInGame", RpcTarget.All);
+        //photonView.RPC("GoInGame", RpcTarget.All);
+        string sceneName = SceneName.GameScene_NPC_Random.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
     }
 
     [PunRPC]
@@ -67,7 +73,9 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         string sceneName = SceneName.GameScene_NPC_Random.ToString();
         PhotonNetwork.LoadLevel(sceneName);
     }
+    #endregion
 
+    #region SetNpc
     #endregion
 
 }
