@@ -73,6 +73,10 @@ MonoBehaviour:
   - OnOffUI
   - UpdateInventoryImage
   - UpdateMainCamera
+  - TextEffectInterr
+  - StartTimerRPC
+  - TimerCoroutine
+  - UpdateText
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

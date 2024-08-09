@@ -161,7 +161,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             dieNpcList[i].SetActive(false);
         }
 
-        FadeOut();
+        image.DOFade(1, 2);
         yield return new WaitForSeconds(1);
         if (InfoManagerKJY.instance.role == "Detective")
         {
@@ -184,12 +184,12 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             //npcList[i].gameObject.SetActive(false);
         }
 
-        FadeIn();
+        image.DOFade(0, 2);
         if (InfoManagerKJY.instance.role == "Detective")
         {
             player.GetComponent<CharacterController>().enabled = true;
+            UI.instance.talkBtn.SetActive(false);
         }
-        UI.instance.talkBtn.SetActive(false);
         UI.instance.skipBtn.SetActive(true);
         call = true;
 
@@ -213,12 +213,12 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     void FadeOut()
     {
-        image.DOFade(1, 1);
+        image.DOFade(1, 2);
     }
 
     void FadeIn()
     {
-        image.DOFade(0, 1);
+        image.DOFade(0, 2);
     }
 
     public void DieNpcSpotSet()

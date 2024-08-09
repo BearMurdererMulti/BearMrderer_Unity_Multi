@@ -11,6 +11,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     [SerializeField] private GameManager_KJY gameManager;
     [SerializeField] private SceneName targetSceneName;
     [SerializeField] private KJY_CitizenManager citizenManager;
+    [SerializeField] private ChatManager chatManager;
+    private bool isTimerRunning = false;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         ui = UI.instance; 
         gameManager = GameManager_KJY.instance;
         citizenManager = KJY_CitizenManager.Instance;
+        chatManager = ChatManager.instance;
     }
 
     #region IntroScenarioResponse
@@ -147,6 +150,74 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
         photonView.RPC("UpdateMainCamera", RpcTarget.All, value);
     }
+    #endregion
+
+
+    #region
+    public void StartTimer()
+    {
+        UI.instance.timerText.enabled = true;
+        float startTime = (float)PhotonNetwork.Time;
+        photonView.RPC("StartTimerRPC", RpcTarget.All, startTime, 120);
+    }
+
+    [PunRPC]
+    private void StartTimerRPC(float startTimestamp, int duration)
+    {
+        if (!isTimerRunning)
+        {
+            StartCoroutine(TimerCoroutine(startTimestamp, (float)duration));
+        }
+    }
+
+    private IEnumerator TimerCoroutine(float startTimestamp, float duration)
+    {
+        isTimerRunning = true;
+        float endTime = startTimestamp + duration;
+
+        while (isTimerRunning)
+        {
+            float timeRemaining = endTime - (float)PhotonNetwork.Time;
+
+            if (timeRemaining > 0)
+            {
+                UpdateTimerDisplay(timeRemaining);
+            }
+            else
+            {
+                UpdateTimerDisplay(0);
+                UI.instance.timerText.enabled = false;
+                ChatManager.instance.isTimerover = true;
+                isTimerRunning = false;
+            }
+
+            yield return null; // 다음 프레임까지 대기
+        }
+    }
+
+    private void UpdateTimerDisplay(float timeRemaining)
+    {
+        int minutes = Mathf.FloorToInt(timeRemaining / 60);
+        int seconds = Mathf.FloorToInt(timeRemaining % 60);
+        UI.instance.timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+    #endregion
+
+    #region interrogationUpdate
+
+    public void Updateinterrogation(string message)
+    {
+        print("message" + message);
+        photonView.RPC("UpdateText", RpcTarget.All, message);
+    }
+
+    [PunRPC]
+    private void UpdateText(string message)
+    {
+        ChatManager.instance.dialog.text = message;
+        ChatManager.instance.talkButton.SetActive(true);
+    }
+
     #endregion
 
 }

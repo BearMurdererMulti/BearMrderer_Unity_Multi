@@ -10,8 +10,27 @@ public class KJY_InterAction : MonoBehaviour
 
     private void Start()
     {
-        button = GameObject.Find("Talk_Btn").GetComponent<Button>();
-        button.interactable = false;
+        StartCoroutine(FindButtonCoroutine("Talk_Btn"));
+    }
+
+    private IEnumerator FindButtonCoroutine(string buttonName)
+    {
+        GameObject buttonObject = null;
+
+        // 버튼이 씬에 나타날 때까지 기다림
+        while (buttonObject == null)
+        {
+            buttonObject = GameObject.Find(buttonName);
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        // 버튼의 컴포넌트를 가져옴
+        button = buttonObject.GetComponent<Button>();
+
+        if (button != null)
+        {
+            button.interactable = false;
+        }
     }
 
     private void OnTriggerStay(UnityEngine.Collider other)

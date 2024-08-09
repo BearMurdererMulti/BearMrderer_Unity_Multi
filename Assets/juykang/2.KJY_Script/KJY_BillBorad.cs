@@ -23,11 +23,17 @@ public class KJY_BillBorad : MonoBehaviour
     {
         if (InfoManagerKJY.instance.role == "Detective")
         {
-            transform.forward = GameObject.Find("DollMainCamera").GetComponent<Camera>().transform.forward;
+            if (detectiveCamera != null)
+            {
+                transform.forward = detectiveCamera.transform.forward;
+            }
         }
         else
         {
-            transform.forward = GameObject.Find("DogMainCamera").GetComponent<Camera>().transform.forward;
+            if (assistantCamera != null)
+            {
+                transform.forward = assistantCamera.transform.forward;
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using DG.Tweening.Plugins;
 using Photon.Pun;
 using System.Collections;
@@ -6,7 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChatManager : MonoBehaviour
+public class ChatManager : MonoBehaviourPunCallbacks
 {
     public static ChatManager instance;
 
@@ -16,6 +17,7 @@ public class ChatManager : MonoBehaviour
     [Header("talkTextList")]
     public Text talkingName;
     public TextMeshProUGUI dialog;
+    [SerializeField] private GameObject xButton;
     [SerializeField] private GameObject nameObject;
     [SerializeField] private GameObject chat;
     [SerializeField] private GameObject talkPanel;
@@ -37,7 +39,7 @@ public class ChatManager : MonoBehaviour
     public bool talk;
     public bool npctalk;
     public bool interrogation = false;
-    public string weapon = "칼";
+    public string weapon = "BabyHammer";
 
     [Header("talkTextList_Interr")]
     [SerializeField] private TMP_InputField field;
@@ -55,6 +57,7 @@ public class ChatManager : MonoBehaviour
     int talkLengthTmp;
     public string sender;
     public string content;
+    public bool isTimerover = false;
 
     private void Awake()
     {
@@ -202,6 +205,7 @@ public class ChatManager : MonoBehaviour
     {
        interactiveBtn.SetActive(false);
        chat.SetActive(true);
+       xButton.SetActive(true);
        talk = true;
        camTopDown.enabled = false;
        camBack.enabled = true;
@@ -213,15 +217,16 @@ public class ChatManager : MonoBehaviour
     public void Startinterrogation()
     {
         talk = true;
-        interactiveBtn.SetActive(false);
         interrogation = true;
         camTopDown.enabled = false;
         camBack.enabled = false;
-        //nowNpc.GetComponent<NpcFaceMove>().talking = true;
+        xButton.SetActive(false);
+        StartTalkinterrogation();//임시
     }
 
     public void StartTalkinterrogation()
     {
+        chat.SetActive(true);
         talkPanel.SetActive(true);
         ManageField();
     }
@@ -314,19 +319,25 @@ public class ChatManager : MonoBehaviour
     {
         //talkLengthTmp = 0;
         talkButton.SetActive(false);
-        dialog.text = ShowDialogue(npcdata.npcName);
         talkingName.text = npcdata.npcName;
         npctalk = false;
         if (interrogation == false)
         {
+            dialog.text = ShowDialogue(npcdata.npcName);
             ConnectionKJY.instance.Request_Question(npcdata.npcName, weapon);
+        }
+        else
+        {
+            dialog.text = "탐정님, 전 범인이 아닙니다!";
+            TextEffectInterr();
+            ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
         }
     }
 
     // 여기서부터 TalkCode
     public void OnclickSend()
     {
-        field.gameObject.SetActive(false);
+        inputFieldObject.SetActive(false);
         // 임시
         string url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/chat/send";
         string chatContent = field.text;
@@ -378,13 +389,18 @@ public class ChatManager : MonoBehaviour
         }
         else
         {
-            if (GameManager_KJY.instance.heartRate >= 120)
+            if (GameManager_KJY.instance.heartRate >= 120 || isTimerover == true)
             {
                 GameManager_KJY.instance.interrogationBtn(true);
-                //print("stop");
-                //FinishTalk();
+                chat.SetActive(false);
+                dialog.text = string.Empty;
+                isTimerover = false;
+                interrogation = false;
+                talk = false;
             }
-            field.gameObject.SetActive(true);
+            dialog.text = string.Empty;
+            inputFieldObject.SetActive(true);
+            inputButton.SetActive(true);
         }
 
         //KJY - bool값 제어
@@ -408,20 +424,46 @@ public class ChatManager : MonoBehaviour
             buttonTexts[i].text = questions[i].question;
         }
         ButtonObject.SetActive(true);
-        talkButton.SetActive(true);
     }
 
     public void OnClickInterrogation()
     {
         //KJY - bool값 제어
-        npctalk = true;
-
-        ConnectionKJY.instance.RequestInterrogationConversation(npcdata.npcName, talkText.text);
-
+        string name = npcdata.npcName;
+        ConnectionKJY.instance.RequestInterrogationConversation(name, talkText.text);
         // text 제어
-        talkingName.text = npcdata.npcName;
-        talkPanel.gameObject.SetActive(true);
-        field.gameObject.SetActive(false);
-        //inputText.text = "";
+        talkingName.text = name;
+        inputFieldObject.SetActive(false);
+        inputButton.SetActive(false);
+        field.text = string.Empty;
+    }
+
+    [PunRPC]
+    private void TextEffectInterr()
+    {
+        StartCoroutine(effect());
+    }
+
+    private IEnumerator effect()
+    {
+        UI.instance.textObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[0].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[1].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[2].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[3].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(1f);
+        UI.instance.textList[0].transform.DOMoveX(-1100, 2f, false);
+        UI.instance.textList[1].transform.DOMoveY(-1100, 2f, false);
+        UI.instance.textList[2].transform.DOMoveY(2000, 2f, false);
+        UI.instance.textList[3].transform.DOMoveX(2500, 2f, false);
+        yield return new WaitForSeconds(2f);
+        UI.instance.textObject.SetActive(false);
+        UI.instance.ResetText();
+        talkButton.SetActive(true);
+        PhotonConnection.Instance.StartTimer();
     }
 }

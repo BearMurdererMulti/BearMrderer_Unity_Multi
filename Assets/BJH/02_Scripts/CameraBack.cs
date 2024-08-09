@@ -16,9 +16,18 @@ public class CameraBack : MonoBehaviourPun
 
     private void Start()
     {
-        initRot = transform.eulerAngles;
-        playerTr = GameObject.FindWithTag("Detective").transform;
-        this.enabled = false;
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            initRot = transform.eulerAngles;
+            playerTr = GameObject.FindWithTag("Detective").transform;
+            this.enabled = false;
+        }
+        else
+        {
+            initRot = transform.eulerAngles;
+            playerTr = GameObject.Find("AssistantCameraSpot").transform;
+            this.enabled = false;
+        }
     }
 
     // Update is called once per frame

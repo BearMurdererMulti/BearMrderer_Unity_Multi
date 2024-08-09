@@ -1122,9 +1122,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 11500000, guid: 950fe8751593aa84fb575a5109a55699, type: 3}
         m_TargetAssemblyTypeName: ChatManager, Assembly-CSharp
-        m_MethodName: StartTalk
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3752,6 +3752,7 @@ GameObject:
   - component: {fileID: 4583381148765727962}
   - component: {fileID: 4769950445237639017}
   - component: {fileID: 2179355407092687282}
+  - component: {fileID: 199436852937426114}
   m_Layer: 0
   m_Name: Doll
   m_TagString: Detective
@@ -3769,7 +3770,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -24.5, y: 1.5, z: -12}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1.13, y: 1.13, z: 1.13}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3127599678284307724}
@@ -3890,6 +3891,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126494ae2a10a34499272ed97a6c9f5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &199436852937426114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4386420590608424768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a04bda98383d2940a148fc77636d8c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn: {fileID: 6905378076031078131}
+  btnInterActive: {fileID: 6568933334385324972}
+  inventory: {fileID: 5906098997080857085}
 --- !u!1 &4456167124412041604
 GameObject:
   m_ObjectHideFlags: 0
@@ -4819,7 +4835,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8560377441304735155
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5003,7 +5019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3526800788589595905
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6111,7 +6127,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1323971531754671322
 RectTransform:
   m_ObjectHideFlags: 0

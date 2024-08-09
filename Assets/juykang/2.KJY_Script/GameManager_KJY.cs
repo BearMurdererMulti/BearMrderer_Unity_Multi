@@ -84,7 +84,6 @@ public class GameManager_KJY : MonoBehaviourPun
     private void Awake()
     {
         instance = this;
-        
     }
 
     private void Start()
@@ -266,6 +265,7 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
+        interrogationBtn(false);
         StartCoroutine(SelectEffect());
     }
 
@@ -304,7 +304,8 @@ public class GameManager_KJY : MonoBehaviourPun
     public void AfterSkip()
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
-        InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
+        InfoManagerKJY.instance.voteNpcName = null;
+        interrogationBtn(false);
         StartCoroutine(EffectNight());
     }
 
@@ -312,7 +313,6 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator EffectNight()
     {
         image.DOFade(1, 1f);
-        interrogationBtn(false);
         InfoManagerKJY.instance.voteNightNumber = 0;
         InfoManagerKJY.instance.voteNpcName = null;
         InfoManagerKJY.instance.voteNpcName = null;
@@ -356,7 +356,6 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator VictimSet()
     {
         yield return new WaitForSeconds(2f);
-        //SetDummyDataAndNpcDataEquel(InfoManagerBJH.instance.victim, false);
         SetDummyDataAndNpcDataEquel(InfoManagerKJY.instance.victim, false);
         TurnNpcList(false, 3);
         KJY_CitizenManager.Instance.SetnpcSpot(false);
@@ -570,13 +569,15 @@ public class GameManager_KJY : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
     private void OnOffUI(bool value)
     {
-        ChatManager.instance.interactiveBtn.SetActive(value);
-        UI.instance.noteObject.SetActive(value);
-        UI.instance.lifeObject.SetActive(value);
-        UI.instance.dayObject.SetActive(value);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            ChatManager.instance.interactiveBtn.SetActive(value);
+        }
+            UI.instance.lifeObject.SetActive(value);
+            UI.instance.dayObject.SetActive(value);
+            UI.instance.inventoryObject.SetActive(value);
     }
 
     [PunRPC]
@@ -586,6 +587,7 @@ public class GameManager_KJY : MonoBehaviourPun
         StopAllCoroutines();
         cameratopdown.enabled = false;
         moveObject.position = startSpot.position;
+        ChatManager.instance.npcdata = obj.GetComponent<NpcData>();
         Camera.main.transform.position = arrestCameraSpot.transform.position;
         Camera.main.transform.rotation = arrestCameraSpot.transform.rotation;
         if (InfoManagerKJY.instance.role == "Detective")
@@ -616,7 +618,7 @@ public class GameManager_KJY : MonoBehaviourPun
         obj.transform.rotation = intellRoomNpc.transform.rotation;
         Camera.main.transform.position = intellCameraSpot.transform.position;
         Camera.main.transform.rotation = intellCameraSpot.transform.rotation;
-        UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
+        //UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
         StartCoroutine(Wait());
     }
 
