@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : MonoBehaviour
+public class WeaponManager : MonoBehaviourPunCallbacks
 {
     #region instance
     private static WeaponManager _instance;
@@ -19,8 +20,9 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private List<int> generatedNumbers = new List<int>();
 
     
-    [SerializeField] private InventoryItems inventoryItems;
+    [SerializeField] public InventoryItems inventoryItems; // 캐릭터 canvas에서 코드로 assign
 
+    [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
 
 
     private void Awake()
@@ -61,9 +63,18 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    public void UpdateInventoryImage(Sprite sprite)
+    [PunRPC]
+    public void UpdateInventoryImage(string weaponName)
     {
-        Debug.Log("업데이트 요청을 game manager가 받았습니다.");
-        inventoryItems.UpdateInventoryItemImages(sprite);
+        foreach (var sprite in weaponSprites)
+        {
+            if (weaponName == sprite.name)
+            {
+                Debug.Log("일치하는 이름의 sprite를 찾았습니다!");
+                inventoryItems.UpdateInventoryItemImages(sprite);
+
+                break;
+            }
+        }
     }
 }

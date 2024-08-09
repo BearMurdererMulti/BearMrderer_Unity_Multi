@@ -4919,6 +4919,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryImage: {fileID: 3430427036626868664}
+  inventoryItems: {fileID: 0}
 --- !u!1 &5632759126748189545
 GameObject:
   m_ObjectHideFlags: 0
