@@ -1,4 +1,5 @@
 using DG.Tweening.Plugins;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -68,13 +69,18 @@ public class ChatManager : MonoBehaviour
     {
         npctalk = false;
         talkLengthTmp = 0;
-        
         for (int i = 0; i < buttons.Count; i++)
         {
             int index = i; // 로컬 변수에 인덱스를 저장하여 캡처
             buttons[i].onClick.AddListener(() => OnClickChat(index));
         }
         InitializeNPCLines();
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            cam = GameObject.Find("DollMainCamera").GetComponent<Camera>();
+        }
+        camTopDown = cam.GetComponent<CameraTopDown>();
+        camBack = cam.GetComponent<CameraBack>();
     }
 
 
@@ -194,14 +200,14 @@ public class ChatManager : MonoBehaviour
 
     public void StartTalk()
     {
-        interactiveBtn.SetActive(false);
-        chat.SetActive(true);
-        talk = true;
-        ManageField();
-        camTopDown.enabled = false;
-        camBack.enabled = true;
-        nowNpc.GetComponent<NpcFaceMove>().talking = true;
-        nowNpc.GetComponent<Collider_BJH>().isTalking = true;
+       interactiveBtn.SetActive(false);
+       chat.SetActive(true);
+       talk = true;
+       camTopDown.enabled = false;
+       camBack.enabled = true;
+       nowNpc.GetComponent<NpcFaceMove>().talking = true;
+       nowNpc.GetComponent<Collider_BJH>().isTalking = true;
+       ManageField();
     }
 
     public void Startinterrogation()
@@ -307,6 +313,7 @@ public class ChatManager : MonoBehaviour
     public void ManageField()
     {
         //talkLengthTmp = 0;
+        talkButton.SetActive(false);
         dialog.text = ShowDialogue(npcdata.npcName);
         talkingName.text = npcdata.npcName;
         npctalk = false;
@@ -367,6 +374,7 @@ public class ChatManager : MonoBehaviour
             }
             dialog.text = ShowDialogue(npcdata.npcName);
             ButtonObject.SetActive(true);
+            talkButton.SetActive(false);
         }
         else
         {
@@ -387,7 +395,6 @@ public class ChatManager : MonoBehaviour
 
     public void OnClickChat(int index)
     {
-        //ConnectionKJY.instance.re
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
         PhotonConnection.Instance.UpdateMinusLife();
         ButtonObject.SetActive(false);
@@ -401,6 +408,7 @@ public class ChatManager : MonoBehaviour
             buttonTexts[i].text = questions[i].question;
         }
         ButtonObject.SetActive(true);
+        talkButton.SetActive(true);
     }
 
     public void OnClickInterrogation()

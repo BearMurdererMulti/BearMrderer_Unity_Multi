@@ -18,21 +18,25 @@ public class KJY_InterAction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
         {
-            print(other.gameObject.GetComponent<NpcData>().npcName);
-            button.interactable = true;
-            ChatManager.instance.nowNpc = other.gameObject;
-            ChatManager.instance.npcdata = other.GetComponent<NpcData>();
-            other.gameObject.GetComponent<NPC>().isWalking = false;
+            if (other.GetComponent<NpcData>().status == "ALIVE")
+            {
+                button.interactable = true;
+                ChatManager.instance.nowNpc = other.gameObject;
+                ChatManager.instance.npcdata = other.GetComponent<NpcData>();
+                other.gameObject.GetComponent<Collider_BJH>().enabled = false;
+                other.gameObject.GetComponent<NPC>().isWalking = false;
+            }
         }
     }
 
     private void OnTriggerExit(UnityEngine.Collider other)
     {
-        if (other.gameObject.CompareTag("Npc"))
+        if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
         {
             button.interactable = false;
             ChatManager.instance.npcdata = null;
             other.gameObject.GetComponent<NPC>().isWalking = true;
+            other.gameObject.GetComponent<Collider_BJH>().enabled = true;
         }
     }
 

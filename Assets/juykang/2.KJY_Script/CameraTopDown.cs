@@ -26,26 +26,15 @@ public class CameraTopDown : MonoBehaviour
 
     private void Start()
     {
-        if (InfoManagerKJY.instance.role == "Assistant")
-        {
-            player = GameObject.FindWithTag("User").transform;
-            first = transform.rotation;
-        }
-        else
-        {
-            player = GameObject.FindWithTag("Detective").transform;
-            first = transform.rotation;
-        }
+        player = GameObject.FindWithTag("Detective").transform;
+        first = transform.rotation;
     }
 
     private void LateUpdate()
     {
-        if (InfoManagerKJY.instance.role == "Detective")
-        {
-            Vector3 targetPos = player.position;
-            targetPos.y += height;
-            targetPos.z += width;
-            transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
-        }
+       Vector3 targetPos = GameObject.FindWithTag("Detective").transform.position;
+       targetPos.y += height;
+       targetPos.z += width;
+       transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
     }
 }

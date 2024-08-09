@@ -6,6 +6,7 @@ using UnityEngine;
 public class Collider_BJH : MonoBehaviour
 {
     public bool isTalking = false;
+
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
         //print("트리거에 닿임");
@@ -50,7 +51,5 @@ public class Collider_BJH : MonoBehaviour
 
         go.GetComponent<Collider_BJH>().isTalking = false;
         go.GetComponent<NPC>().isWalking = true;
-
-
     }
 }

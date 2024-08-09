@@ -67,15 +67,6 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
         // 걷기 상태에 따라서 애니메이션 실행 여부 결정
         isWalking = true;
         photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", true);
-        
-        if(GetComponent<NpcData>().status == "ALIVE")
-        {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                // nac에 목적지를 지정
-                nav.SetDestination(target.position);
-            }
-        }
 
         //KJY 추가
         if (!photonView.IsMine) // 동기화할 때 초기 위치 설정
@@ -83,6 +74,16 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
             networkPosition = transform.position;
             networkRotation = transform.rotation;
             networkMovementSpeed = nav.speed;
+        }
+
+        if (GetComponent<NpcData>().status == "ALIVE")
+        {
+            GetComponent<SphereCollider>().enabled = true;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // nac에 목적지를 지정
+                nav.SetDestination(target.position);
+            }
         }
     }
 
@@ -192,6 +193,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
                 NavIsStooped(true);
                 isWalking = false;
                 photonView.RPC("SetBoolRpc_NPC", RpcTarget.All, "Walk", false);
+                StopCoroutine(nameof(coWaitForASec));
             }
         //}
     }
@@ -200,7 +202,7 @@ public class NPC : MonoBehaviourPunCallbacks, IPunObservable
     {
         // 플레이어와 멀어지면
         // 다시 걷는다.
-        if(other.gameObject.tag == "Detective")
+        if(other.gameObject.tag == "Detective" && ChatManager.instance.talk == false)
         {
             other.GetComponent<KJY_InterAction>().isOccupy = false;
             isTalking = false;
