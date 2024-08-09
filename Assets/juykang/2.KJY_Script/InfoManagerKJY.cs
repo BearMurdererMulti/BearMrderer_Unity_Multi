@@ -35,7 +35,7 @@ public class InfoManagerKJY : MonoBehaviour
     public string gameStatus;
     public DateTime createdAt;
     public DateTime modifiedAt;
-    public int gameDay;
+    public int gameDay = 1;
     public string gameResult;
     public string deadNpc;
     public string deadPlace;

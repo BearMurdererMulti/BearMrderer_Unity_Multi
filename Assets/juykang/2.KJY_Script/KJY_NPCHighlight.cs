@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class KJY_NPCHighlight : MonoBehaviour
+public class KJY_NPCHighlight : MonoBehaviourPun
 {
     [SerializeField] Color baseC;
     [SerializeField] Material material;
@@ -85,6 +86,23 @@ public class KJY_NPCHighlight : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("mouseEnterColor", RpcTarget.All);
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("mouseExitColor", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    private void mouseEnterColor()
+    {
         if (KJY_CitizenManager.Instance.call == true && GameManager_KJY.instance.click == false)
         {
             material.SetFloat("_Outline", changevalue);
@@ -96,7 +114,8 @@ public class KJY_NPCHighlight : MonoBehaviour
         }
     }
 
-    private void OnMouseExit()
+    [PunRPC]
+    private void mouseExitColor()
     {
         if (KJY_CitizenManager.Instance.call == true)
         {

@@ -24,7 +24,6 @@ public class KJY_SenarioConnection : MonoBehaviour
     public class SenarioRequst
     {
         public long gameSetNo;
-        public string secretKey;
     }
 
     [System.Serializable]
@@ -32,7 +31,6 @@ public class KJY_SenarioConnection : MonoBehaviour
     {
         public string url;
         public long gameSetNo;
-        public string secretKey;
     }
 
     [System.Serializable]
@@ -74,14 +72,12 @@ public class KJY_SenarioConnection : MonoBehaviour
         {
             this.url = str.url;
             this.gameSetNo = str.gameSetNo;
-            this.secretKey = str.secretKey;
             CreateJson();
         }
         public void CreateJson()
         {
             SenarioRequst request = new SenarioRequst();
             request.gameSetNo = this.gameSetNo;
-            request.secretKey = this.secretKey;
 
             string jsonData = JsonUtility.ToJson(request);
             OnGetRequest(jsonData);
@@ -118,11 +114,8 @@ public class KJY_SenarioConnection : MonoBehaviour
     public void ReqeustScenario()
     {
         SenarioSetting str = new SenarioSetting();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/save";
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/save";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
-        //str.gameSetNo = InfoManagerBJH.instance.gameSetNo;
-        str.secretKey = "mafia";
-        //Select = false;
         TrySenarioSetting senario = new TrySenarioSetting(str);
     }
 }

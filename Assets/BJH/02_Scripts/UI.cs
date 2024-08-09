@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using static ConnectionKJY;
 using static System.Net.WebRequestMethods;
 
-public class UI : MonoBehaviourPunCallbacks
+public class UI : MonoBehaviourPun
 {
 
 
@@ -94,8 +94,7 @@ public class UI : MonoBehaviourPunCallbacks
         //timeSlider.value = 0;
         //sliderFill.GetComponent<Image>().color = Color.green;
         //tmp01.text = dayInt.ToString(); (KJY 추가함)
-        dayInt = InfoManagerKJY.instance.gameDay;
-        tmp01.text = (InfoManagerKJY.instance.gameDay + 1).ToString();
+        tmp01.text = (dayInt).ToString();
 
         settingImg.SetActive(false);
 
@@ -194,8 +193,8 @@ public class UI : MonoBehaviourPunCallbacks
 
     }
 
-    [PunRPC]
     // ��, ���� �����ϴ� �Լ�
+    [PunRPC]
     private void DayAndNight(bool b)
     {
         // true == ��
@@ -249,8 +248,8 @@ public class UI : MonoBehaviourPunCallbacks
 
         if(lifeCount < 0 && Input.GetKeyDown(KeyCode.P))
         {
-            DayAndNight(false);
-            StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
+            PhotonConnection.Instance.UpdateDayAndNight(false);
+            PhotonConnection.Instance.UpdateCitizenCall();
         }
     }
 

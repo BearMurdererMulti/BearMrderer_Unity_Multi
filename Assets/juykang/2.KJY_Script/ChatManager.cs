@@ -36,7 +36,7 @@ public class ChatManager : MonoBehaviour
     public bool talk;
     public bool npctalk;
     public bool interrogation = false;
-    private string weapon = "Į";
+    public string weapon = "Į";
 
     [Header("talkTextList_Interr")]
     [SerializeField] private TMP_InputField field;
@@ -210,8 +210,7 @@ public class ChatManager : MonoBehaviour
         interactiveBtn.SetActive(false);
         interrogation = true;
         camTopDown.enabled = false;
-        camBack.enabled = true;
-        ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
+        camBack.enabled = false;
         //nowNpc.GetComponent<NpcFaceMove>().talking = true;
     }
 
@@ -256,7 +255,7 @@ public class ChatManager : MonoBehaviour
             if (npctalk == true)
             {
                 PhotonConnection.Instance.UpdateDayAndNight(false);
-                StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
+                PhotonConnection.Instance.UpdateCitizenCall();
             }
         }
 
@@ -362,7 +361,7 @@ public class ChatManager : MonoBehaviour
                 {
                     FinishTalk();
                     PhotonConnection.Instance.UpdateDayAndNight(false);
-                    StartCoroutine(KJY_CitizenManager.Instance.CitizenCall());
+                    PhotonConnection.Instance.UpdateCitizenCall();
                 }
                 return;
             }
