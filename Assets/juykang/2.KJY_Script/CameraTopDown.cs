@@ -28,7 +28,7 @@ public class CameraTopDown : MonoBehaviour
     {
         if (InfoManagerKJY.instance.role == "Assistant")
         {
-            player = GameObject.FindWithTag("Assistant").transform;
+            player = GameObject.FindWithTag("User").transform;
             first = transform.rotation;
         }
         else
