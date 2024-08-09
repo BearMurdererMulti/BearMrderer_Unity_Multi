@@ -221,7 +221,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
         camTopDown.enabled = false;
         camBack.enabled = false;
         xButton.SetActive(false);
-        StartTalkinterrogation();//임시
+        //StartTalkinterrogation();//임시
     }
 
     public void StartTalkinterrogation()
