@@ -61,8 +61,20 @@ public class GameManager_KJY : MonoBehaviourPun
     int number;
 
     [SerializeField] GameObject notifyDead;
-    [SerializeField] Transform intellRoom;
-    [SerializeField] Transform intellRoomPlayer;
+    
+    [Header("IntellRoom")]
+    [SerializeField] private Transform intellRoomNpc;
+    [SerializeField] private Transform intellCameraSpot;
+    
+    [Header("GoIntellRoom")]
+    [SerializeField] private Transform moveObject;
+    [SerializeField] private Transform startSpot;
+    [SerializeField] private Transform endSpot;
+    [SerializeField] private Transform detectiveSpot;
+    [SerializeField] private Transform assistantSpot;
+    [SerializeField] private Transform arrestNpcSpot;
+    [SerializeField] private Transform arrestCameraSpot;
+
 
     bool Winner;
     public int heartRate = 60;
@@ -102,7 +114,9 @@ public class GameManager_KJY : MonoBehaviourPun
                 {
                     if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
                     {
-                        ChooseNpc();
+                        PhotonView view =  hit.collider.GetComponent<PhotonView>();
+                        int viewID = view.ViewID;
+                        PhotonConnection.Instance.UpdateChooseNpc(viewID);
                     }
                 }
             }
@@ -115,26 +129,27 @@ public class GameManager_KJY : MonoBehaviourPun
     }
 
     [PunRPC]
-    private void ChooseNpc()
+    private void ChooseNpc(int viewID)
     {
-        obj = hit.collider.gameObject;
+        PhotonView view = PhotonView.Find(viewID);
+        obj = view.gameObject;
         rotation = obj.transform.rotation;
         OnOffUI(false);
         skipBtn.SetActive(false);
         selectBtn.SetActive(true);
         selectUI.SetActive(true);
-        FollowNpc();
+        FollowNpc(obj);
     }
 
-    void FollowNpc()
+    void FollowNpc(GameObject gameObject)
     {
-        KJY_CitizenManager.Instance.OnOffCanvas(obj, false);
+        KJY_CitizenManager.Instance.OnOffCanvas(gameObject, false);
         cameratopdown.enabled = false;
         click = true;
         isZoom = true;
-        Vector3 target = obj.transform.position - cam.transform.position;
+        Vector3 target = gameObject.transform.position - cam.transform.position;
         StartCoroutine(RotateVectorCoroutine(target, cam.transform, true));
-        StartCoroutine(RotateVectorCoroutine(-target, obj.transform, false));
+        StartCoroutine(RotateVectorCoroutine(-target, gameObject.transform, false));
         StartCoroutine(ChangeZoom(maxZoom));
     }
 
@@ -242,6 +257,8 @@ public class GameManager_KJY : MonoBehaviourPun
     //확인 버튼
     public void SelectNpc()
     {
+        InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
+        InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
         StartCoroutine(SelectEffect());
     }
 
@@ -279,6 +296,8 @@ public class GameManager_KJY : MonoBehaviourPun
     //스킵할 때 결정하는 것
     public void AfterSkip()
     {
+        InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
+        InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
         StartCoroutine(EffectNight());
     }
 
@@ -306,9 +325,6 @@ public class GameManager_KJY : MonoBehaviourPun
         TextMeshProUGUI text = checkUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
         SetDummyDataAndNpcDataEquel(null,true);
-
-        InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
-        InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
         if (answer == "FOUND")
         {
             text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
@@ -546,7 +562,8 @@ public class GameManager_KJY : MonoBehaviourPun
         }
     }
 
-    void OnOffUI(bool value)
+    [PunRPC]
+    private void OnOffUI(bool value)
     {
         ChatManager.instance.interactiveBtn.SetActive(value);
         UI.instance.noteObject.SetActive(value);
@@ -554,15 +571,43 @@ public class GameManager_KJY : MonoBehaviourPun
         UI.instance.dayObject.SetActive(value);
     }
 
+    [PunRPC]
     public void GointerrogationRoom()
     {
-        image.DOFade(1, 0.5f);
+        selectUI.SetActive(false);
+        StopAllCoroutines();
+        cameratopdown.enabled = false;
+        moveObject.position = startSpot.position;
+        Camera.main.transform.position = arrestCameraSpot.transform.position;
+        Camera.main.transform.rotation = arrestCameraSpot.transform.rotation;
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            GameObject detective = KJY_CitizenManager.Instance.player;
+            detective.transform.position = detectiveSpot.position;
+            detective.transform.rotation = detectiveSpot.rotation;
+        }
+        else
+        {
+            GameObject assistant = KJY_CitizenManager.Instance.dog;
+            assistant.transform.position = assistantSpot.position;
+            assistant.transform.rotation = assistantSpot.rotation;
+        }
+        obj.transform.position = arrestNpcSpot.position;
+        obj.transform.rotation = arrestNpcSpot.rotation;
+        arrestCameraSpot.transform.position = arrestNpcSpot.position;
+        arrestCameraSpot.transform.rotation = arrestNpcSpot.rotation;
+
+        StartCoroutine(HanginterrogationRoom());
+    }
+
+    private void SettingInterrogationRoom()
+    {
         ChatManager.instance.nowNpc = obj;
         ChatManager.instance.npcdata = obj.GetComponent<NpcData>();
-        selectUI.SetActive(false);
-        obj.transform.position = intellRoom.transform.position;
-        obj.transform.rotation = intellRoom.transform.rotation;
-        GameObject.FindWithTag("Detective").transform.position = intellRoomPlayer.transform.position;
+        obj.transform.position = intellRoomNpc.transform.position;
+        obj.transform.rotation = intellRoomNpc.transform.rotation;
+        Camera.main.transform.position = intellCameraSpot.transform.position;
+        Camera.main.transform.rotation = intellCameraSpot.transform.rotation;
         UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
         StartCoroutine(Wait());
     }
@@ -571,7 +616,17 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         yield return new WaitForSeconds(1);
         ChatManager.instance.Startinterrogation();
-        image.DOFade(0, 1f);
+        image.DOFade(0, 2f);
+    }
+
+    private IEnumerator HanginterrogationRoom()
+    {
+        float journeyLength = Vector3.Distance(startSpot.position, endSpot.position);
+        float startTime = Time.time;
+
+        image.DOFade(1, 1f);
+        yield return new WaitForSeconds(1f);
+        SettingInterrogationRoom();
     }
 
     public void interrogationBtn(bool value)

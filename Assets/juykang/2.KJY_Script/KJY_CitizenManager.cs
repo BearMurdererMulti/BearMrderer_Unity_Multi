@@ -58,8 +58,14 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Detective");
-        dog = GameObject.FindGameObjectWithTag("Assistant");
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            player = GameObject.FindGameObjectWithTag("Detective");
+        }
+        else
+        {
+            dog = GameObject.FindGameObjectWithTag("Assistant");
+        }
 
         SetNpcList();
 
@@ -75,7 +81,10 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         call = false;
         FirstVictim();
         //UI.instance.SetNoteUI(); // note ui를 셋팅하는 메서드입니다. 이따가 삭제
-        buttonInterAction = FindFirstObjectByType<KJY_InterAction>();
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            buttonInterAction = FindFirstObjectByType<KJY_InterAction>();
+        }
     }
 
     public void SetNpcList()
@@ -137,7 +146,13 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         }
     }
 
-    public IEnumerator CitizenCall()
+    [PunRPC]
+    public void CallCitizen()
+    {
+        StartCoroutine(CitizenCall());
+    }
+
+    private IEnumerator CitizenCall()
     {
         // navi mesh 꺼주기
         //GameManagerBJH.instance.OnOffNaviAgent(false);
@@ -148,11 +163,18 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
         FadeOut();
         yield return new WaitForSeconds(1);
-        player.GetComponent<CharacterController>().enabled = false;
-        player.transform.position = playerSpots.position;
-        player.transform.GetChild(0).rotation = playerSpots.rotation;
-        //dog.transform.position = dogSpot.position;
-        //dog.transform.root.rotation = dogSpot.rotation;
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            player.GetComponent<CharacterController>().enabled = false;
+            player.transform.position = playerSpots.position;
+            player.transform.GetChild(0).rotation = playerSpots.rotation;
+        }
+        else
+        {
+            dog.transform.position = dogSpot.position;
+            dog.transform.root.rotation = dogSpot.rotation;
+            //dog.GetComponent<CharacterController>().enabled = false;
+        }
 
         SetnpcSpot(true);
 
@@ -163,12 +185,18 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         }
 
         FadeIn();
-        player.GetComponent<CharacterController>().enabled = true;
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            player.GetComponent<CharacterController>().enabled = true;
+        }
         UI.instance.talkBtn.SetActive(false);
         UI.instance.skipBtn.SetActive(true);
         call = true;
 
-        buttonInterAction.ButtonInterAction();
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            buttonInterAction.ButtonInterAction();
+        }
     }
 
     public void SetnpcSpot(bool value)

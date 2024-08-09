@@ -61,6 +61,15 @@ MonoBehaviour:
   - SetTriggerRpc
   - NextScene
   - SendRead
+  - ChooseNpc
+  - DayAndNight
+  - MinusLife
+  - CallCitizen
+  - mouseEnterColor
+  - mouseExitColor
+  - FollowNpc
+  - OnOffUI
+  - GointerrogationRoom
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

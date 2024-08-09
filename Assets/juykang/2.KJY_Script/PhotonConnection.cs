@@ -9,6 +9,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     public static PhotonConnection Instance;
     [SerializeField] private UI ui;
     [SerializeField] private GameManager_KJY gameManager;
+    [SerializeField] private KJY_CitizenManager citizenManager;
 
     private void Awake()
     {
@@ -19,6 +20,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     {
         ui = UI.instance; 
         gameManager = GameManager_KJY.instance;
+        citizenManager = KJY_CitizenManager.Instance;
     }
 
     #region IntroScenarioResponse
@@ -44,7 +46,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.GameScene_NPC_Random.ToString();
+            string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
         }
     }
@@ -109,11 +111,28 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #endregion
 
     #region SelectNpc
-    public void UpdateChooseNpc()
+    public void UpdateChooseNpc(int viewID)
     {
         PhotonView photonView = PhotonView.Get(gameManager);
 
-        photonView.RPC("ChooseNpc", RpcTarget.All);
+        photonView.RPC("ChooseNpc", RpcTarget.All, viewID);
+    }
+    #endregion
+
+    #region
+    public void UpdateCitizenCall()
+    {
+        PhotonView photonView = PhotonView.Get(citizenManager);
+
+        photonView.RPC("CallCitizen", RpcTarget.All);
+    }
+    #endregion
+
+    #region
+    public void UpdateGoInterrRoom()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+        photonView.RPC("GointerrogationRoom", RpcTarget.All);
     }
     #endregion
 }

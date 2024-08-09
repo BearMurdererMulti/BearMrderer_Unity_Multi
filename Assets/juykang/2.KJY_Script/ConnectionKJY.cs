@@ -155,7 +155,7 @@ public class TrySaveSetting : ConnectionStratege
 #region SaveSetting
 public class RequestSave
 {
-    public void Request(bool value)
+    public void Request(bool result)
     {
         SaveSetting str = new SaveSetting();
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/save";
@@ -163,7 +163,8 @@ public class RequestSave
         str.gameDay = UI.instance.dayInt;
         str.voteNpcName = InfoManagerKJY.instance.voteNpcName;
         str.voteNightNumber = InfoManagerKJY.instance.voteNightNumber;
-        str.voteResult = value;
+        str.voteResult = result;
+        Debug.Log(str.voteResult);
         str.npcCustomInfos = InfoManagerKJY.instance.npcCustomLists;
 
         // 체크리스트 dic을 list로 변환하는 메서드
@@ -720,7 +721,6 @@ public class TryGameStart : ConnectionStratege
 public class SenarioRequst
 {
     public long gameSetNo;
-    public string secretKey;
 }
 
 [System.Serializable]
@@ -728,7 +728,6 @@ public class SenarioSetting
 {
     public string url;
     public long gameSetNo;
-    public string secretKey;
 }
 
 [System.Serializable]
@@ -744,7 +743,7 @@ public class ScenarioMessage
     public string crimeScene;
     public string dailySummary;
     public string victim;
-    public List<GameNpcSetting> gameNpcSetting;
+    public List<GameNpcSetting> gameNpcList;
 }
 
 public class TrySenarioSetting : ConnectionStratege
@@ -757,14 +756,12 @@ public class TrySenarioSetting : ConnectionStratege
     {
         this.url = str.url;
         this.gameSetNo = str.gameSetNo;
-        this.secretKey = str.secretKey;
         CreateJson();
     }
     public void CreateJson()
     {
         SenarioRequst request = new SenarioRequst();
         request.gameSetNo = this.gameSetNo;
-        request.secretKey = this.secretKey;
 
         string jsonData = JsonUtility.ToJson(request);
         OnGetRequest(jsonData);
@@ -1726,7 +1723,6 @@ public class ConnectionKJY : MonoBehaviour
         SenarioSetting str = new SenarioSetting();
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/save";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
-        str.secretKey = "mafia";
 
         TrySenarioSetting senario = new TrySenarioSetting(str);
     }
