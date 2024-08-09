@@ -142,12 +142,12 @@ GameObject:
   - component: {fileID: 8141032594752989996}
   - component: {fileID: 8704079165570851184}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: DollMainCamera
   m_TagString: DetectiveCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6968032075548570179
 Transform:
   m_ObjectHideFlags: 0

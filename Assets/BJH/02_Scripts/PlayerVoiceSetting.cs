@@ -15,6 +15,7 @@ public class PlayerVoiceSetting : MonoBehaviour
             recorder = GameObject.Find("VoiceManager").GetComponent<Recorder>();
         }
 
+        // 마스터 클라이언트가 아니면 뮤트
         if(!PhotonNetwork.IsMasterClient)
         {
             MuteRecorder();
