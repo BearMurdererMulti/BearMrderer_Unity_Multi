@@ -64,7 +64,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            dog = GameObject.FindGameObjectWithTag("Assistant");
+            dog = GameObject.FindGameObjectWithTag("User");
         }
 
         SetNpcList();

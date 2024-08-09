@@ -31,20 +31,13 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
     Vector3 receivePos;
     //서버에서 넘어오는 회전값
     Quaternion receiveRot = Quaternion.identity;
-    float lerpSpeed = 50;
+    float lerpSpeed = 30;
 
     // Start is called before the first frame update
     void Start()
     {
         cc = GetComponent<CharacterController>();
-        if (InfoManagerKJY.instance.role == "Detective")
-        {
-            animator = transform.GetChild(0).GetComponent<Animator>();
-        }
-        else if (gameObject.name == "B")
-        {
-            animator = transform.GetComponent<Animator>();
-        }
+        animator = transform.GetChild(0).GetComponent<Animator>();
         body = transform.GetChild(0);
     }
 
@@ -114,7 +107,7 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
             //위치 보정
             transform.position = Vector3.Lerp(transform.position, receivePos, lerpSpeed * Time.deltaTime);
             //회전 보정
-            transform.rotation = Quaternion.Lerp(transform.rotation, receiveRot, lerpSpeed * Time.deltaTime);
+            body.rotation = Quaternion.Lerp(body.rotation, receiveRot, lerpSpeed * Time.deltaTime);
         }
     }
 
@@ -135,7 +128,7 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
             //나의 위치값을 보낸다.
             stream.SendNext(transform.position);
             //나의 회전값을 보낸다.
-            stream.SendNext(transform.rotation);
+            stream.SendNext(body.rotation);
             //h 값 보낸다.
             stream.SendNext(h);
             //v 값 보낸다.

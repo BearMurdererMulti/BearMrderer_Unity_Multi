@@ -42,13 +42,15 @@ public class GameManager_KJY : MonoBehaviourPun
 
     [SerializeField] GameObject DayText;
 
+    [Header("Camera")]
     //회전 스피드 값
     public float speed = 10;
-
     //카메라 줌인 줌아웃 값
     float maxZoom = 30;
     float curr = 40;
     bool isZoom;
+    public Camera detectiveCamera;
+    public Camera assistantCamera;
 
     [SerializeField] Transform camPlace;
     [SerializeField] GameObject effect;
@@ -92,7 +94,8 @@ public class GameManager_KJY : MonoBehaviourPun
         npcList = KJY_CitizenManager.Instance.npcList;
         dieNpcList = KJY_CitizenManager.Instance.dieNpcList;
         selectUI.SetActive(false);
-        cameratopdown = cam.GetComponent<CameraTopDown>();  
+        cameratopdown = cam.GetComponent<CameraTopDown>();
+        PhotonConnection.Instance.CameraOnOff(false);
         checkUI.SetActive(false);
         firstSun = sun.transform.rotation;
         effect.SetActive(false);
@@ -107,16 +110,21 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (KJY_CitizenManager.Instance.call == true)
             {
-                if (Input.GetMouseButtonDown(0) && KJY_CitizenManager.Instance.call == true && click == false)
+                PhotonConnection.Instance.CameraOnOff(true);
+
+                ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                    if (Input.GetMouseButtonDown(0) && click == false)
                     {
-                        PhotonView view =  hit.collider.GetComponent<PhotonView>();
-                        int viewID = view.ViewID;
-                        PhotonConnection.Instance.UpdateChooseNpc(viewID);
+                        if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                        {
+                            PhotonView view =  hit.collider.GetComponent<PhotonView>();
+                            int viewID = view.ViewID;
+                            PhotonConnection.Instance.UpdateChooseNpc(viewID);
+                        }
                     }
                 }
             }
@@ -200,7 +208,6 @@ public class GameManager_KJY : MonoBehaviourPun
 
             if (AreQuaternionsSimilar(tr.transform.rotation, target, 0.3f))
             {
-                print("break");
                 yield break; // 코루틴 중단
             }
 
@@ -516,6 +523,7 @@ public class GameManager_KJY : MonoBehaviourPun
         cameratopdown.enabled = true;
         cam.transform.rotation = cameratopdown.first;
         KJY_CitizenManager.Instance.call = false;
+        PhotonConnection.Instance.CameraOnOff(false);
         OnOffUI(true);
     }
 
@@ -632,5 +640,11 @@ public class GameManager_KJY : MonoBehaviourPun
     public void interrogationBtn(bool value)
     {
         selectInBtn.SetActive(value);
+    }
+
+    [PunRPC]
+    private void UpdateMainCamera(bool value)
+    {
+        cam.enabled = value;
     }
 }
