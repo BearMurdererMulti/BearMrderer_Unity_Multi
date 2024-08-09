@@ -25,10 +25,7 @@ public class WeaponPicker : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            if(pickButton.IsActive())
-            {
-                AddWeaponInInventory();
-            }
+            AddWeaponInInventory();
         }
     }
 
@@ -72,7 +69,12 @@ public class WeaponPicker : MonoBehaviour
 
     public void AddWeaponInInventory()
     {
-        pickedWeapon.gameObject.SetActive(false); // 찾은 오브젝트 비활성화
+        if (pickButton.IsActive())
+        {
+            Debug.Log("주울 수 있는 오브젝트가 없습니다.");
+            return;
+        }
+            pickedWeapon.gameObject.SetActive(false); // 찾은 오브젝트 비활성화
 
         foreach (var sprite in weaponSprites)
         {

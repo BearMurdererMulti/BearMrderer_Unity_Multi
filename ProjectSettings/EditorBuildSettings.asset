@@ -32,10 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/BJH/01_Scenes/Cinemachine03.unity
     guid: a0bfa589cc55c8c4ab99a3a33722e71b
-  - enabled: 0
-    path: Assets/BJH/01_Scenes/GameScene_NPC_Random_BJH.unity
-    guid: cf1d36309ebf7694c8457be8c9fe1037
   - enabled: 1
+    path: Assets/BJH/01_Scenes/GameScene_NPC_Random_BJH.unity
+    guid: cdbc3dfa8e8e70147ad92eecb1146cf3
+  - enabled: 0
     path: Assets/juykang/1.KJY_Scene/GameScene_NPC_Random.unity
     guid: 25cab2f64fc04bc40bfe89fd858cebba
   - enabled: 1
