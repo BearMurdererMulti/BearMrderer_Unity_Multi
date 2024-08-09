@@ -19,6 +19,7 @@ TagManager:
   - Detective
   - Assistant
   - User
+  - DetectiveCamera
   layers:
   - Default
   - TransparentFX

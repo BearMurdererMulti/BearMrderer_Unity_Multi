@@ -15,8 +15,7 @@ public class KJY_InGamePhoton : MonoBehaviour
         }
         else
         {
-            PhotonNetwork.Instantiate("Dog", dollSpawn.position, dollSpawn.rotation);
-
+            PhotonNetwork.Instantiate("Dog", dogSpawn.position, dogSpawn.rotation);
         }
     }
 }

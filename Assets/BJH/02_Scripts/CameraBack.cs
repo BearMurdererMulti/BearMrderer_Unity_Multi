@@ -17,7 +17,7 @@ public class CameraBack : MonoBehaviour
         if (InfoManagerKJY.instance.role == "Assistant")
         {
             initRot = transform.eulerAngles;
-            playerTr = GameObject.FindWithTag("Assistant").transform;
+            playerTr = GameObject.FindWithTag("User").transform;
             this.enabled = false;
         }
         else

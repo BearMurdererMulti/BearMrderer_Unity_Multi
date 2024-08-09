@@ -9,11 +9,17 @@ public class CameraFollow_BJH : MonoBehaviour
 
     private void Start()
     {
-
+        if (InfoManagerKJY.instance.role == "Assistant")
+        {
+            player = GameObject.FindWithTag("User").transform;
+        }
     }
     private void Update()
     {
-        transform.position = player.position + offset;
+        if (InfoManagerKJY.instance.role == "Assistant")
+        {
+            transform.position = player.position + offset;
+        }
         //transform.LookAt(player);
     }
 }
