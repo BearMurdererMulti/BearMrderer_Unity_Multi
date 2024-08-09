@@ -138,4 +138,14 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         photonView.RPC("GointerrogationRoom", RpcTarget.All);
     }
     #endregion
+
+    #region MainCamera
+    public void CameraOnOff(bool value)
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+
+        photonView.RPC("UpdateMainCamera", RpcTarget.All, value);
+    }
+    #endregion
+
 }
