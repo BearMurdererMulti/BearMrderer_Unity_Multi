@@ -13,8 +13,8 @@ public class ReceiveLetterUI : MonoBehaviourPunCallbacks
     [Header("UI")]
     [SerializeField] private GameObject letterBG;
     [SerializeField] private TMP_Text senderText, contentText, receiverText;
-    [SerializeField] private TMP_Text pressEnterMasterText;
-    [SerializeField] private TMP_Text pressEnterClientText;
+    [SerializeField] private TMP_Text pressEnterMasterText01, pressEnterMasterText02;
+    [SerializeField] private TMP_Text pressEnterClientText01, pressEnterClientText02;
     
     private TMP_Text targetText;
     private string content;
@@ -26,39 +26,70 @@ public class ReceiveLetterUI : MonoBehaviourPunCallbacks
 
     private bool isReadyClient;
 
+    private Coroutine _coroutine;
+
     // Start is called before the first frame update
     void Start()
     {
+        // 기본 텍스트 끄기
+        pressEnterMasterText01.enabled = false;
+        pressEnterMasterText02.enabled = false;
+        pressEnterClientText01.enabled = false;
+        pressEnterClientText02.enabled = false;
 
-        pressEnterClientText.enabled = false;
-        pressEnterClientText.enabled = false;
+        // 편지 배경 끄기
         letterBG.SetActive(false);
 
+        // 통신 값 받아오기
         content = InfoManagerKJY.instance.content;
-        senderText.text = InfoManagerKJY.instance.greeting;
         receiverText.text = InfoManagerKJY.instance.closing;
-
-
         senderText.text = InfoManagerKJY.instance.greeting;
 
+        // 타임라인 끝나고 이벤트 등록
         SubTimelineEvent();
     }
 
     void Update()
     {
+        // 마스터 일 때
         if(PhotonNetwork.IsMasterClient)
         {
+            if(isReadyClient)
+            {
+                pressEnterMasterText01.enabled = false;
+                pressEnterMasterText02.enabled = true;
+            }
             if (isDone && Input.GetKeyDown(KeyCode.Return) && isReadyClient)
             {
                 photonView.RPC("NextScene", RpcTarget.All);
             }
         }
+        // 클라이언트 일 때
         else
         {
             if (isDone && Input.GetKeyDown(KeyCode.Return))
             {
+                pressEnterClientText01.enabled = false;
+                pressEnterClientText02.enabled = true;
                 photonView.RPC("SendRead", RpcTarget.All);
             }
+        }
+
+        // 편지가 모두 작성되지 않았을 때 엔터를 누르면
+        // 타이핑효과 초기화
+        if(!isDone && Input.GetKeyDown(KeyCode.Return))
+        {
+            StopCoroutine(_coroutine);
+            contentText.text = content;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                pressEnterMasterText01.enabled = true;
+            }
+            else
+            {
+                pressEnterClientText01.enabled = true;
+            }
+            isDone = true;
         }
 
     }
@@ -84,7 +115,7 @@ public class ReceiveLetterUI : MonoBehaviourPunCallbacks
     private void DissubTimelineEvent(PlayableDirector timeline)
     {
         timeline.stopped -= DissubTimelineEvent;
-        StartCoroutine(CoTyping());
+        _coroutine = StartCoroutine(CoTyping());
     }
 
     IEnumerator CoTyping()
@@ -108,45 +139,12 @@ public class ReceiveLetterUI : MonoBehaviourPunCallbacks
 
         if (PhotonNetwork.IsMasterClient)
         {
-            pressEnterClientText.enabled = true;
-            targetText = pressEnterClientText;
+            pressEnterMasterText01.enabled = true;
         }
         else
         {
-            pressEnterClientText.enabled = true;
-            targetText = pressEnterClientText;
+            pressEnterClientText01.enabled = true;
         }
         yield return null;
-
-        StartCoroutine(Blink());
     }
-
-    IEnumerator Blink()
-    {
-        while (true)
-        {
-            // 서서히 사라지기
-            yield return StartCoroutine(Fade(1f, 0f, durationTime));
-
-            // 서서히 나타나기
-            yield return StartCoroutine(Fade(0f, 1f, durationTime));
-        }
-    }
-
-    IEnumerator Fade(float startAlpha, float endAlpha, float duration)
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
-            
-            targetText.alpha = alpha;
-            yield return null;
-        }
-        pressEnterClientText.alpha = endAlpha;
-        pressEnterClientText.alpha = endAlpha;
-    }
-
 }

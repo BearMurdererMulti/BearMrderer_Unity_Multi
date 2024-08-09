@@ -9,6 +9,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     public static PhotonConnection Instance;
     [SerializeField] private UI ui;
     [SerializeField] private GameManager_KJY gameManager;
+    [SerializeField] private SceneName targetSceneName;
 
     private void Awake()
     {
@@ -44,8 +45,9 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.GameScene_NPC_Random.ToString();
+            string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
+            //PhotonNetwork.LoadLevel($"{targetSceneName}");
         }
     }
     #endregion
