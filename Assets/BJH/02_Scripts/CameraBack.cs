@@ -30,7 +30,10 @@ public class CameraBack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = playerTr.position + camOffset;
-        transform.rotation = Quaternion.Euler(initRot);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            transform.position = playerTr.position + camOffset;
+            transform.rotation = Quaternion.Euler(initRot);
+        }
     }
 }

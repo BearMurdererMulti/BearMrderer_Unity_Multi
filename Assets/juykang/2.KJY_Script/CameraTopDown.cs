@@ -40,9 +40,12 @@ public class CameraTopDown : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 targetPos = player.position;
-        targetPos.y += height;
-        targetPos.z += width;
-        transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            Vector3 targetPos = player.position;
+            targetPos.y += height;
+            targetPos.z += width;
+            transform.position = Vector3.Lerp(transform.position, targetPos, smoothing);
+        }
     }
 }
