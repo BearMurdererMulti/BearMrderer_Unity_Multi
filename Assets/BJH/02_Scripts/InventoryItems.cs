@@ -28,7 +28,7 @@ public class InventoryItems : MonoBehaviour
     {
         Debug.Log("전달받은 sprite를 적용합니다.");
         inventoryItemImages[index].sprite = sprite;
-        weaponText[index].text = sprite.name; //KJY 추가
+        //weaponText[index].text = sprite.name; //KJY 추가
         index++;
     }
 }

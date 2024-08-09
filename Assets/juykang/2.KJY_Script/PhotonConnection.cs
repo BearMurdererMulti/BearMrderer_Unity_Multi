@@ -45,7 +45,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random_BJH.ToString();
             PhotonNetwork.LoadLevel(sceneName);
             //PhotonNetwork.LoadLevel($"{targetSceneName}");
         }
@@ -73,14 +73,14 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     public void InGameResponsePhoton()
     {
         //photonView.RPC("GoInGame", RpcTarget.All);
-        string sceneName = SceneName.GameScene_NPC_Random.ToString();
+        string sceneName = SceneName.GameScene_NPC_Random_BJH.ToString();
         PhotonNetwork.LoadLevel(sceneName);
     }
 
     [PunRPC]
     private void GoInGame()
     {
-        string sceneName = SceneName.GameScene_NPC_Random.ToString();
+        string sceneName = SceneName.GameScene_NPC_Random_BJH.ToString();
         PhotonNetwork.LoadLevel(sceneName);
     }
     #endregion

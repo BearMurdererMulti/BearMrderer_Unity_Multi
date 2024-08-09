@@ -1,10 +1,11 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerMove_BJH : MonoBehaviour
+public class PlayerMove_BJH : MonoBehaviourPunCallbacks
 {
     [SerializeField] private float walkSpeed;
     [SerializeField] private float runSpeed;
@@ -60,18 +61,40 @@ public class PlayerMove_BJH : MonoBehaviour
             Jump();
         }
 
+        // 스페이스는 구르기
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isRoll");
+        }
+        // 돌기, 바운스, 두려움, 앉기, 선택된
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
-            isWalk = false;
-            PlaySpecialAnimation("isSpin");
-            isWalk = true;
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isSpin");
         }
         if(Input.GetKeyDown(KeyCode.Alpha2))
         {
-            isWalk = false;
-            PlaySpecialAnimation("isRoll");
-            isWalk = true;
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isBounce");
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isFear");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isSit");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isClicked");
+        }
+    }
+
+    [PunRPC]
+    private void PlaySpecialAnimation(string triggerName)
+    {
+        isWalk = false;
+        animator.SetTrigger(triggerName);
+        isWalk = true;
     }
 
     private void Move(float speed, float animationSpeed)
@@ -114,9 +137,5 @@ public class PlayerMove_BJH : MonoBehaviour
         }
     }
 
-    private void PlaySpecialAnimation(string triggerName)
-    {
-        animator.SetTrigger(triggerName);
-    }
 
 }
