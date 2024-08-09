@@ -18,10 +18,10 @@ public class InventoryItems : MonoBehaviour
             selector.color = Color.white;
         }
 
-        for (int i = 0; i < inventoryItemSelectors.Count; i++)
-        {
-            weaponText.Add(inventoryItemSelectors[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>());
-        }
+        //for (int i = 0; i < inventoryItemSelectors.Count; i++)
+        //{
+        //    weaponText.Add(inventoryItemSelectors[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>());
+        //}
     }
 
     public void UpdateInventoryItemImages(Sprite sprite)

@@ -18,6 +18,7 @@ TagManager:
   - Weapon
   - Detective
   - Assistant
+  - User
   layers:
   - Default
   - TransparentFX

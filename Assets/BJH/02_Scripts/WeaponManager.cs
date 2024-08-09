@@ -27,7 +27,7 @@ public class WeaponManager : MonoBehaviour
     {
         InitInstance();
 
-        ReplaceWeapons(weaponList.Count);
+        ReplaceWeapons(7); // 임시 // 무기 개수가 7개씩 올거임
     }
 
     private void InitInstance()
