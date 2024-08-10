@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class KeyWordData : MonoBehaviour
 {
-    public string KeyWord;
+    public string KeyWord = null;
     [SerializeField] private Image sprite;
     [SerializeField] private TextMeshProUGUI keyName;
 
