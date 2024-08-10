@@ -3753,6 +3753,7 @@ GameObject:
   - component: {fileID: 4769950445237639017}
   - component: {fileID: 2179355407092687282}
   - component: {fileID: 199436852937426114}
+  - component: {fileID: 9101095188649446793}
   m_Layer: 0
   m_Name: Doll
   m_TagString: Detective
@@ -3906,6 +3907,22 @@ MonoBehaviour:
   btn: {fileID: 6905378076031078131}
   btnInterActive: {fileID: 6568933334385324972}
   inventory: {fileID: 5906098997080857085}
+--- !u!114 &9101095188649446793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4386420590608424768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f69ed8c39fdcb324b9bb03dde504d345, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryImage: {fileID: 3430427036626868664}
+  dollInventoryItems: {fileID: 3306057083247988900}
+  dogInventoryItems: {fileID: 0}
+  putDownButton: {fileID: 0}
 --- !u!1 &4456167124412041604
 GameObject:
   m_ObjectHideFlags: 0
@@ -4828,7 +4845,6 @@ GameObject:
   - component: {fileID: 4713462544272908913}
   - component: {fileID: 1670651612995649129}
   - component: {fileID: 7909472665291398616}
-  - component: {fileID: 5202357743057931065}
   m_Layer: 5
   m_Name: DollCanvas
   m_TagString: Untagged
@@ -4922,21 +4938,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5202357743057931065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5535814996567596102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f69ed8c39fdcb324b9bb03dde504d345, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryImage: {fileID: 3430427036626868664}
-  dollInventoryItems: {fileID: 3306057083247988900}
-  dogInventoryItems: {fileID: 0}
 --- !u!1 &5632759126748189545
 GameObject:
   m_ObjectHideFlags: 0

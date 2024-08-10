@@ -2,6 +2,7 @@ using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponManager : MonoBehaviourPunCallbacks
 {
@@ -18,9 +19,11 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     [SerializeField] private List<GameObject> weaponList = new List<GameObject>();
     [SerializeField] private List<Transform> weaponSpawnPoints = new List<Transform>();
     [SerializeField] private List<int> generatedNumbers = new List<int>();
-
     
     [SerializeField] public InventoryItems inventoryItems; // 캐릭터 canvas에서 코드로 assign
+    [SerializeField] public Button putDownButton; // 캐릭터가 가진 dog canvas 스크립트에서 코드로 assign
+    [SerializeField] public WeaponSubmitter weaponSubmitter; // dog가 가진 스크립트에서 assign
+
 
     [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
 
@@ -76,5 +79,19 @@ public class WeaponManager : MonoBehaviourPunCallbacks
                 break;
             }
         }
+    }
+
+    // 무기를 내려놓는 버튼 ui를 비/활성화 하는 메서드
+    // 취조실 들어가고 나갈 때 주연이가 호출
+    public void PutdownButtonActive()
+    {
+        putDownButton.gameObject.SetActive(putDownButton.gameObject.activeSelf);
+    }
+
+    // 내려놓은 무기를 동기화하는 메서드
+    [PunRPC]
+    public void PutdownSelectedWeapon(string weaponName)
+    {
+        weaponSubmitter.PutDownWeaponOnTr(weaponName);
     }
 }
