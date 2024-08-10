@@ -117,7 +117,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
     [PunRPC]
     private void mouseExitColor()
     {
-        if (KJY_CitizenManager.Instance.call == true && GameManager_KJY.instance.click == false)
+        if (KJY_CitizenManager.Instance.call == true && InfoManagerKJY.instance.role == "Detective")
         {
             material.SetFloat("_Outline", resetValue);
             material.SetColor("_OutlineColor", baseC);
