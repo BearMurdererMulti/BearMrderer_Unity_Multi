@@ -132,6 +132,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7538510555126440636}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &265216480813377678
 GameObject:
@@ -332,10 +344,10 @@ RectTransform:
   - {fileID: 3561149276747407170}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -255, y: 140}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7964833009244658602
 CanvasRenderer:
@@ -810,6 +822,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7288041868981181615}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &1567545377103142056
 GameObject:
@@ -1071,6 +1095,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 7552108186092945315}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5268156877430842318}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1382,6 +1418,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 4510149823949100942}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5539687187022269477}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1792,6 +1840,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7549236481742560570}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &3099192404720665341
 GameObject:
@@ -1962,10 +2022,10 @@ RectTransform:
   - {fileID: 7592101923493067710}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 205, y: 140}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3547591922527955716
 CanvasRenderer:
@@ -2297,6 +2357,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 5444776119029143992}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 68887824033576542}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2681,6 +2753,20 @@ MonoBehaviour:
   inventoryImage: {fileID: 5869332653370266900}
   dollInventoryItems: {fileID: 0}
   dogInventoryItems: {fileID: 1842809201614620478}
+  imtems:
+  - {fileID: 5058763362155775382}
+  - {fileID: 7538510555126440636}
+  - {fileID: 3194158458654684624}
+  - {fileID: 7549236481742560570}
+  - {fileID: 1988662143986823545}
+  - {fileID: 7354927564984891028}
+  - {fileID: 5539687187022269477}
+  - {fileID: 68887824033576542}
+  - {fileID: 7363768557295705151}
+  - {fileID: 5268156877430842318}
+  - {fileID: 7288041868981181615}
+  - {fileID: 6858983216965429797}
+  selctedWeaponImageName: 
   putDownButton: {fileID: 5683500796684936662}
 --- !u!1 &3707076221247751938
 GameObject:
@@ -2943,6 +3029,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 767495626237457284}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5058763362155775382}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3217,6 +3315,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1988662143986823545}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &3937078897662836514
 GameObject:
@@ -3367,10 +3477,10 @@ RectTransform:
   - {fileID: 3840520502599069898}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -255, y: -90}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3416781256007945343
 CanvasRenderer:
@@ -3542,6 +3652,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7354927564984891028}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &4510149823949100942
 GameObject:
@@ -3576,10 +3698,10 @@ RectTransform:
   - {fileID: 7073749665613358755}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 205, y: -90}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5446238137319995616
 CanvasRenderer:
@@ -3785,10 +3907,10 @@ RectTransform:
   - {fileID: 6607121758680809950}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 435, y: -90}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6866991241066854574
 CanvasRenderer:
@@ -3955,6 +4077,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 3110304717530140594}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3194158458654684624}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4310,10 +4444,10 @@ RectTransform:
   - {fileID: 6981069657218245761}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -25, y: -90}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7751471855921827425
 CanvasRenderer:
@@ -4794,10 +4928,10 @@ RectTransform:
   - {fileID: 2856084271781433807}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -25, y: -320}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1945445289432557173
 CanvasRenderer:
@@ -4855,7 +4989,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9047689638915499317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4974,10 +5108,10 @@ RectTransform:
   - {fileID: 3607647060425660083}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 435, y: 140}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &521783079391251459
 CanvasRenderer:
@@ -5357,10 +5491,10 @@ RectTransform:
   - {fileID: 7355301428575999578}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 205, y: -320}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6418767483803996551
 CanvasRenderer:
@@ -5544,10 +5678,10 @@ RectTransform:
   - {fileID: 6072353085982360333}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 435, y: -320}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7288466088580165353
 CanvasRenderer:
@@ -5885,10 +6019,10 @@ RectTransform:
   - {fileID: 7582950415762159871}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -25, y: 140}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &398596380609075814
 CanvasRenderer:
@@ -6400,6 +6534,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7363768557295705151}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   selectedWeaponSelector: {fileID: 0}
 --- !u!1 &8974223772459002976
 GameObject:
@@ -6528,6 +6674,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 8277016652676107610}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_SelectWeapon
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 6858983216965429797}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6688,10 +6846,10 @@ RectTransform:
   - {fileID: 7563871690862883202}
   m_Father: {fileID: 3496623868231627482}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: -255, y: -320}
+  m_SizeDelta: {x: 180, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3303859568838207786
 CanvasRenderer:
