@@ -133,6 +133,7 @@ public class KJY_RoomManageer : MonoBehaviourPunCallbacks
                   {
                       saveRole();
                   }
+                AudioManager.Instnace.photonView.RPC("StopSoundPun", RpcTarget.All);
              }
              else
              {

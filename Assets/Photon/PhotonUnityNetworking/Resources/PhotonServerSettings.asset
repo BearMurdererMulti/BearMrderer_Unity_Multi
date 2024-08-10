@@ -88,7 +88,7 @@ MonoBehaviour:
   - SetWeapon
   - StartTalkinterrogation
   - SetUI
-  - GoEndingCredit
+  - StopSoundPun
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

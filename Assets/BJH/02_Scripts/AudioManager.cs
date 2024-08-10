@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 // enum 순서에 맞에 _audioSources에 assign 해주세요.
 public enum SoundList
 {
+    LoginBG,
     BG,
     Ending_Positive01,
     Ending_Positive02,
@@ -12,7 +14,7 @@ public enum SoundList
     Play_BG
 }
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : MonoBehaviourPunCallbacks
 {
     private static AudioManager _instance;
     [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>(); // 오디오 소스 담기
@@ -42,15 +44,25 @@ public class AudioManager : MonoBehaviour
     {
         _audioSource = GetComponent<AudioSource>();
     }
-
+    
+    // duration time은 페이드인과 페이드 아웃용
     public void PlaySound(SoundList soundList, float volume, float durationTime)
     {
         StartCoroutine(CoPlayMusicWithFadeIn(soundList, volume, durationTime));
     }
 
+    [PunRPC]
+    public void StopSoundPun()
+    {
+        _audioSource.Stop();
+        _audioSource = null;
+    }
+
     public void StopSound()
     {
         _audioSource.Stop();
+        _audioSource = null;
+
     }
 
     IEnumerator CoPlayMusicWithFadeIn(SoundList soundList, float volume, float durationTime)
