@@ -4214,7 +4214,7 @@ MonoBehaviour:
   checkImage: {fileID: 266364053}
   isPrivate: 0
   btnCreateRoom: {fileID: 1704232643}
-  roomItemFactory: {fileID: 4620620591538981561, guid: e5808d53609aa4a44b4b9f347fde63cc, type: 3}
+  roomItemFactory: {fileID: 7897738714634983466, guid: 81ccedd1c26aef648a3558a95598cea6, type: 3}
   rtContent: {fileID: 70556683}
 --- !u!1 &420956179
 GameObject:
@@ -13139,6 +13139,16 @@ MonoBehaviour:
   body: 0
   tail: 0
   CustomMaterialsAndMesh: {fileID: 0}
+  finalLetterResultCode: 
+  chiefLetter:
+    receiver: 
+    content: 
+    sender: 
+  murdererLetter:
+    receiver: 
+    content: 
+    sender: 
+  finalLetters: []
   npcCustomLists: []
   role: 
   roomdata: {fileID: 0}

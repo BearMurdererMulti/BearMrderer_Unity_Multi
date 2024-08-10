@@ -487,11 +487,13 @@ public class GameManager_KJY : MonoBehaviourPun
         GameObject lastDieNpc = dieNpcList[dieNpcList.Count - 1];
         if (InfoManagerKJY.instance.role == "Detective")
         {
-            photonView.RPC("OnOffDetectiveShape", RpcTarget.All, value);
+            KJY_CitizenManager.Instance.player.SetActive(value);
+            //photonView.RPC("OnOffDetectiveShape", RpcTarget.All, value);
         }
         else
         {
-            photonView.RPC("OnOffAssistantShape", RpcTarget.All, value);
+            KJY_CitizenManager.Instance.dog.SetActive(value);
+            //photonView.RPC("OnOffAssistantShape", RpcTarget.All, value);
         }
 
         if (who == 3)

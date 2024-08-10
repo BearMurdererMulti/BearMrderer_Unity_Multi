@@ -84,6 +84,10 @@ public class UI : MonoBehaviourPun
 
     public TextMeshProUGUI timerText;
 
+    [SerializeField]private Image day;
+    [SerializeField]private Sprite morning;
+    [SerializeField]private Sprite night;
+
     // chat list
 
     private void Awake()
@@ -206,9 +210,10 @@ public class UI : MonoBehaviourPun
         // true == ��
         if(b)
         {
+            
             tmp03.text = "일차";
             trLight.rotation = Quaternion.Euler(170, 240, 0);
-
+            day.sprite = morning;
             //lerpTime += Time.deltaTime * lerpSpeed;
 
             //lerpX = Mathf.Lerp(x, 140, lerpTime);
@@ -229,7 +234,7 @@ public class UI : MonoBehaviourPun
         {
             tmp03.text = "밤";
             trLight.rotation = Quaternion.Euler(190, 240, 0);
-
+            day.sprite = night;
             //lerpTime += Time.deltaTime * lerpSpeed;
 
             //lerpX = Mathf.Lerp(x, 195, lerpTime);
