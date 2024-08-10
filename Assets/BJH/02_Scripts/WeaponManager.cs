@@ -103,7 +103,6 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         {
             DogCanvas dogCanvas = canvas.GetComponent<DogCanvas>();
             dogCanvas.inventoryImage.SetActive(!dogCanvas.inventoryImage.activeSelf);
-
         }
     }
 }
