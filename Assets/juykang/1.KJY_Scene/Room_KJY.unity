@@ -1231,6 +1231,7 @@ MonoBehaviour:
   chatItemFactory: {fileID: 8043171704402541056, guid: 903160625df568a4c9a904634f98cbda, type: 3}
   rtContent: {fileID: 1898206657}
   rtScrollView: {fileID: 54442002}
+  scrollRect: {fileID: 1668342134}
   nickNameColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &510508696
 Transform:
