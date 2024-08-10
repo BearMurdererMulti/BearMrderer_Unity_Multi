@@ -13,7 +13,7 @@ public enum SceneName
     Cinemachine02,
     CharacterCustom_new,
     Cinemachine03,
-    //GameScene_NPC_Random_BJH,
+    GameScene_NPC_Random_BJH,
     GameScene_NPC_Random,
     GameScene_NPC_Random3,
     KJY_Test_Ending_Success,

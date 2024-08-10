@@ -25,6 +25,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     [SerializeField] public Button putDownButton; // 캐릭터가 가진 dog canvas 스크립트에서 코드로 assign
     [SerializeField] public WeaponSubmitter weaponSubmitter; // dog가 가진 스크립트에서 assign
 
+    [SerializeField] public Transform SubmitWeaponPosition; // 무기 내려놓는 위치 직접 assign
 
     [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
 
@@ -33,7 +34,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     {
         InitInstance();
 
-        ReplaceWeapons(7); // 임시 // 무기 개수가 7개씩 올거임
+        ReplaceWeapons(weaponList.Count); // 임시 // 무기 개수가 7개씩 올거임
     }
 
     private void InitInstance()
@@ -60,6 +61,8 @@ public class WeaponManager : MonoBehaviourPunCallbacks
             {
                 generatedNumbers.Add(randomNumber);
                 weaponList[index].transform.position = weaponSpawnPoints[randomNumber].position;
+                Vector3 targaetScale = new Vector3(0.3f, 0.3f, 0.3f);
+                weaponList[index].transform.localScale = targaetScale;
                 weaponList[index].GetComponent<MeshRenderer>().enabled = false;
                 index++;
             }

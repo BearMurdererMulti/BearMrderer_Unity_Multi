@@ -13,7 +13,7 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
 
         weaponPrefabs = new List<GameObject>(); // 초기화
 
-        putdownTr = transform.Find("SubmitWeaponPosition").transform; // 성능 문제때문에 놓을 위치를 전체에서 찾지 않고 자식 리그에 담아서 자식으로 찾음
+        putdownTr = WeaponManager.Instance.SubmitWeaponPosition;
     }
 
     // 내려 놓는 메서드

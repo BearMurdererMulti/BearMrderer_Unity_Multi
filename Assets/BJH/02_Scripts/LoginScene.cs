@@ -6,6 +6,6 @@ public class LoginScene : MonoBehaviour
 {
     void Start()
     {
-        AudioManager.Instnace.PlaySound(SoundList.LoginBG, 0.3f, 1f);
+        AudioManager.Instnace.PlaySound(BGM_List.LoginBG, 0.3f, 1f);
     }
 }

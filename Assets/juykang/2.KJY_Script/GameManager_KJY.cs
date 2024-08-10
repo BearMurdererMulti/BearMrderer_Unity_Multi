@@ -268,6 +268,11 @@ public class GameManager_KJY : MonoBehaviourPun
     [PunRPC]
     public void SelectNpc()
     {
+        // 변지환
+        // 사운드 추가
+        AudioManager.Instnace.StopSound();
+        AudioManager.Instnace.PlaySound(BGM_List.Play_BG, 0.3f, 1.5f);
+
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
         interrogationBtn(false);
@@ -310,6 +315,11 @@ public class GameManager_KJY : MonoBehaviourPun
     [PunRPC]
     public void AfterSkip()
     {
+        // 변지환
+        // 사운드 추가
+        AudioManager.Instnace.StopSound();
+        AudioManager.Instnace.PlaySound(BGM_List.Play_BG, 0.3f, 1.5f);
+
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = null;
         isSeletNpc = false;
@@ -594,9 +604,15 @@ public class GameManager_KJY : MonoBehaviourPun
             UI.instance.inventoryObject.SetActive(value);
     }
 
+    // 취조실 들어갈 때 실행되는 메서드
     [PunRPC]
     public void GointerrogationRoom()
     {
+        // 변지환 추가
+        // 배경음악 실행
+        AudioManager.Instnace.StopSound();
+        AudioManager.Instnace.PlaySound(BGM_List.InterrogationRoom_BG, 0.2f, 1.5f);
+
         selectUI.SetActive(false);
         StopAllCoroutines();
         cameratopdown.enabled = false;

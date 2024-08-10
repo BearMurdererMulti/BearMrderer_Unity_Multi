@@ -80,7 +80,7 @@ public class EndingcreditManager : MonoBehaviour
     private void Start()
     {
         // bgm
-        AudioManager.Instnace.PlaySound(SoundList.Ending_Positive01, 0.15f, 2f);
+        AudioManager.Instnace.PlaySound(BGM_List.Ending_Positive01, 0.15f, 2f);
 
         // 크레딧 올라가기
         bg.GetComponent<EndingcreditUI>().credit.gameObject.SetActive(true);
@@ -139,11 +139,11 @@ public class EndingcreditManager : MonoBehaviour
     {
         if (response.resultCode.CompareTo("WIN") == 0)
         {
-            AudioManager.Instnace.PlaySound(SoundList.Ending_Positive01, 0.3f, 2f);
+            AudioManager.Instnace.PlaySound(BGM_List.Ending_Positive01, 0.3f, 2f);
         }
         else
         {
-            AudioManager.Instnace.PlaySound(SoundList.Ending_Negative03, 0.3f, 2f);
+            AudioManager.Instnace.PlaySound(BGM_List.Ending_Negative03, 0.3f, 2f);
 
         }
 

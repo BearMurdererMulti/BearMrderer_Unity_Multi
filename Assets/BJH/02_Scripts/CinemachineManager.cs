@@ -63,7 +63,7 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
         doll.SetActive(false);
 
         // 음악 실행
-        AudioManager.Instnace.PlaySound(SoundList.Play_BG, 0.3f, 2f);
+        AudioManager.Instnace.PlaySound(BGM_List.Play_BG, 0.3f, 2f);
 
         // 타임라인에서 타이밍 맞게 시작, 끝내야 할 것들을 코루틴으로 구현
         StartCoroutine(CoSpawnDollAndDog());
@@ -153,7 +153,7 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
         foreach (char c in script)
         {
             talkContent.text += c;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.03f);
         }
         scriptIndex++;
         isActiveEnter = true;
