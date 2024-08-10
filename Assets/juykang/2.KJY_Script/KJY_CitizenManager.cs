@@ -52,7 +52,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         //    npcList.Add(npc);
         //}
 
-
+        DOTween.Init();
         npcInfoList = InfoManagerKJY.instance.gameNpcList;
     }
 
@@ -163,18 +163,8 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
         image.DOFade(1, 2);
         yield return new WaitForSeconds(1);
-        if (InfoManagerKJY.instance.role == "Detective")
-        {
-            player.GetComponent<CharacterController>().enabled = false;
-            player.transform.position = playerSpots.position;
-            player.transform.GetChild(0).rotation = playerSpots.rotation;
-        }
-        else
-        {
-            dog.transform.position = dogSpot.position;
-            dog.transform.root.rotation = dogSpot.rotation;
-            //dog.GetComponent<CharacterController>().enabled = false;
-        }
+        
+        ResetPlayersSpot(true);
 
         SetnpcSpot(true);
 
@@ -344,5 +334,30 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
         npcList[npcIndex].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
         dummyNpcList[npcIndex].GetComponent<KJY_NPCHighlight>().GetMaterialInformation(data);
+    }
+
+    public void ResetPlayersSpot(bool status)
+    {
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            if (status == false)
+            {
+                player.transform.position = playerSpots.position;
+                player.transform.rotation = playerSpots.rotation;
+                player.transform.GetChild(0).rotation = playerSpots.rotation;
+            }
+            else
+            {
+                player.GetComponent<CharacterController>().enabled = false;
+                player.transform.position = playerSpots.position;
+                player.transform.GetChild(0).rotation = playerSpots.rotation;
+            }
+        }
+        else
+        {
+            dog.transform.position = dogSpot.position;
+            dog.transform.root.rotation = dogSpot.rotation;
+            //dog.GetComponent<CharacterController>().enabled = false;
+        }
     }
 }

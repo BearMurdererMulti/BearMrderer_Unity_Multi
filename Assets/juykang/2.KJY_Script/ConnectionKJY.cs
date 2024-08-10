@@ -908,14 +908,12 @@ public class TryIntroScenarioSetting : ConnectionStratege
 public class FinalRequest
 {
     public long gameSetNo;
-    public string secretKey;
 }
 
 [System.Serializable]
 public class FinalSetting
 {
     public long gameSetNo;
-    public string secretKey;
     public string url;
 }
 
@@ -936,13 +934,11 @@ public class TryFinalSetting : ConnectionStratege
 {
     long gameSetNo;
     string url;
-    string secretKey;
 
     public TryFinalSetting(FinalSetting str)
     {
         this.url = str.url;
         this.gameSetNo = str.gameSetNo;
-        this.secretKey = str.secretKey;
 
         CreateJson();
     }
@@ -950,7 +946,6 @@ public class TryFinalSetting : ConnectionStratege
     {
         FinalRequest request = new FinalRequest();
         request.gameSetNo = this.gameSetNo;
-        request.secretKey = this.secretKey;
 
         string jsonData = JsonUtility.ToJson(request);
         OnGetRequest(jsonData);
@@ -1828,8 +1823,7 @@ public class ConnectionKJY : MonoBehaviour
     public void RequestFinal()
     {
         FinalSetting str = new FinalSetting();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/final-words";
-        //str.gameSet = InfoManagerKJY.instance.gameSetNo;
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/final-words";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.secretKey = "mafia";
         TryFinalSetting final = new TryFinalSetting(str);
@@ -1842,7 +1836,7 @@ public class ConnectionKJY : MonoBehaviour
     {
         LoadSetting str = new LoadSetting();
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo.ToString();
-        str.url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/load?gameSetNo=" + str.gameSetNo;
+        str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/load?gameSetNo=" + str.gameSetNo;
 
         TryLoadSetting load = new TryLoadSetting(str);
     }

@@ -22,6 +22,5 @@ public class DogVoiceCanvas : MonoBehaviour
     private void Update()
     {
         this.isVoiceImage.enabled = photonVoiceView.IsSpeaking;
-        Debug.Log(photonVoiceView.IsSpeaking);
     }
 }

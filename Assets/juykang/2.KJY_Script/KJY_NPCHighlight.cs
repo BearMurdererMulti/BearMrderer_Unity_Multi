@@ -19,6 +19,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
     [SerializeField] SkinnedMeshRenderer re2;
     [SerializeField] SkinnedMeshRenderer re3;
     [SerializeField] MeshRenderer re4;
+    [SerializeField] SkinnedMeshRenderer eye;
     float resetValue;
     public float changevalue;
     [SerializeField] GameObject npcName;
@@ -145,6 +146,8 @@ public class KJY_NPCHighlight : MonoBehaviourPun
             re4.enabled = value;
         }
         re3.enabled = value;
+        mouth.enabled = value;
+        eye.enabled = value;
         npcName.SetActive(value);
     }
 }

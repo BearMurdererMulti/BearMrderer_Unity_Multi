@@ -1,5 +1,4 @@
 using DG.Tweening;
-using DG.Tweening.Plugins;
 using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,6 +66,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
         chat.SetActive(false);
         ButtonObject.SetActive(false);
         talk = false;
+        DOTween.Init();
     }
 
     private void Start()
@@ -401,12 +401,8 @@ public class ChatManager : MonoBehaviourPunCallbacks
         {
             if (GameManager_KJY.instance.heartRate >= 120 || isTimerover == true)
             {
-                GameManager_KJY.instance.interrogationBtn(true);
-                chat.SetActive(false);
-                dialog.text = string.Empty;
-                isTimerover = false;
-                interrogation = false;
-                talk = false;
+            
+                photonView.RPC("ResetInterrogation", RpcTarget.All);
                 WeaponManager.Instance.PutdownButtonActive();
             }
             dialog.text = string.Empty;
@@ -486,5 +482,16 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public void SetWeapon(string name)
     {
         this.weapon = name;
+    }
+
+    [PunRPC]
+    public void ResetInterrogation()
+    {
+        GameManager_KJY.instance.interrogationBtn(true);
+        chat.SetActive(false);
+        dialog.text = string.Empty;
+        isTimerover = false;
+        interrogation = false;
+        talk = false;
     }
 }

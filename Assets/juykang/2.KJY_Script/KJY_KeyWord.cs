@@ -10,7 +10,6 @@ public class KJY_KeyWord : MonoBehaviourPun
     
     [SerializeField] List<Image> weaponSprite;
     [SerializeField] List<KeyWordData> keyWordData;
-    [SerializeField] Button btn;
     [SerializeField] GameObject grid;
     private List<int> index = new List<int>();
     private int i = 0;

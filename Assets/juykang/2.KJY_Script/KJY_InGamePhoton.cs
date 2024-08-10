@@ -8,6 +8,9 @@ public class KJY_InGamePhoton : MonoBehaviour
 {
     [SerializeField] private Transform dollSpawn;
     [SerializeField] private Transform dogSpawn;
+    [SerializeField] private GameObject detectiveCamera;
+    [SerializeField] private GameObject assistantCamera;
+
     private void Awake()
     {
         // 기본적으로 프리팹에 존재하는 카메라를 끄고 시작해주세요. -변지환-
@@ -19,6 +22,7 @@ public class KJY_InGamePhoton : MonoBehaviour
             camera.SetActive(true);
             GameObject canvas = doll.transform.Find("DollCanvas").gameObject;
             canvas.SetActive(true);
+            detectiveCamera = camera;
         }
         else
         {
@@ -27,6 +31,13 @@ public class KJY_InGamePhoton : MonoBehaviour
             camera.SetActive(true);
             GameObject canvas = dog.transform.Find("DogCanvas").gameObject;
             canvas.SetActive(true);
+            assistantCamera = camera;
         }
+    }
+
+    private void Start()
+    {
+        GameManager_KJY.instance.detectiveCamera = detectiveCamera;
+        GameManager_KJY.instance.assistantCamera = assistantCamera;
     }
 }
