@@ -972,7 +972,11 @@ public class TryFinalSetting : ConnectionStratege
         FinalResponse reponse = new FinalResponse();
         reponse = JsonUtility.FromJson<FinalResponse>(result.text);
 
-        InfoManagerKJY.instance.FinalWordConnect(reponse.message.finalWords); 
+        InfoManagerKJY.instance.FinalWordConnect(reponse.message.finalWords);
+
+        // 변지환 추가
+        long gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        EndingLetterConnection.Instance.LetterConnection(gameSetNo);
     }
 }
 #endregion
@@ -1828,7 +1832,6 @@ public class ConnectionKJY : MonoBehaviour
         //str.gameSet = InfoManagerKJY.instance.gameSetNo;
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
         str.secretKey = "mafia";
-
         TryFinalSetting final = new TryFinalSetting(str);
     }
 
@@ -1855,6 +1858,10 @@ public class ConnectionKJY : MonoBehaviour
         str.resultMessage = "FAILURE";
 
         TryGameEndSetting gameEnd = new TryGameEndSetting(str);
+
+        // 변지환 추가
+        long gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        EndingLetterConnection.Instance.LetterConnection(gameSetNo);
     }
     #endregion
 

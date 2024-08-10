@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static ConnectionKJY;
 
+
+
 public class InfoManagerKJY : MonoBehaviour
 {
     public static InfoManagerKJY instance;
@@ -94,6 +96,14 @@ public class InfoManagerKJY : MonoBehaviour
     [Header("캐릭터 커스텀 머터리얼, 메쉬")]
     public CustomMaterialsAndMesh CustomMaterialsAndMesh;
     public Dictionary<string, int> customDictionary = new Dictionary<string, int>();
+
+    [Header("엔딩크레딧 편지")]
+    public string finalLetterResultCode;
+    public ChiefLetter chiefLetter;
+    public MurdererLetter murdererLetter;
+    public List<SurvivorsLettersLetter> finalLetters = new List<SurvivorsLettersLetter>();
+
+
 
     //NpcCustomList
     public List<NpcCustomInfos> npcCustomLists = new List<NpcCustomInfos>();
