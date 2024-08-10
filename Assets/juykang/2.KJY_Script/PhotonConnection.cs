@@ -51,8 +51,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
             //string sceneName = SceneName.GameScene_NPC_Random_BJH.ToString();
-            //string sceneName = SceneName.GameScene_NPC_Random.ToString();
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random3.ToString();
+            //string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
             //PhotonNetwork.LoadLevel($"{targetSceneName}");
         }
@@ -235,6 +235,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
     #endregion
 
+
+    #region
     public void FailGo()
     {
         photonView.RPC("GoFail", RpcTarget.All);
@@ -246,5 +248,29 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         string sceneName = SceneName.KJY_Test_Ending_Fail.ToString();
         PhotonNetwork.LoadLevel(sceneName);
     }
+    #endregion
 
+    #region
+    public void UpdateCancle()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+        photonView.RPC("CancleSeletNpc", RpcTarget.All);
+    }
+    #endregion
+
+    #region
+    public void UpdateAfterSkip()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+        photonView.RPC("AfterSkip", RpcTarget.All);
+    }
+    #endregion
+
+    #region
+    public void UpdateSelect()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+        photonView.RPC("SelectNpc", RpcTarget.All);
+    }
+    #endregion
 }

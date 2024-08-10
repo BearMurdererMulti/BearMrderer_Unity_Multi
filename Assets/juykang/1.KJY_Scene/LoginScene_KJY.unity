@@ -14447,6 +14447,8 @@ MonoBehaviour:
   roomPartiNickName: 
   roomMasterRole: 
   roomPartiRole: 
+  npcListInfo: []
+  dieNpcListInfo: []
 --- !u!1 &1631368759 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5285552584920467892, guid: 1a4fe2480463fd24c96c432f59bfb571, type: 3}

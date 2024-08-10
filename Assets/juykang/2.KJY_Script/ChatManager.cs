@@ -28,6 +28,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public List<Button> buttons;
     public List<TextMeshProUGUI> buttonTexts;
     public GameObject talkButton;
+    public GameObject KeyWord;
     
     [Header("cam")]
     [SerializeField] private Camera cam;
@@ -201,6 +202,11 @@ public class ChatManager : MonoBehaviourPunCallbacks
         };
     }
 
+    public void StartKeyWordCanVas()
+    {
+        KeyWord.SetActive(true);
+    }
+
     public void StartTalk()
     {
        interactiveBtn.SetActive(false);
@@ -221,9 +227,11 @@ public class ChatManager : MonoBehaviourPunCallbacks
         camTopDown.enabled = false;
         camBack.enabled = false;
         xButton.SetActive(false);
+        //weaponmanager.instance.PutdownButtonActive();
         //StartTalkinterrogation();//юс╫ц
     }
 
+    [PunRPC]
     public void StartTalkinterrogation()
     {
         chat.SetActive(true);
@@ -397,6 +405,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 isTimerover = false;
                 interrogation = false;
                 talk = false;
+                //weaponmanager.instance.PutdownButtonActive();
             }
             dialog.text = string.Empty;
             inputFieldObject.SetActive(true);
@@ -465,5 +474,11 @@ public class ChatManager : MonoBehaviourPunCallbacks
         UI.instance.ResetText();
         talkButton.SetActive(true);
         PhotonConnection.Instance.StartTimer();
+    }
+
+    [PunRPC]
+    public void SetWeapon(string name)
+    {
+        this.weapon = name;
     }
 }

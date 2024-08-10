@@ -146,6 +146,7 @@ public class GameManager_KJY : MonoBehaviourPun
         selectBtn.SetActive(true);
         selectUI.SetActive(true);
         FollowNpc(obj);
+        print(obj.gameObject.name);
     }
 
     void FollowNpc(GameObject gameObject)
@@ -261,6 +262,7 @@ public class GameManager_KJY : MonoBehaviourPun
     }
 
     //확인 버튼
+    [PunRPC]
     public void SelectNpc()
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
@@ -270,6 +272,7 @@ public class GameManager_KJY : MonoBehaviourPun
     }
 
     //취소 버튼
+    [PunRPC]
     public void CancleSeletNpc()
     {
         KJY_CitizenManager.Instance.OnOffCanvas(obj, true);
@@ -301,6 +304,7 @@ public class GameManager_KJY : MonoBehaviourPun
 
 
     //스킵할 때 결정하는 것
+    [PunRPC]
     public void AfterSkip()
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
@@ -314,7 +318,6 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         image.DOFade(1, 1f);
         InfoManagerKJY.instance.voteNightNumber = 0;
-        InfoManagerKJY.instance.voteNpcName = null;
         InfoManagerKJY.instance.voteNpcName = null;
         UI.instance.DeathInfo();
 
@@ -331,10 +334,10 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         TextMeshProUGUI text = checkUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-        SetDummyDataAndNpcDataEquel(null,true);
+        SetDummyDataAndNpcDataEquel(obj.GetComponent<NpcData>().npcName, true);
         if (answer == "FOUND")
         {
-            text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
+            //text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
             InfoManagerKJY.instance.voteResult = "FOUND";
             InfoManagerKJY.instance.voteNpcObjectName = obj.name;
             InfoManagerKJY.instance.npcListInfo = npcList;
@@ -342,11 +345,11 @@ public class GameManager_KJY : MonoBehaviourPun
             PhotonConnection.Instance.VictoryGo();
             Winner = true;
         }
-        //else
-        //{
-        //    text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
-        //    InfoManagerKJY.instance.voteResult = "NOTFOUND";
-        //}
+        else
+        {
+            //text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
+            InfoManagerKJY.instance.voteResult = "NOTFOUND";
+        }
         checkUI.SetActive(true);
     }
 
@@ -535,19 +538,22 @@ public class GameManager_KJY : MonoBehaviourPun
 
         if (isNpcSelectMafia == true)
         {
-            obj.GetComponent<NpcData>().status = "DEAD";
-            obj.GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
-
-            for (int i = 0; i < npcList.Count; i++)
+            if (obj != null)
             {
-                if (obj.GetComponent<NpcData>().npcName == npcList[i].GetComponent<NpcData>().npcName)
+                obj.GetComponent<NpcData>().status = "DEAD";
+                obj.GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
+                for (int i = 0; i < npcList.Count; i++)
                 {
-                    npcList[i].GetComponent<NpcData>().status = "DEAD";
-                    npcList[i].GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
-                    dieNpcList.Add(npcList[i]);
-                    npcList.RemoveAt(i);
+                    if (obj.GetComponent<NpcData>().npcName == npcList[i].GetComponent<NpcData>().npcName)
+                    {
+                        npcList[i].GetComponent<NpcData>().status = "DEAD";
+                        npcList[i].GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
+                        dieNpcList.Add(npcList[i]);
+                        npcList.RemoveAt(i);
+                    }
                 }
             }
+
         }
         else
         {

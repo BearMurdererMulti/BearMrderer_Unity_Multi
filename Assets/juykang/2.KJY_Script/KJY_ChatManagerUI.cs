@@ -7,7 +7,9 @@ public class KJY_ChatManagerUI : MonoBehaviour
 {
     [SerializeField] GameObject btn;
     [SerializeField] Button btnInterActive;
+    [SerializeField] Button btnInterInactive;
     [SerializeField] GameObject inventory;
+    [SerializeField] GameObject keyWord;
     private void Start()
     {
         if (InfoManagerKJY.instance.role == "Detective")
@@ -15,8 +17,9 @@ public class KJY_ChatManagerUI : MonoBehaviour
             btn.SetActive(true);
             inventory.SetActive(true);
             ChatManager.instance.interactiveBtn = btn;
+            ChatManager.instance.KeyWord = keyWord;
             UI.instance.talkBtn = btn;
-            btnInterActive.onClick.AddListener(() => { ChatManager.instance.StartTalk(); });
+            btnInterActive.onClick.AddListener(() => { ChatManager.instance.StartKeyWordCanVas(); });
         }
         UI.instance.inventoryObject = inventory;
     }

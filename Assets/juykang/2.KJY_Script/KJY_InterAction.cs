@@ -37,7 +37,7 @@ public class KJY_InterAction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
         {
-            if (other.GetComponent<NpcData>().status == "ALIVE")
+            if (other.GetComponent<NpcData>().status == "ALIVE" && InfoManagerKJY.instance.role == "Detective")
             {
                 button.interactable = true;
                 ChatManager.instance.nowNpc = other.gameObject;
@@ -50,7 +50,7 @@ public class KJY_InterAction : MonoBehaviour
 
     private void OnTriggerExit(UnityEngine.Collider other)
     {
-        if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false)
+        if (other.gameObject.CompareTag("Npc") && ChatManager.instance.talk == false && InfoManagerKJY.instance.role == "Detective")
         {
             button.interactable = false;
             ChatManager.instance.npcdata = null;

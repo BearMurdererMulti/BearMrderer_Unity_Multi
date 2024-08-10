@@ -80,6 +80,9 @@ MonoBehaviour:
   - ApplyNpcCustomization
   - GoVictory
   - GoFail
+  - CancleSeletNpc
+  - AfterSkip
+  - SelectNpc
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
