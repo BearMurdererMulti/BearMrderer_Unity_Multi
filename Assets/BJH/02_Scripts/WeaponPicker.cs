@@ -1,17 +1,18 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WeaponPicker : MonoBehaviour
+public class WeaponPicker : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Button pickButton;
     [SerializeField] private float outlineWidth;
     [SerializeField] private Color outlineColor;
     private GameObject pickedWeapon;
     
-    [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
+    //[SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
     [SerializeField] private InventoryItems inventoryItems; // 하이어라키에 있는 canvas > inventoryItems를 assign
     //[SerializeField] private Dictionary<string, Sprite> dicWeaponSprite = new Dictionary<string, Sprite>();
 
@@ -25,10 +26,7 @@ public class WeaponPicker : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.L))
         {
-            if(pickButton.IsActive())
-            {
-                AddWeaponInInventory();
-            }
+            AddWeaponInInventory();
         }
     }
 
@@ -72,16 +70,19 @@ public class WeaponPicker : MonoBehaviour
 
     public void AddWeaponInInventory()
     {
-        pickedWeapon.gameObject.SetActive(false); // 찾은 오브젝트 비활성화
-
-        foreach (var sprite in weaponSprites)
+        if (pickButton.interactable)
         {
-            if(pickedWeapon.name == sprite.name)
-            {
-                Debug.Log("일치하는 이름의 sprite를 찾았습니다!");
-                WeaponManager.Instance.UpdateInventoryImage(sprite);
-                break;
-            }
+            pickedWeapon.gameObject.SetActive(false); // 찾은 오브젝트 비활성화
+
+            PhotonView targetPhotonView = GameObject.Find("WeaponManager").GetComponent<PhotonView>();
+
+            targetPhotonView.RPC("UpdateInventoryImage", RpcTarget.All, pickedWeapon.name);
+
+            // 주연의 키워드 동기화해주는 pun rpc
+            PhotonView pv = KJY_KeyWord.instance.GetComponent<PhotonView>();
+            pv.RPC("SetUI", RpcTarget.MasterClient, pickedWeapon.name);
+
         }
+
     }
 }

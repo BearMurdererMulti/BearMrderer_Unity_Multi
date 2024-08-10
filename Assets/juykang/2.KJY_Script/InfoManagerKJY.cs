@@ -108,6 +108,10 @@ public class InfoManagerKJY : MonoBehaviour
     public string roomMasterRole;
     public string roomPartiRole;
 
+    public List<GameObject> npcListInfo;
+    public List<GameObject> dieNpcListInfo;
+
+
     public void loginDTO()
     {
         gameSetNo = testLoginresponse[testLoginresponse.Count - 1].gameSetNo;

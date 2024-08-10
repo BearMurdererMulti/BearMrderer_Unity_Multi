@@ -1,11 +1,13 @@
+using DG.Tweening;
 using DG.Tweening.Plugins;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChatManager : MonoBehaviour
+public class ChatManager : MonoBehaviourPunCallbacks
 {
     public static ChatManager instance;
 
@@ -15,6 +17,7 @@ public class ChatManager : MonoBehaviour
     [Header("talkTextList")]
     public Text talkingName;
     public TextMeshProUGUI dialog;
+    [SerializeField] private GameObject xButton;
     [SerializeField] private GameObject nameObject;
     [SerializeField] private GameObject chat;
     [SerializeField] private GameObject talkPanel;
@@ -25,6 +28,7 @@ public class ChatManager : MonoBehaviour
     public List<Button> buttons;
     public List<TextMeshProUGUI> buttonTexts;
     public GameObject talkButton;
+    public GameObject KeyWord;
     
     [Header("cam")]
     [SerializeField] private Camera cam;
@@ -36,7 +40,7 @@ public class ChatManager : MonoBehaviour
     public bool talk;
     public bool npctalk;
     public bool interrogation = false;
-    public string weapon = "칼";
+    public string weapon = "BabyHammer";
 
     [Header("talkTextList_Interr")]
     [SerializeField] private TMP_InputField field;
@@ -54,6 +58,7 @@ public class ChatManager : MonoBehaviour
     int talkLengthTmp;
     public string sender;
     public string content;
+    public bool isTimerover = false;
 
     private void Awake()
     {
@@ -68,13 +73,18 @@ public class ChatManager : MonoBehaviour
     {
         npctalk = false;
         talkLengthTmp = 0;
-        
         for (int i = 0; i < buttons.Count; i++)
         {
             int index = i; // 로컬 변수에 인덱스를 저장하여 캡처
             buttons[i].onClick.AddListener(() => OnClickChat(index));
         }
         InitializeNPCLines();
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            cam = GameObject.Find("DollMainCamera").GetComponent<Camera>();
+        }
+        camTopDown = cam.GetComponent<CameraTopDown>();
+        camBack = cam.GetComponent<CameraBack>();
     }
 
 
@@ -192,30 +202,38 @@ public class ChatManager : MonoBehaviour
         };
     }
 
+    public void StartKeyWordCanVas()
+    {
+        KeyWord.SetActive(true);
+    }
+
     public void StartTalk()
     {
-        interactiveBtn.SetActive(false);
-        chat.SetActive(true);
-        talk = true;
-        ManageField();
-        camTopDown.enabled = false;
-        camBack.enabled = true;
-        nowNpc.GetComponent<NpcFaceMove>().talking = true;
-        nowNpc.GetComponent<Collider_BJH>().isTalking = true;
+       interactiveBtn.SetActive(false);
+       chat.SetActive(true);
+       xButton.SetActive(true);
+       talk = true;
+       camTopDown.enabled = false;
+       camBack.enabled = true;
+       nowNpc.GetComponent<NpcFaceMove>().talking = true;
+       nowNpc.GetComponent<Collider_BJH>().isTalking = true;
+       ManageField();
     }
 
     public void Startinterrogation()
     {
         talk = true;
-        interactiveBtn.SetActive(false);
         interrogation = true;
         camTopDown.enabled = false;
         camBack.enabled = false;
-        //nowNpc.GetComponent<NpcFaceMove>().talking = true;
+        xButton.SetActive(false);
+        WeaponManager.Instance.PutdownButtonActive();
+        //StartTalkinterrogation();//임시
     }
 
     public void StartTalkinterrogation()
     {
+        chat.SetActive(true);
         talkPanel.SetActive(true);
         ManageField();
     }
@@ -307,19 +325,29 @@ public class ChatManager : MonoBehaviour
     public void ManageField()
     {
         //talkLengthTmp = 0;
-        dialog.text = ShowDialogue(npcdata.npcName);
+        talkButton.SetActive(false);
         talkingName.text = npcdata.npcName;
         npctalk = false;
         if (interrogation == false)
         {
+            dialog.text = ShowDialogue(npcdata.npcName);
             ConnectionKJY.instance.Request_Question(npcdata.npcName, weapon);
+        }
+        else
+        {
+            dialog.text = "탐정님, 전 범인이 아닙니다!";
+            TextEffectInterr();
+            if (PhotonNetwork.IsMasterClient)
+            {
+                ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
+            }
         }
     }
 
     // 여기서부터 TalkCode
     public void OnclickSend()
     {
-        field.gameObject.SetActive(false);
+        inputFieldObject.SetActive(false);
         // 임시
         string url = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/chat/send";
         string chatContent = field.text;
@@ -367,16 +395,23 @@ public class ChatManager : MonoBehaviour
             }
             dialog.text = ShowDialogue(npcdata.npcName);
             ButtonObject.SetActive(true);
+            talkButton.SetActive(false);
         }
         else
         {
-            if (GameManager_KJY.instance.heartRate >= 120)
+            if (GameManager_KJY.instance.heartRate >= 120 || isTimerover == true)
             {
                 GameManager_KJY.instance.interrogationBtn(true);
-                //print("stop");
-                //FinishTalk();
+                chat.SetActive(false);
+                dialog.text = string.Empty;
+                isTimerover = false;
+                interrogation = false;
+                talk = false;
+                WeaponManager.Instance.PutdownButtonActive();
             }
-            field.gameObject.SetActive(true);
+            dialog.text = string.Empty;
+            inputFieldObject.SetActive(true);
+            inputButton.SetActive(true);
         }
 
         //KJY - bool값 제어
@@ -387,7 +422,6 @@ public class ChatManager : MonoBehaviour
 
     public void OnClickChat(int index)
     {
-        //ConnectionKJY.instance.re
         ConnectionKJY.instance.RequestAnswer(index, npcdata.npcName, weapon);
         PhotonConnection.Instance.UpdateMinusLife();
         ButtonObject.SetActive(false);
@@ -405,15 +439,52 @@ public class ChatManager : MonoBehaviour
 
     public void OnClickInterrogation()
     {
-        //KJY - bool값 제어
-        npctalk = true;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (InfoManagerKJY.instance.role == "Detective")
+            {
+                string name = npcdata.npcName;
+                ConnectionKJY.instance.RequestInterrogationConversation(name, talkText.text);
+                talkingName.text = name;
+                inputFieldObject.SetActive(false);
+                inputButton.SetActive(false);
+                field.text = string.Empty;
+            }
+        }
+    }
 
-        ConnectionKJY.instance.RequestInterrogationConversation(npcdata.npcName, talkText.text);
+    [PunRPC]
+    private void TextEffectInterr()
+    {
+        StartCoroutine(effect());
+    }
 
-        // text 제어
-        talkingName.text = npcdata.npcName;
-        talkPanel.gameObject.SetActive(true);
-        field.gameObject.SetActive(false);
-        //inputText.text = "";
+    private IEnumerator effect()
+    {
+        UI.instance.textObject.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[0].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[1].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[2].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(0.5f);
+        UI.instance.textList[3].transform.DOPunchPosition(Vector3.down, 5, 10, 1, false);
+        yield return new WaitForSeconds(1f);
+        UI.instance.textList[0].transform.DOMoveX(-1100, 2f, false);
+        UI.instance.textList[1].transform.DOMoveY(-1100, 2f, false);
+        UI.instance.textList[2].transform.DOMoveY(2000, 2f, false);
+        UI.instance.textList[3].transform.DOMoveX(2500, 2f, false);
+        yield return new WaitForSeconds(2f);
+        UI.instance.textObject.SetActive(false);
+        UI.instance.ResetText();
+        talkButton.SetActive(true);
+        PhotonConnection.Instance.StartTimer();
+    }
+
+    [PunRPC]
+    public void SetWeapon(string name)
+    {
+        this.weapon = name;
     }
 }

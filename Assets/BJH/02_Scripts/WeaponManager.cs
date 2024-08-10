@@ -1,8 +1,10 @@
+using Photon.Pun;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class WeaponManager : MonoBehaviour
+public class WeaponManager : MonoBehaviourPunCallbacks
 {
     #region instance
     private static WeaponManager _instance;
@@ -17,10 +19,14 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private List<GameObject> weaponList = new List<GameObject>();
     [SerializeField] private List<Transform> weaponSpawnPoints = new List<Transform>();
     [SerializeField] private List<int> generatedNumbers = new List<int>();
+        
+    [SerializeField] public GameObject canvas; // 강아지 canvas를 코드로 assign(dog canvas)
+    [SerializeField] public InventoryItems inventoryItems; // 캐릭터 canvas에서 코드로 assign
+    [SerializeField] public Button putDownButton; // 캐릭터가 가진 dog canvas 스크립트에서 코드로 assign
+    [SerializeField] public WeaponSubmitter weaponSubmitter; // dog가 가진 스크립트에서 assign
 
-    
-    [SerializeField] private InventoryItems inventoryItems;
 
+    [SerializeField] public List<Sprite> weaponSprites = new List<Sprite>(); // 무기 이미지들
 
 
     private void Awake()
@@ -61,9 +67,42 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    public void UpdateInventoryImage(Sprite sprite)
+    [PunRPC]
+    public void UpdateInventoryImage(string weaponName)
     {
-        Debug.Log("업데이트 요청을 game manager가 받았습니다.");
-        inventoryItems.UpdateInventoryItemImages(sprite);
+        foreach (var sprite in weaponSprites)
+        {
+            if (weaponName == sprite.name)
+            {
+                Debug.Log("일치하는 이름의 sprite를 찾았습니다!");
+                inventoryItems.UpdateInventoryItemImages(sprite);
+
+                break;
+            }
+        }
+    }
+
+    // 무기를 내려놓는 버튼 ui를 비/활성화 하는 메서드
+    // 취조실 들어가고 나갈 때 주연이가 호출
+    public void PutdownButtonActive()
+    {
+        putDownButton.gameObject.SetActive(!putDownButton.gameObject.activeSelf);
+    }
+
+    // 내려놓은 무기를 동기화하는 메서드
+    [PunRPC]
+    public void PutdownSelectedWeapon(string weaponName)
+    {
+        Debug.Log($"무기를 내려놓기 동기화 하겠습니다");
+        weaponSubmitter.PutDownWeaponOnTr(weaponName);
+    }
+
+    public void ChangeActice_InventoryImage()
+    {
+        if(canvas != null)
+        {
+            DogCanvas dogCanvas = canvas.GetComponent<DogCanvas>();
+            dogCanvas.inventoryImage.SetActive(!dogCanvas.inventoryImage.activeSelf);
+        }
     }
 }

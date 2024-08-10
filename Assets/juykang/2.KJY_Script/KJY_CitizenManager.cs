@@ -64,7 +64,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            dog = GameObject.FindGameObjectWithTag("Assistant");
+            dog = GameObject.FindGameObjectWithTag("User");
         }
 
         SetNpcList();
@@ -161,7 +161,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             dieNpcList[i].SetActive(false);
         }
 
-        FadeOut();
+        image.DOFade(1, 2);
         yield return new WaitForSeconds(1);
         if (InfoManagerKJY.instance.role == "Detective")
         {
@@ -184,12 +184,12 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             //npcList[i].gameObject.SetActive(false);
         }
 
-        FadeIn();
+        image.DOFade(0, 2);
         if (InfoManagerKJY.instance.role == "Detective")
         {
             player.GetComponent<CharacterController>().enabled = true;
+            UI.instance.talkBtn.SetActive(false);
         }
-        UI.instance.talkBtn.SetActive(false);
         UI.instance.skipBtn.SetActive(true);
         call = true;
 
@@ -213,12 +213,12 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     void FadeOut()
     {
-        image.DOFade(1, 1);
+        image.DOFade(1, 2);
     }
 
     void FadeIn()
     {
-        image.DOFade(0, 1);
+        image.DOFade(0, 2);
     }
 
     public void DieNpcSpotSet()
@@ -279,19 +279,59 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     private void SetNpcRandomization()
     {
-        for (int i = 0; i < npcList.Count; i++)
+        if (PhotonNetwork.IsMasterClient)
         {
-            int randomBody = Random.Range(0, bodyColor.Count - 1);
-            int randomMouth = Random.Range(0, mouth.Length - 1);
-            int randomEar = Random.Range(0, earCollider.Length - 1);
-            int randomTail = Random.Range(0, tailCollider.Length - 1);
+            List<int> availableColors = new List<int>();
 
-            photonView.RPC("SetNpcCustomization", RpcTarget.AllBuffered, i, randomBody, randomMouth, randomEar, randomTail);
+            // 0부터 bodyColor.Count-1까지의 인덱스를 리스트에 추가
+            for (int i = 0; i < bodyColor.Count; i++)
+            {
+                availableColors.Add(i);
+            }
+
+            // 리스트를 무작위로 섞음
+            for (int i = 0; i < availableColors.Count; i++)
+            {
+                int temp = availableColors[i];
+                int randomIndex = Random.Range(i, availableColors.Count);
+                availableColors[i] = availableColors[randomIndex];
+                availableColors[randomIndex] = temp;
+            }
+
+            int[] customizationDataArray = new int[npcList.Count * 4];
+
+            for (int i = 0; i < npcList.Count; i++)
+            {
+                int randomBody = availableColors[i];
+                int randomMouth = Random.Range(0, mouth.Length);
+                int randomEar = Random.Range(0, earCollider.Length);
+                int randomTail = Random.Range(0, tailCollider.Length);
+
+                // 데이터를 배열에 저장
+                customizationDataArray[i * 4] = randomBody;
+                customizationDataArray[i * 4 + 1] = randomMouth;
+                customizationDataArray[i * 4 + 2] = randomEar;
+                customizationDataArray[i * 4 + 3] = randomTail;
+            }
+            photonView.RPC("ApplyNpcCustomization", RpcTarget.All, customizationDataArray);
         }
     }
 
     [PunRPC]
-    public void SetNpcCustomization(int npcIndex, int bodyIndex, int mouthIndex, int earIndex, int tailIndex)
+    private void ApplyNpcCustomization(int[] customizationDataArray)
+    {
+        for (int i = 0; i < npcList.Count; i++)
+        {
+            int bodyIndex = customizationDataArray[i * 4];
+            int mouthIndex = customizationDataArray[i * 4 + 1];
+            int earIndex = customizationDataArray[i * 4 + 2];
+            int tailIndex = customizationDataArray[i * 4 + 3];
+
+            SetNpcCustomization(i, bodyIndex, mouthIndex, earIndex, tailIndex);
+        }
+    }
+
+    private void SetNpcCustomization(int npcIndex, int bodyIndex, int mouthIndex, int earIndex, int tailIndex)
     {
         if (npcIndex < 0 || npcIndex >= npcList.Count) return;
 

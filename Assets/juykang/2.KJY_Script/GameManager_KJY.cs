@@ -42,13 +42,15 @@ public class GameManager_KJY : MonoBehaviourPun
 
     [SerializeField] GameObject DayText;
 
+    [Header("Camera")]
     //회전 스피드 값
     public float speed = 10;
-
     //카메라 줌인 줌아웃 값
     float maxZoom = 30;
     float curr = 40;
     bool isZoom;
+    public Camera detectiveCamera;
+    public Camera assistantCamera;
 
     [SerializeField] Transform camPlace;
     [SerializeField] GameObject effect;
@@ -78,11 +80,11 @@ public class GameManager_KJY : MonoBehaviourPun
 
     bool Winner;
     public int heartRate = 60;
+    public bool isSeletNpc = false;
 
     private void Awake()
     {
         instance = this;
-        
     }
 
     private void Start()
@@ -92,7 +94,8 @@ public class GameManager_KJY : MonoBehaviourPun
         npcList = KJY_CitizenManager.Instance.npcList;
         dieNpcList = KJY_CitizenManager.Instance.dieNpcList;
         selectUI.SetActive(false);
-        cameratopdown = cam.GetComponent<CameraTopDown>();  
+        cameratopdown = cam.GetComponent<CameraTopDown>();
+        PhotonConnection.Instance.CameraOnOff(false);
         checkUI.SetActive(false);
         firstSun = sun.transform.rotation;
         effect.SetActive(false);
@@ -107,16 +110,22 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            ray = cam.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
+            if (KJY_CitizenManager.Instance.call == true)
             {
-                if (Input.GetMouseButtonDown(0) && KJY_CitizenManager.Instance.call == true && click == false)
+                PhotonConnection.Instance.CameraOnOff(true);
+
+                ray = cam.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit))
                 {
-                    if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                    if (Input.GetMouseButtonDown(0) && click == false)
                     {
-                        PhotonView view =  hit.collider.GetComponent<PhotonView>();
-                        int viewID = view.ViewID;
-                        PhotonConnection.Instance.UpdateChooseNpc(viewID);
+                        if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
+                        {
+                            isSeletNpc = true;
+                            PhotonView view =  hit.collider.GetComponent<PhotonView>();
+                            int viewID = view.ViewID;
+                            PhotonConnection.Instance.UpdateChooseNpc(viewID);
+                        }
                     }
                 }
             }
@@ -139,6 +148,8 @@ public class GameManager_KJY : MonoBehaviourPun
         selectBtn.SetActive(true);
         selectUI.SetActive(true);
         FollowNpc(obj);
+        isSeletNpc = false;
+        print(obj.gameObject.name);
     }
 
     void FollowNpc(GameObject gameObject)
@@ -200,7 +211,6 @@ public class GameManager_KJY : MonoBehaviourPun
 
             if (AreQuaternionsSimilar(tr.transform.rotation, target, 0.3f))
             {
-                print("break");
                 yield break; // 코루틴 중단
             }
 
@@ -255,14 +265,17 @@ public class GameManager_KJY : MonoBehaviourPun
     }
 
     //확인 버튼
+    [PunRPC]
     public void SelectNpc()
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
+        interrogationBtn(false);
         StartCoroutine(SelectEffect());
     }
 
     //취소 버튼
+    [PunRPC]
     public void CancleSeletNpc()
     {
         KJY_CitizenManager.Instance.OnOffCanvas(obj, true);
@@ -294,10 +307,13 @@ public class GameManager_KJY : MonoBehaviourPun
 
 
     //스킵할 때 결정하는 것
+    [PunRPC]
     public void AfterSkip()
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
-        InfoManagerKJY.instance.voteNpcName = obj.GetComponent<NpcData>().npcName;
+        InfoManagerKJY.instance.voteNpcName = null;
+        isSeletNpc = false;
+        interrogationBtn(false);
         StartCoroutine(EffectNight());
     }
 
@@ -305,9 +321,7 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator EffectNight()
     {
         image.DOFade(1, 1f);
-        interrogationBtn(false);
         InfoManagerKJY.instance.voteNightNumber = 0;
-        InfoManagerKJY.instance.voteNpcName = null;
         InfoManagerKJY.instance.voteNpcName = null;
         UI.instance.DeathInfo();
 
@@ -324,19 +338,22 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         TextMeshProUGUI text = checkUI.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
 
-        SetDummyDataAndNpcDataEquel(null,true);
+        SetDummyDataAndNpcDataEquel(obj.GetComponent<NpcData>().npcName, true);
         if (answer == "FOUND")
         {
-            text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
+            //text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
             InfoManagerKJY.instance.voteResult = "FOUND";
             InfoManagerKJY.instance.voteNpcObjectName = obj.name;
+            InfoManagerKJY.instance.npcListInfo = npcList;
+            InfoManagerKJY.instance.dieNpcListInfo = dieNpcList;
+            PhotonConnection.Instance.VictoryGo();
             Winner = true;
         }
-        //else
-        //{
-        //    text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
-        //    InfoManagerKJY.instance.voteResult = "NOTFOUND";
-        //}
+        else
+        {
+            //text.text = obj.GetComponent<NpcData>().npcName + "은(는) 시민이였습니다.";
+            InfoManagerKJY.instance.voteResult = "NOTFOUND";
+        }
         checkUI.SetActive(true);
     }
 
@@ -349,7 +366,6 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator VictimSet()
     {
         yield return new WaitForSeconds(2f);
-        //SetDummyDataAndNpcDataEquel(InfoManagerBJH.instance.victim, false);
         SetDummyDataAndNpcDataEquel(InfoManagerKJY.instance.victim, false);
         TurnNpcList(false, 3);
         KJY_CitizenManager.Instance.SetnpcSpot(false);
@@ -361,6 +377,7 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator SelectEffect()
     {
         image.DOFade(1, 1f);
+        cameratopdown.enabled = true;
         interrogationBtn(false);
         RequestSave requst = new RequestSave();
         requst.Request(true);
@@ -516,6 +533,7 @@ public class GameManager_KJY : MonoBehaviourPun
         cameratopdown.enabled = true;
         cam.transform.rotation = cameratopdown.first;
         KJY_CitizenManager.Instance.call = false;
+        PhotonConnection.Instance.CameraOnOff(false);
         OnOffUI(true);
     }
 
@@ -524,19 +542,22 @@ public class GameManager_KJY : MonoBehaviourPun
 
         if (isNpcSelectMafia == true)
         {
-            obj.GetComponent<NpcData>().status = "DEAD";
-            obj.GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
-
-            for (int i = 0; i < npcList.Count; i++)
+            if (obj != null)
             {
-                if (obj.GetComponent<NpcData>().npcName == npcList[i].GetComponent<NpcData>().npcName)
+                obj.GetComponent<NpcData>().status = "DEAD";
+                obj.GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
+                for (int i = 0; i < npcList.Count; i++)
                 {
-                    npcList[i].GetComponent<NpcData>().status = "DEAD";
-                    npcList[i].GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
-                    dieNpcList.Add(npcList[i]);
-                    npcList.RemoveAt(i);
+                    if (obj.GetComponent<NpcData>().npcName == npcList[i].GetComponent<NpcData>().npcName)
+                    {
+                        npcList[i].GetComponent<NpcData>().status = "DEAD";
+                        npcList[i].GetComponent<NpcData>().npcDeathNightNumer = UI.instance.dayInt;
+                        dieNpcList.Add(npcList[i]);
+                        npcList.RemoveAt(i);
+                    }
                 }
             }
+
         }
         else
         {
@@ -562,13 +583,15 @@ public class GameManager_KJY : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
     private void OnOffUI(bool value)
     {
-        ChatManager.instance.interactiveBtn.SetActive(value);
-        UI.instance.noteObject.SetActive(value);
-        UI.instance.lifeObject.SetActive(value);
-        UI.instance.dayObject.SetActive(value);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            ChatManager.instance.interactiveBtn.SetActive(value);
+        }
+            UI.instance.lifeObject.SetActive(value);
+            UI.instance.dayObject.SetActive(value);
+            UI.instance.inventoryObject.SetActive(value);
     }
 
     [PunRPC]
@@ -578,6 +601,7 @@ public class GameManager_KJY : MonoBehaviourPun
         StopAllCoroutines();
         cameratopdown.enabled = false;
         moveObject.position = startSpot.position;
+        ChatManager.instance.npcdata = obj.GetComponent<NpcData>();
         Camera.main.transform.position = arrestCameraSpot.transform.position;
         Camera.main.transform.rotation = arrestCameraSpot.transform.rotation;
         if (InfoManagerKJY.instance.role == "Detective")
@@ -608,7 +632,7 @@ public class GameManager_KJY : MonoBehaviourPun
         obj.transform.rotation = intellRoomNpc.transform.rotation;
         Camera.main.transform.position = intellCameraSpot.transform.position;
         Camera.main.transform.rotation = intellCameraSpot.transform.rotation;
-        UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
+        //UI.instance.talkBt.onClick.AddListener(ChatManager.instance.Startinterrogation);
         StartCoroutine(Wait());
     }
 
@@ -632,5 +656,11 @@ public class GameManager_KJY : MonoBehaviourPun
     public void interrogationBtn(bool value)
     {
         selectInBtn.SetActive(value);
+    }
+
+    [PunRPC]
+    private void UpdateMainCamera(bool value)
+    {
+        cam.enabled = value;
     }
 }

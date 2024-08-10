@@ -86,7 +86,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
 
     private void OnMouseEnter()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (InfoManagerKJY.instance.role == "Detective")
         {
             photonView.RPC("mouseEnterColor", RpcTarget.All);
         }
@@ -94,7 +94,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
 
     private void OnMouseExit()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (InfoManagerKJY.instance.role == "Detective")
         {
             photonView.RPC("mouseExitColor", RpcTarget.All);
         }
@@ -103,7 +103,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
     [PunRPC]
     private void mouseEnterColor()
     {
-        if (KJY_CitizenManager.Instance.call == true && GameManager_KJY.instance.click == false)
+        if (GameManager_KJY.instance.isSeletNpc == true && GameManager_KJY.instance.click == false)
         {
             material.SetFloat("_Outline", changevalue);
             material.SetColor("_OutlineColor", Color.yellow);
@@ -117,7 +117,7 @@ public class KJY_NPCHighlight : MonoBehaviourPun
     [PunRPC]
     private void mouseExitColor()
     {
-        if (KJY_CitizenManager.Instance.call == true)
+        if (GameManager_KJY.instance.isSeletNpc == true)
         {
             material.SetFloat("_Outline", resetValue);
             material.SetColor("_OutlineColor", baseC);

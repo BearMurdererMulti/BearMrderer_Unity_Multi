@@ -15,7 +15,10 @@ public enum SceneName
     Cinemachine03,
     //GameScene_NPC_Random_BJH,
     GameScene_NPC_Random,
-    EndingCredit
+    GameScene_NPC_Random3,
+    KJY_Test_Ending_Success,
+    KJY_Test_Ending_Fail,
+    EndingCredit,
 }
 
 public class KJY_SceneManager : MonoBehaviour

@@ -665,7 +665,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -11.2502}
+  m_AnchoredPosition: {x: 0, y: 12}
   m_SizeDelta: {x: 1007.8567, y: 385.1069}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &201681833
@@ -688,7 +688,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD3B8\uC9C0 \uB0B4\uC6A9 \uBE14\uB77C\uBE14\uB77C"
+  m_text: "\uD3B8\uC9C0 \uB0B4\uC6A9 \uBE14\uB77C\uBE14\uB77C\n\uBE14\uB77C\uBE14\uB77C\n\uBE14\uB77C\uBE14\uB77C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6d045f6d8e2236344bf10e4116ae51ee, type: 2}
   m_sharedMaterial: {fileID: -7365840025196455517, guid: 6d045f6d8e2236344bf10e4116ae51ee, type: 2}
@@ -727,7 +727,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: 27.07
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -812,6 +812,10 @@ PrefabInstance:
     - target: {fileID: 6977459867834590302, guid: 59653407f8bca654595013519095d87e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7499983956699614068, guid: 59653407f8bca654595013519095d87e, type: 3}
+      propertyPath: sceneViewId
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7717153445480095494, guid: 59653407f8bca654595013519095d87e, type: 3}
       propertyPath: m_Name
@@ -2056,10 +2060,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1028693443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 400, y: -265.52588}
-  m_SizeDelta: {x: 329.2312, y: 60.9927}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 70.716064, y: 181}
+  m_SizeDelta: {x: 465.7992, y: 60.9927}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &950980219
 MonoBehaviour:
@@ -2321,7 +2325,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a9817b839069bd54b9e61a1cf055795d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 322f0b943082612469d84df9e4c6daf9, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

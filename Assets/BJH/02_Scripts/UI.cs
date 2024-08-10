@@ -50,7 +50,7 @@ public class UI : MonoBehaviourPun
     public GameObject profile;
     public Transform parent;
     public Transform checkListParent;
-    public GameObject noteObject; //KJY 추가
+    public GameObject inventoryObject; //KJY 추가
     
     public GameObject settingImg;
 
@@ -78,6 +78,12 @@ public class UI : MonoBehaviourPun
     public GameObject oxBox;
     public GameObject checkListProfilePre;
 
+    public GameObject textObject;
+    public List<TextMeshProUGUI> textList;
+    [SerializeField] private List<Transform> textTransform;
+
+    public TextMeshProUGUI timerText;
+
     // chat list
 
     private void Awake()
@@ -89,7 +95,7 @@ public class UI : MonoBehaviourPun
     {
         //startBtn.gameObject.SetActive(false);
 
-        noteImg.SetActive(false);
+        //noteImg.SetActive(false);
 
         //timeSlider.value = 0;
         //sliderFill.GetComponent<Image>().color = Color.green;
@@ -330,7 +336,13 @@ public class UI : MonoBehaviourPun
     }
 
 
-
+    public void ResetText()
+    {
+        for (int i = 0; i < textList.Count; i++)
+        {
+            textList[i].transform.position = textTransform[i].position;
+        }
+    }
 
 
 

@@ -1446,7 +1446,7 @@ public class TryInterrogationStartSetting : ConnectionStratege
 
         if (response.resultCode == "SUCCESS")
         {
-            ChatManager.instance.StartTalkinterrogation();
+            Debug.Log("startSuccess");
         }
 
     }
@@ -1530,9 +1530,8 @@ public class TryInterrogationConversationSetting : ConnectionStratege
 
         if (response.resultCode == "SUCCESS")
         {
-            ChatManager.instance.dialog.text = response.message.response;
-
-            ChatManager.instance.npctalk = true;
+            Debug.Log("result" + response.message.response);
+            PhotonConnection.Instance.Updateinterrogation(response.message.response);
         }
 
     }
@@ -2033,9 +2032,9 @@ public class ConnectionKJY : MonoBehaviour
         str.npcName = name;
         str.content = content;
 
-        print(str.gameSetNo);
-        print(str.npcName);
-        print(str.content);
+        print("gmaeSetNo" + InfoManagerKJY.instance.gameSetNo);
+        print("npcName" + str.npcName);
+        print("content" + content);
 
         TryInterrogationConversationSetting question = new TryInterrogationConversationSetting(str);
     }

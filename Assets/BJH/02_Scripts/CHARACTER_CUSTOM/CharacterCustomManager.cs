@@ -54,13 +54,13 @@ public class CharacterCustomManager : MonoBehaviour
         if(index == 4)
         {
             rotationDuration = 1f;
-            targetRotationEuler = new Vector3(0, 350, 0);
+            targetRotationEuler = new Vector3(0.8f, -226, 0);
             StartCoroutine(CoRotateCharater(targetRotationEuler, rotationDuration));
         }
         else
         {
             rotationDuration = 1f;
-            targetRotationEuler = new Vector3(0, 150, 0);
+            targetRotationEuler = new Vector3(0.8f, -39f, 0);
             StartCoroutine(CoRotateCharater(targetRotationEuler, rotationDuration));
         }
         characterCustom.ActiveCategoryContent(index);

@@ -11,11 +11,11 @@ public class KJY_BillBorad : MonoBehaviour
     {
         if (InfoManagerKJY.instance.role == "Detective")
         {
-           detectiveCamera = GameObject.FindWithTag("DetectiveCamera").GetComponent<Camera>();
+           detectiveCamera = GameObject.Find("DollMainCamera").GetComponent<Camera>();
         }
         else
         {
-            assistantCamera = Camera.main;
+            assistantCamera = GameObject.Find("DogMainCamera").GetComponent<Camera>();
         }
     }
     // Update is called once per frame
@@ -23,11 +23,17 @@ public class KJY_BillBorad : MonoBehaviour
     {
         if (InfoManagerKJY.instance.role == "Detective")
         {
-            transform.forward = detectiveCamera.transform.forward;
+            if (detectiveCamera != null)
+            {
+                transform.forward = detectiveCamera.transform.forward;
+            }
         }
         else
         {
-            transform.forward = assistantCamera.transform.forward;
+            if (assistantCamera != null)
+            {
+                transform.forward = assistantCamera.transform.forward;
+            }
         }
     }
 }

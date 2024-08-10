@@ -71,6 +71,25 @@ MonoBehaviour:
   - mouseEnterColor
   - mouseExitColor
   - OnOffUI
+  - UpdateInventoryImage
+  - UpdateMainCamera
+  - TextEffectInterr
+  - StartTimerRPC
+  - TimerCoroutine
+  - UpdateText
+  - ApplyNpcCustomization
+  - GoVictory
+  - GoFail
+  - PutDownWeaponOnTr
+  - PutdownSelectedWeapon
+  - AfterSkip
+  - CancleSeletNpc
+  - SelectNpc
+  - SetWeapon
+  - StartTalkinterrogation
+  - SetUI
+  - StopSoundPun
+  - GoEndingCredit
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
