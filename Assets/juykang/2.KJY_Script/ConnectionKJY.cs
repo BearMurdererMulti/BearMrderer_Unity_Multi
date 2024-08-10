@@ -1825,7 +1825,7 @@ public class ConnectionKJY : MonoBehaviour
         FinalSetting str = new FinalSetting();
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/final-words";
         str.gameSetNo = InfoManagerKJY.instance.gameSetNo;
-        str.secretKey = "mafia";
+
         TryFinalSetting final = new TryFinalSetting(str);
     }
 
