@@ -401,9 +401,9 @@ public class ChatManager : MonoBehaviourPunCallbacks
         {
             if (GameManager_KJY.instance.heartRate >= 120 || isTimerover == true)
             {
-            
+                
                 photonView.RPC("ResetInterrogation", RpcTarget.All);
-                WeaponManager.Instance.PutdownButtonActive();
+                photonView.RPC("PutdownButtonActive", RpcTarget.Others);
             }
             dialog.text = string.Empty;
             inputFieldObject.SetActive(true);
