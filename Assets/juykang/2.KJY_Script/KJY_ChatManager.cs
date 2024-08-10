@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class KJY_ChatManager : MonoBehaviourPun
 {
@@ -16,6 +17,8 @@ public class KJY_ChatManager : MonoBehaviourPun
     public RectTransform rtContent;
     //ScrollView 의 RectTransform
     public RectTransform rtScrollView;
+
+    public ScrollRect scrollRect;
     //채팅이 추가되기 전의 Content H 의 값을 가지고 있는 변수
     float prevContentH;
 
@@ -39,11 +42,6 @@ public class KJY_ChatManager : MonoBehaviourPun
 
         //InputField 의 Focusing 이 사라졌을 때 호출해주는 함수 등록
         chatInput.onEndEdit.AddListener(OnEndEdit);
-    }
-
-    void Update()
-    {
-
     }
 
     void OnSubmit(string s)
@@ -84,7 +82,15 @@ public class KJY_ChatManager : MonoBehaviourPun
         item.SetText(chat);
 
         //자동으로 content 를 맨 밑으로 내리는 기능
-        StartCoroutine(AutoScrollBottom());
+        //StartCoroutine(AutoScrollBottom());
+        ScrollToBottom();
+    }
+
+    void ScrollToBottom()
+    {
+        // ScrollRect의 스크롤 위치를 맨 아래로 설정
+        Canvas.ForceUpdateCanvases(); // UI 업데이트를 강제하여 스크롤 위치 설정이 올바르게 반영되도록 함
+        scrollRect.verticalNormalizedPosition = 0f;
     }
 
     IEnumerator AutoScrollBottom()

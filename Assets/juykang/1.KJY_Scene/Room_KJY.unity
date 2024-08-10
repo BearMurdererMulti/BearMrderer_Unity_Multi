@@ -1231,6 +1231,7 @@ MonoBehaviour:
   chatItemFactory: {fileID: 8043171704402541056, guid: 903160625df568a4c9a904634f98cbda, type: 3}
   rtContent: {fileID: 1898206657}
   rtScrollView: {fileID: 54442002}
+  scrollRect: {fileID: 1668342134}
   nickNameColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &510508696
 Transform:
@@ -1266,7 +1267,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 2
+  sceneViewId: 102
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &550042230
@@ -1664,7 +1665,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f40c761043aca944c87b3a6f6dea2e5e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 845e366b4bda87f4987d87e3dd67367e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2083,7 +2084,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 1
+  sceneViewId: 101
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1088038324
@@ -2367,7 +2368,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 3
+  sceneViewId: 103
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &1188885493
