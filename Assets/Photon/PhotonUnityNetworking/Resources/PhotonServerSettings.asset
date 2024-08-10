@@ -77,6 +77,9 @@ MonoBehaviour:
   - StartTimerRPC
   - TimerCoroutine
   - UpdateText
+  - ApplyNpcCustomization
+  - GoVictory
+  - GoFail
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0

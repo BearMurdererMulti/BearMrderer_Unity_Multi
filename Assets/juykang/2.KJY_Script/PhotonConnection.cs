@@ -220,4 +220,31 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
     #endregion
 
+    #region
+    public void VictoryGo()
+    {
+        photonView.RPC("GoVictory", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void GoVictory()
+    {
+        string sceneName = SceneName.KJY_Test_Ending_Success.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+
+    #endregion
+
+    public void FailGo()
+    {
+        photonView.RPC("GoFail", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void GoFail()
+    {
+        string sceneName = SceneName.KJY_Test_Ending_Fail.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
+    }
+
 }

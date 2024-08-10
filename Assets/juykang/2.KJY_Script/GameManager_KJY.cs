@@ -337,6 +337,9 @@ public class GameManager_KJY : MonoBehaviourPun
             text.text = obj.GetComponent<NpcData>().npcName + "은(는) 마피아였습니다.";
             InfoManagerKJY.instance.voteResult = "FOUND";
             InfoManagerKJY.instance.voteNpcObjectName = obj.name;
+            InfoManagerKJY.instance.npcListInfo = npcList;
+            InfoManagerKJY.instance.dieNpcListInfo = dieNpcList;
+            PhotonConnection.Instance.VictoryGo();
             Winner = true;
         }
         //else
@@ -367,6 +370,7 @@ public class GameManager_KJY : MonoBehaviourPun
     IEnumerator SelectEffect()
     {
         image.DOFade(1, 1f);
+        cameratopdown.enabled = true;
         interrogationBtn(false);
         RequestSave requst = new RequestSave();
         requst.Request(true);
