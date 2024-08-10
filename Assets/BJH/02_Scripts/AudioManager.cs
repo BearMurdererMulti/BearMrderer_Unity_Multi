@@ -102,7 +102,7 @@ public class AudioManager : MonoBehaviourPunCallbacks
     IEnumerator CoPlayMusicWithFadeIn(BGM_List soundList, float volume, float durationTime)
     {
         index = ((int)soundList);
-        _audioSource.clip = _audioEffectClips[index];
+        _audioSource.clip = _BgmClips[index];
         _audioSource.volume = 0f;
         _audioSource.Play();
 
