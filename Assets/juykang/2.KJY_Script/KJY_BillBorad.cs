@@ -21,6 +21,12 @@ public class KJY_BillBorad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Camera.main != null)
+        {
+            transform.forward = Camera.main.transform.forward;
+            return;
+        }
+
         if (InfoManagerKJY.instance.role == "Detective")
         {
             if (detectiveCamera != null)

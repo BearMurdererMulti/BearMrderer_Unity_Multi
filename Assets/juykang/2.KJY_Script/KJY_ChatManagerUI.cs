@@ -19,8 +19,16 @@ public class KJY_ChatManagerUI : MonoBehaviour
             ChatManager.instance.interactiveBtn = btn;
             ChatManager.instance.KeyWord = keyWord;
             UI.instance.talkBtn = btn;
+
+            btnInterActive.onClick.RemoveAllListeners();
+            btnInterInactive.onClick.RemoveAllListeners();
+
             btnInterActive.onClick.AddListener(() => { ChatManager.instance.StartKeyWordCanVas(); });
             btnInterInactive.onClick.AddListener(() => { ChatManager.instance.StartTalk(); });
+        }
+        else
+        {
+            btn.SetActive(false);
         }
         UI.instance.inventoryObject = inventory;
     }

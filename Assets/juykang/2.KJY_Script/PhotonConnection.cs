@@ -50,9 +50,9 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             {
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
-            //string sceneName = SceneName.GameScene_NPC_Random.ToString();
+            string sceneName = SceneName.GameScene_NPC_Random.ToString();
             //string sceneName = SceneName.GameScene_NPC_Random3.ToString();
-            string sceneName = SceneName.Chinemachine_01.ToString();
+            //string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
             //PhotonNetwork.LoadLevel($"{targetSceneName}");
         }
@@ -92,9 +92,6 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    #region SetNpc
-    #endregion
-
     #region MinusLife
 
     public void UpdateMinusLife()
@@ -104,7 +101,6 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         photonView.RPC("MinusLife", RpcTarget.All);
     }
     #endregion
-
 
     #region MorningAndNight
 
@@ -120,9 +116,13 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region SelectNpc
     public void UpdateChooseNpc(int viewID)
     {
-        PhotonView photonView = PhotonView.Get(gameManager);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            PhotonView photonView = PhotonView.Get(gameManager);
 
-        photonView.RPC("ChooseNpc", RpcTarget.All, viewID);
+            photonView.RPC("ChooseNpc", RpcTarget.All, viewID);
+
+        }
     }
     #endregion
 
@@ -138,8 +138,12 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #region
     public void UpdateGoInterrRoom()
     {
-        PhotonView photonView = PhotonView.Get(gameManager);
-        photonView.RPC("GointerrogationRoom", RpcTarget.All);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            PhotonView photonView = PhotonView.Get(gameManager);
+            photonView.RPC("GointerrogationRoom", RpcTarget.All);
+
+        }
     }
     #endregion
 
@@ -207,8 +211,12 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
     public void Updateinterrogation(string message)
     {
-        print("message" + message);
-        photonView.RPC("UpdateText", RpcTarget.All, message);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            print("message" + message);
+            photonView.RPC("UpdateText", RpcTarget.All, message);
+
+        }
     }
 
     [PunRPC]
@@ -220,7 +228,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
 
     #endregion
 
-    #region
+    #region SceneMoveSuccess
     public void VictoryGo()
     {
         photonView.RPC("GoVictory", RpcTarget.All);
@@ -236,7 +244,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     #endregion
 
 
-    #region
+    #region SceneMoveFail
     public void FailGo()
     {
         photonView.RPC("GoFail", RpcTarget.All);
@@ -250,27 +258,69 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    #region
+    #region SelectNpcCancle
     public void UpdateCancle()
     {
-        PhotonView photonView = PhotonView.Get(gameManager);
-        photonView.RPC("CancleSeletNpc", RpcTarget.All);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            PhotonView photonView = PhotonView.Get(gameManager);
+            photonView.RPC("CancleSeletNpc", RpcTarget.All);
+
+        }
     }
     #endregion
 
-    #region
+    #region SelectSkip
     public void UpdateAfterSkip()
     {
-        PhotonView photonView = PhotonView.Get(gameManager);
-        photonView.RPC("AfterSkip", RpcTarget.All);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            PhotonView photonView = PhotonView.Get(gameManager);
+            photonView.RPC("AfterSkip", RpcTarget.All);
+
+        }
     }
     #endregion
 
-    #region
+    #region SelectNpc
     public void UpdateSelect()
     {
-        PhotonView photonView = PhotonView.Get(gameManager);
-        photonView.RPC("SelectNpc", RpcTarget.All);
+        if (InfoManagerKJY.instance.role == "Detective")
+        {
+            PhotonView photonView = PhotonView.Get(gameManager);
+            photonView.RPC("SelectNpc", RpcTarget.All);
+
+        }
     }
+    #endregion
+
+    #region ResetDummyNpc
+    public void ResetDummyNpc()
+    {
+        PhotonView photonView = PhotonView.Get(gameManager);
+        photonView.RPC("npcSpotResetPun", RpcTarget.All);
+    }
+    #endregion
+
+    #region SetVictim
+
+    public void UpdateScenarioConnection(KJY_SenarioConnection.SenarioResponse response)
+    {
+        string jsonResponse = JsonUtility.ToJson(response);
+        photonView.RPC("ScenarioConnectionPun", RpcTarget.All, jsonResponse);
+    }
+
+    [PunRPC]
+    private void ScenarioConnectionPun(string jsonResponse)
+    {
+        SenarioResponse response = JsonUtility.FromJson<SenarioResponse>(jsonResponse);
+
+        InfoManagerKJY.instance.victim = response.message.victim;
+        InfoManagerKJY.instance.crimeScene = response.message.crimeScene;
+        InfoManagerKJY.instance.dailySummary = response.message.dailySummary;
+
+        GameManager_KJY.instance.DieResidentSet();
+    }
+
     #endregion
 }

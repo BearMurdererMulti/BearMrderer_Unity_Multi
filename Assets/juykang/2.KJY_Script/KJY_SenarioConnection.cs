@@ -96,18 +96,9 @@ public class KJY_SenarioConnection : MonoBehaviour
         public void Complete(DownloadHandler result)
         {
 
-            SenarioResponse reponse = new SenarioResponse();
-            reponse = JsonUtility.FromJson<SenarioResponse>(result.text);
-
-            InfoManagerKJY.instance.victim = reponse.message.victim;
-            InfoManagerKJY.instance.crimeScene = reponse.message.crimeScene;
-            InfoManagerKJY.instance.dailySummary = reponse.message.dailySummary;
-
-            //InfoManagerBJH.instance.victim = reponse.message.victim;
-            //InfoManagerBJH.instance.crimeScene = reponse.message.crimeScene;
-            //InfoManagerBJH.instance.dailySummary = reponse.message.dailySummary;
-
-            GameManager_KJY.instance.DieResidentSet();
+            SenarioResponse response = new SenarioResponse();
+            response = JsonUtility.FromJson<SenarioResponse>(result.text);
+            PhotonConnection.Instance.UpdateScenarioConnection(response);
         }
     }
 

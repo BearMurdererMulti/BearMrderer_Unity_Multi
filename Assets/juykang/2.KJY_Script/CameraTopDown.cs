@@ -34,6 +34,7 @@ public class CameraTopDown : MonoBehaviour
         else
         {
             player = GameObject.Find("AssistantCameraSpot").transform;
+            first = transform.rotation;
         }
     }
 

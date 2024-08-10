@@ -90,6 +90,11 @@ MonoBehaviour:
   - SetUI
   - StopSoundPun
   - GoEndingCredit
+  - npcSpotResetPun
+  - ResetInterrogation
+  - ScenarioConnectionPun
+  - OnOffAssistantShape
+  - OnOffDetectiveShape
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
