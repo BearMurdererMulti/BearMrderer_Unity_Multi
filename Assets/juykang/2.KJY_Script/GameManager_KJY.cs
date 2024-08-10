@@ -625,10 +625,12 @@ public class GameManager_KJY : MonoBehaviourPun
     [PunRPC]
     public void GointerrogationRoom()
     {
+        print("dadada");
         // 변지환 추가
         // 배경음악 실행
-        AudioManager.Instnace.StopSound();
-        AudioManager.Instnace.PlaySound(BGM_List.InterrogationRoom_BG, 0.2f, 1.5f);
+        //AudioManager.Instnace.StopSound();
+        //AudioManager.Instnace.PlaySound(BGM_List.InterrogationRoom_BG, 0.2f, 1.5f);
+        print("Next");
 
         selectUI.SetActive(false);
         StopAllCoroutines();

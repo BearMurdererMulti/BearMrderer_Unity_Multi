@@ -227,7 +227,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
         camTopDown.enabled = false;
         camBack.enabled = false;
         xButton.SetActive(false);
-        WeaponManager.Instance.PutdownButtonActive();
+        PhotonConnection.Instance.UpdatePutdownButtonActive();
         //StartTalkinterrogation();//юс╫ц
     }
 

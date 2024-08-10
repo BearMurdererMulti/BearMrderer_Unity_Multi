@@ -81,6 +81,7 @@ public class AudioManager : MonoBehaviourPunCallbacks
     public void StopSoundPun()
     {
         _audioSource.Stop();
+        print("stopSound");
     }
 
     public void StopSound()

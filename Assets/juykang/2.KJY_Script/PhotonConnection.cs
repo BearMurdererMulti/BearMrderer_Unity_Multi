@@ -12,6 +12,8 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     [SerializeField] private SceneName targetSceneName;
     [SerializeField] private KJY_CitizenManager citizenManager;
     [SerializeField] private ChatManager chatManager;
+    [SerializeField] private WeaponManager weaponManager;
+
     private bool isTimerRunning = false;
 
     private void Awake()
@@ -25,6 +27,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         gameManager = GameManager_KJY.instance;
         citizenManager = KJY_CitizenManager.Instance;
         chatManager = ChatManager.instance;
+        weaponManager = WeaponManager.Instance;
     }
 
     #region IntroScenarioResponse
@@ -52,9 +55,9 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
             }
             //string sceneName = SceneName.GameScene_NPC_Random.ToString();
             //string sceneName = SceneName.GameScene_NPC_Random_BJH.ToString();
-            string sceneName = SceneName.GameScene_NPC_Random.ToString();
+            //string sceneName = SceneName.GameScene_NPC_Random.ToString();
             //string sceneName = SceneName.GameScene_NPC_Random3.ToString();
-            //string sceneName = SceneName.Chinemachine_01.ToString();
+            string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
             //PhotonNetwork.LoadLevel($"{targetSceneName}");
         }
@@ -142,6 +145,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     {
         if (InfoManagerKJY.instance.role == "Detective")
         {
+            print("Detective");
             PhotonView photonView = PhotonView.Get(gameManager);
             photonView.RPC("GointerrogationRoom", RpcTarget.All);
 
@@ -322,6 +326,16 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
         InfoManagerKJY.instance.dailySummary = response.message.dailySummary;
 
         GameManager_KJY.instance.DieResidentSet();
+    }
+
+    #endregion
+
+    #region
+    public void UpdatePutdownButtonActive()
+    {
+        PhotonView photonView = PhotonView.Get(weaponManager);
+
+        photonView.RPC("PutdownButtonActive", RpcTarget.Others);
     }
 
     #endregion

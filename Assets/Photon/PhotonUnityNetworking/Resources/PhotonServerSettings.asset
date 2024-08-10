@@ -97,6 +97,7 @@ MonoBehaviour:
   - OnOffDetectiveShape
   - ResetInterrogation
   - ScenarioConnectionPun
+  - PutdownButtonActive
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 0
