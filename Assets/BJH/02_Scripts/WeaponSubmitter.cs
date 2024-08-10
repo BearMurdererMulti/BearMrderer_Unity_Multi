@@ -35,6 +35,9 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
                 PhotonNetwork.Instantiate(weaponName, putdownTr.position, Quaternion.identity);
             }
         }
+
+        WeaponManager.Instance.ChangeActice_InventoryImage();
+
         PhotonView pv = ChatManager.instance.GetComponent<PhotonView>();
         pv.RPC("SetWeapon", RpcTarget.All, weaponName);
         pv.RPC("StartTalkinterrogation", RpcTarget.All);

@@ -19,7 +19,8 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     [SerializeField] private List<GameObject> weaponList = new List<GameObject>();
     [SerializeField] private List<Transform> weaponSpawnPoints = new List<Transform>();
     [SerializeField] private List<int> generatedNumbers = new List<int>();
-    
+        
+    [SerializeField] public GameObject canvas; // 강아지 canvas를 코드로 assign(dog canvas)
     [SerializeField] public InventoryItems inventoryItems; // 캐릭터 canvas에서 코드로 assign
     [SerializeField] public Button putDownButton; // 캐릭터가 가진 dog canvas 스크립트에서 코드로 assign
     [SerializeField] public WeaponSubmitter weaponSubmitter; // dog가 가진 스크립트에서 assign
@@ -85,7 +86,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     // 취조실 들어가고 나갈 때 주연이가 호출
     public void PutdownButtonActive()
     {
-        putDownButton.gameObject.SetActive(putDownButton.gameObject.activeSelf);
+        putDownButton.gameObject.SetActive(!putDownButton.gameObject.activeSelf);
     }
 
     // 내려놓은 무기를 동기화하는 메서드
@@ -94,5 +95,15 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     {
         Debug.Log($"무기를 내려놓기 동기화 하겠습니다");
         weaponSubmitter.PutDownWeaponOnTr(weaponName);
+    }
+
+    public void ChangeActice_InventoryImage()
+    {
+        if(canvas != null)
+        {
+            DogCanvas dogCanvas = canvas.GetComponent<DogCanvas>();
+            dogCanvas.inventoryImage.SetActive(!dogCanvas.inventoryImage.activeSelf);
+
+        }
     }
 }

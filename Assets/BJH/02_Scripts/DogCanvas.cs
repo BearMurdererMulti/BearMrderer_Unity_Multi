@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class DogCanvas : MonoBehaviour
 {
-    [SerializeField] private GameObject inventoryImage;
+    [SerializeField] public GameObject inventoryImage;
     [SerializeField] private InventoryItems dollInventoryItems;
     [SerializeField] private InventoryItems dogInventoryItems;
 
@@ -42,6 +42,8 @@ public class DogCanvas : MonoBehaviour
                 putDownButton.gameObject.SetActive(false);
             }
         }
+
+        WeaponManager.Instance.canvas = this.gameObject;
     }
 
     // 누르면 선택된 무기와 함께 내려놓음
