@@ -51,7 +51,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
                 InfoManagerKJY.instance.npcOxDic.Add(npc.npcName.ToString(), null);
             }
             string sceneName = SceneName.GameScene_NPC_Random.ToString();
-            string sceneName = SceneName.GameScene_NPC_Random3.ToString();
+            //string sceneName = SceneName.GameScene_NPC_Random3.ToString();
             //string sceneName = SceneName.Chinemachine_01.ToString();
             PhotonNetwork.LoadLevel(sceneName);
             //PhotonNetwork.LoadLevel($"{targetSceneName}");
