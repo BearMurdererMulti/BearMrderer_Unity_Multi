@@ -231,7 +231,6 @@ public class ChatManager : MonoBehaviourPunCallbacks
         //StartTalkinterrogation();//임시
     }
 
-    [PunRPC]
     public void StartTalkinterrogation()
     {
         chat.SetActive(true);
@@ -338,7 +337,10 @@ public class ChatManager : MonoBehaviourPunCallbacks
         {
             dialog.text = "탐정님, 전 범인이 아닙니다!";
             TextEffectInterr();
-            ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
+            }
         }
     }
 
@@ -437,14 +439,18 @@ public class ChatManager : MonoBehaviourPunCallbacks
 
     public void OnClickInterrogation()
     {
-        //KJY - bool값 제어
-        string name = npcdata.npcName;
-        ConnectionKJY.instance.RequestInterrogationConversation(name, talkText.text);
-        // text 제어
-        talkingName.text = name;
-        inputFieldObject.SetActive(false);
-        inputButton.SetActive(false);
-        field.text = string.Empty;
+        if (PhotonNetwork.IsMasterClient)
+        {
+            if (InfoManagerKJY.instance.role == "Detective")
+            {
+                string name = npcdata.npcName;
+                ConnectionKJY.instance.RequestInterrogationConversation(name, talkText.text);
+                talkingName.text = name;
+                inputFieldObject.SetActive(false);
+                inputButton.SetActive(false);
+                field.text = string.Empty;
+            }
+        }
     }
 
     [PunRPC]

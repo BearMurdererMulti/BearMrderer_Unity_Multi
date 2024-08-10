@@ -2766,7 +2766,7 @@ MonoBehaviour:
   - {fileID: 5268156877430842318}
   - {fileID: 7288041868981181615}
   - {fileID: 6858983216965429797}
-  _selctedWeaponImageName: 
+  _selectedWeaponImageName: 
   putDownButton: {fileID: 5683500796684936662}
 --- !u!1 &3707076221247751938
 GameObject:

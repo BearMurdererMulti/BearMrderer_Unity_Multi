@@ -40,6 +40,7 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
 
         PhotonView pv = ChatManager.instance.GetComponent<PhotonView>();
         pv.RPC("SetWeapon", RpcTarget.All, weaponName);
-        pv.RPC("StartTalkinterrogation", RpcTarget.All);
+        //pv.RPC("StartTalkinterrogation", RpcTarget.MasterClient);
+        ChatManager.instance.StartTalkinterrogation();
     }
 }

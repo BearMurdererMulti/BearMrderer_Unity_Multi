@@ -1,9 +1,10 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
-public class KJY_TimeLine : MonoBehaviour
+public class KJY_TimeLine : MonoBehaviourPun
 {
     [SerializeField] PlayableDirector director;
 
@@ -15,7 +16,13 @@ public class KJY_TimeLine : MonoBehaviour
 
     private void OnTimelineFinished()
     {
-        KJY_SceneManager.instance.ChangeScene(0);
-        Debug.Log("로드 완료");
+        photonView.RPC("GoEndingCredit", RpcTarget.All);
+    }
+
+    [PunRPC]
+    private void GoEndingCredit()
+    {
+        string sceneName = SceneName.EndingCredit.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
     }
 }

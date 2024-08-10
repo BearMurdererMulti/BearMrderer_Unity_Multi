@@ -24898,8 +24898,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 819982915}
   serializedVersion: 2
-  m_LocalRotation: {x: 6.541504e-10, y: 0.94952273, z: -0.31369832, w: 0.0000000019800255}
-  m_LocalPosition: {x: -24.099997, y: 7.2900004, z: 24.4}
+  m_LocalRotation: {x: -0.00027365517, y: -0.54253983, z: -0.0001767423, w: 0.84003}
+  m_LocalPosition: {x: -22.732428, y: 1.112376, z: 8.358842}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29507,6 +29507,7 @@ MonoBehaviour:
   arrestNpcSpot: {fileID: 0}
   arrestCameraSpot: {fileID: 0}
   heartRate: 60
+  isSeletNpc: 0
 --- !u!4 &936961664
 Transform:
   m_ObjectHideFlags: 0
@@ -33991,6 +33992,7 @@ MonoBehaviour:
   buttons: []
   buttonTexts: []
   talkButton: {fileID: 0}
+  KeyWord: {fileID: 0}
   cam: {fileID: 819982919}
   camTopDown: {fileID: 819982921}
   camBack: {fileID: 819982922}
@@ -68591,13 +68593,14 @@ GameObject:
   m_Component:
   - component: {fileID: 6336353315467802419}
   - component: {fileID: 6336353315467802420}
+  - component: {fileID: 6336353315467802421}
   m_Layer: 0
   m_Name: MoveFirstScene
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &401714536757649676
 GameObject:
   m_ObjectHideFlags: 0
@@ -79773,6 +79776,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   director: {fileID: 1382800313}
+--- !u!114 &6336353315467802421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400462520861227527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!4 &6354940223031407036
 Transform:
   m_ObjectHideFlags: 0

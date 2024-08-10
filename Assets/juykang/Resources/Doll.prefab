@@ -4342,7 +4342,7 @@ MonoBehaviour:
   dollInventoryItems: {fileID: 3306057083247988900}
   dogInventoryItems: {fileID: 0}
   imtems: []
-  _selctedWeaponImageName: 
+  _selectedWeaponImageName: 
   putDownButton: {fileID: 0}
 --- !u!1 &4456167124412041604
 GameObject:
