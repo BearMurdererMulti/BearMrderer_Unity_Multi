@@ -80,6 +80,7 @@ public class GameManager_KJY : MonoBehaviourPun
 
     bool Winner;
     public int heartRate = 60;
+    public bool isSeletNpc = false;
 
     private void Awake()
     {
@@ -120,6 +121,7 @@ public class GameManager_KJY : MonoBehaviourPun
                     {
                         if (hit.collider.CompareTag("Npc") || hit.collider.CompareTag("NpcDummy"))
                         {
+                            isSeletNpc = true;
                             PhotonView view =  hit.collider.GetComponent<PhotonView>();
                             int viewID = view.ViewID;
                             PhotonConnection.Instance.UpdateChooseNpc(viewID);
@@ -146,6 +148,7 @@ public class GameManager_KJY : MonoBehaviourPun
         selectBtn.SetActive(true);
         selectUI.SetActive(true);
         FollowNpc(obj);
+        isSeletNpc = false;
         print(obj.gameObject.name);
     }
 
@@ -309,6 +312,7 @@ public class GameManager_KJY : MonoBehaviourPun
     {
         InfoManagerKJY.instance.voteNightNumber = UI.instance.dayInt;
         InfoManagerKJY.instance.voteNpcName = null;
+        isSeletNpc = false;
         interrogationBtn(false);
         StartCoroutine(EffectNight());
     }

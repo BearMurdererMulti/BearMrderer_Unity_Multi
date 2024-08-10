@@ -405,7 +405,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 isTimerover = false;
                 interrogation = false;
                 talk = false;
-                //weaponmanager.instance.PutdownButtonActive();
+                WeaponManager.Instance.PutdownButtonActive();
             }
             dialog.text = string.Empty;
             inputFieldObject.SetActive(true);

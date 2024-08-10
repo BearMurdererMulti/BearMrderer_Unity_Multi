@@ -19,5 +19,6 @@ public class KeyWordData : MonoBehaviour
     {
         sprite.sprite = Resources.Load<Sprite>("WeaponSprite/" + name);
         keyName.text = name;
+        KeyWord = name;
     }
 }
