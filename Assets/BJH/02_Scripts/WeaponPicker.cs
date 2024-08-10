@@ -79,7 +79,9 @@ public class WeaponPicker : MonoBehaviourPunCallbacks
             targetPhotonView.RPC("UpdateInventoryImage", RpcTarget.All, pickedWeapon.name);
 
             // 주연의 키워드 동기화해주는 pun rpc
-            //KJY_KeyWord.
+            PhotonView pv = KJY_KeyWord.instance.GetComponent<PhotonView>();
+            pv.RPC("SetUI", RpcTarget.MasterClient, pickedWeapon.name);
+
         }
 
     }
