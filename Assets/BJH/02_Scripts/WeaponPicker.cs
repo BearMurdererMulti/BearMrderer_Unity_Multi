@@ -77,6 +77,9 @@ public class WeaponPicker : MonoBehaviourPunCallbacks
             PhotonView targetPhotonView = GameObject.Find("WeaponManager").GetComponent<PhotonView>();
 
             targetPhotonView.RPC("UpdateInventoryImage", RpcTarget.All, pickedWeapon.name);
+
+            // 주연의 키워드 동기화해주는 pun rpc
+            //KJY_KeyWord.
         }
 
     }

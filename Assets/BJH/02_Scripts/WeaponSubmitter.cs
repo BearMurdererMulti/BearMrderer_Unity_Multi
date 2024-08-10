@@ -27,6 +27,7 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
     
     public void PutDownWeaponOnTr(string weaponName)
     {
+        Debug.Log("weaponsubmitter입니다. 무기 내려놓겠삼. 받은 무기는" + weaponName);
         foreach(GameObject weapon in weaponPrefabs)
         {
             if(weapon.name == weaponName)

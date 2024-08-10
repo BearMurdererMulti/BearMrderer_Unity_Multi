@@ -92,6 +92,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void PutdownSelectedWeapon(string weaponName)
     {
+        Debug.Log($"무기를 내려놓기 동기화 하겠습니다");
         weaponSubmitter.PutDownWeaponOnTr(weaponName);
     }
 }

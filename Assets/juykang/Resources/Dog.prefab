@@ -2766,7 +2766,7 @@ MonoBehaviour:
   - {fileID: 5268156877430842318}
   - {fileID: 7288041868981181615}
   - {fileID: 6858983216965429797}
-  selctedWeaponImageName: 
+  _selctedWeaponImageName: 
   putDownButton: {fileID: 5683500796684936662}
 --- !u!1 &3707076221247751938
 GameObject:
@@ -6812,7 +6812,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7448942247246759366}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8127947878058556995}
+        m_TargetAssemblyTypeName: DogCanvas, Assembly-CSharp
+        m_MethodName: OnClick_PuntDownButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9161521545889658610
 GameObject:
   m_ObjectHideFlags: 0

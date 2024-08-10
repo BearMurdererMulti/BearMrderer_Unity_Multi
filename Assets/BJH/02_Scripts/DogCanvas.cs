@@ -11,11 +11,11 @@ public class DogCanvas : MonoBehaviour
     [SerializeField] private InventoryItems dogInventoryItems;
 
     [SerializeField] private List<Image> imtems; // canvs에 imtems안에 item이 있다.. 이걸 직접 assign
-    [SerializeField] private string _selctedWeaponImageName;
+    [SerializeField] private string _selectedWeaponImageName;
 
     public string SelectedWeaponImageName
     {
-        get { return _selctedWeaponImageName; }
+        get { return _selectedWeaponImageName; }
     }
 
     [SerializeField] public Button putDownButton; // 취조실 갈 때만 on
@@ -47,8 +47,13 @@ public class DogCanvas : MonoBehaviour
     // 누르면 선택된 무기와 함께 내려놓음
     public void OnClick_PuntDownButton()
     {
+        Debug.Log("무기를 내려놓겠습니다 후후..");
+        Debug.Log($"내려놓을 무기 이름은 {_selectedWeaponImageName} 입니다.");
+
+
         PhotonView pv = WeaponManager.Instance.GetComponent<PhotonView>();
-        pv.RPC("PutdownSelectedWeapon", RpcTarget.All, _selctedWeaponImageName);
+
+        pv.RPC("PutdownSelectedWeapon", RpcTarget.All, _selectedWeaponImageName);
         //pv.RPC("PutdownSelectedWeapon", RpcTarget.All, weaponName);
     }
 
@@ -56,6 +61,6 @@ public class DogCanvas : MonoBehaviour
     // 그리고 자기 자신을 삽입
     public void OnClick_SelectWeapon(Image itemSourceImage)
     {
-        _selctedWeaponImageName = itemSourceImage.sprite.name;
+        _selectedWeaponImageName = itemSourceImage.sprite.name;
     }
 }
