@@ -17,8 +17,8 @@ public enum SoundList
 public class AudioManager : MonoBehaviourPunCallbacks
 {
     private static AudioManager _instance;
-    [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>(); // 오디오 소스 담기
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private List<AudioClip> _audioClips = new List<AudioClip>(); // 오디오 클립들 담기
+    [SerializeField] private AudioSource _audioSource; // 오디오 소스
     private int index;
 
     public static AudioManager Instnace
@@ -44,7 +44,15 @@ public class AudioManager : MonoBehaviourPunCallbacks
     {
         _audioSource = GetComponent<AudioSource>();
     }
-    
+
+    private void Update()
+    {
+        if(_audioSource == null)
+        {
+            _audioSource = GetComponent<AudioSource>();
+        }
+    }
+
     // duration time은 페이드인과 페이드 아웃용
     public void PlaySound(SoundList soundList, float volume, float durationTime)
     {
@@ -55,14 +63,11 @@ public class AudioManager : MonoBehaviourPunCallbacks
     public void StopSoundPun()
     {
         _audioSource.Stop();
-        _audioSource = null;
     }
 
     public void StopSound()
     {
         _audioSource.Stop();
-        _audioSource = null;
-
     }
 
     IEnumerator CoPlayMusicWithFadeIn(SoundList soundList, float volume, float durationTime)
