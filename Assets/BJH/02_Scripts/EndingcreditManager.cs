@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,20 +24,23 @@ public class EndingcreditManager : MonoBehaviour
 
     private void Start()
     {
+        AudioManager.Instnace.PlaySound(BGM_List.Ending_Positive01, 0.15f, 2f);
         // 노래 실행
-        if(InfoManagerKJY.instance.finalLetterResultCode == "WIN")
-        {
-            AudioManager.Instnace.PlaySound(BGM_List.Ending_Positive01, 0.15f, 2f);
-        }
-        else
-        {
-            AudioManager.Instnace.PlaySound(BGM_List.Ending_Negative03, 0.15f, 2f);
-        }
+        //if(InfoManagerKJY.instance.finalLetterResultCode == "WIN")
+        //{
+        //    AudioManager.Instnace.PlaySound(BGM_List.Ending_Positive01, 0.15f, 2f);
+        //}
+        //else
+        //{
+        //    AudioManager.Instnace.PlaySound(BGM_List.Ending_Negative03, 0.15f, 2f);
+        //}
 
         // 코루틴 실행
-        StartCoroutine(CoInstantiateLetter());
+        //StartCoroutine(CoInstantiateLetter());
 
         creditTr = bg.GetComponent<EndingcreditUI>().credit.transform; // ending credit의 tr값 받아오기
+
+        isLetterDone = true;
     }
 
     #region 통신
@@ -97,12 +101,13 @@ public class EndingcreditManager : MonoBehaviour
 
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
-                    Debug.Log("크레딧을 종료하고 씬을 이동합니다.");
+                    Application.Quit();
                 }
 
                 if (bg.GetComponent<EndingcreditUI>().credit.transform.position.y >= 4900)
                 {
-                    Debug.Log("크레딧을 종료하고 씬을 이동합니다.");
+                    Application.Quit();
+
                 }
             }
         }
