@@ -967,8 +967,7 @@ public class TryFinalSetting : ConnectionStratege
         FinalResponse reponse = new FinalResponse();
         reponse = JsonUtility.FromJson<FinalResponse>(result.text);
 
-        InfoManagerKJY.instance.FinalWordConnect(reponse.message.finalWords);
-
+        PhotonConnection.Instance.UpdateFinalConnection(reponse);
         // 변지환 추가
         long gameSetNo = InfoManagerKJY.instance.gameSetNo;
         EndingLetterConnection.Instance.LetterConnection(gameSetNo);

@@ -488,6 +488,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public void ResetInterrogation()
     {
         GameManager_KJY.instance.interrogationBtn(true);
+        inputFieldObject.SetActive(false);
         chat.SetActive(false);
         dialog.text = string.Empty;
         isTimerover = false;

@@ -337,4 +337,19 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     }
 
     #endregion
+
+    #region
+    public void UpdateFinalConnection(FinalResponse response)
+    {
+        string jsonResponse = JsonUtility.ToJson(response);
+        photonView.RPC("FinalConnectionPhoton", RpcTarget.All, jsonResponse);
+    }
+
+    [PunRPC]
+    private void FinalConnectionPhoton(string jsonResponse)
+    {
+        FinalResponse response = JsonUtility.FromJson<FinalResponse>(jsonResponse);
+        InfoManagerKJY.instance.FinalWordConnect(response.message.finalWords);
+    }
+    #endregion
 }

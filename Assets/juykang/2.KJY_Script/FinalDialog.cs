@@ -13,10 +13,10 @@ public class FinalDialog : MonoBehaviour
     private void Start()
     {
         ConnectionKJY.instance.RequestFinal();
-        murdername = InfoManagerKJY.instance.voteNpcObjectName;
-        murder = GameObject.Find(murdername);
-        murder.transform.position = murderSpot.transform.position;
-        murder.transform.rotation = murderSpot.transform.rotation;
+        //murdername = InfoManagerKJY.instance.voteNpcObjectName;
+        //murder = GameObject.Find(murdername);
+        //murder.transform.position = murderSpot.transform.position;
+        //murder.transform.rotation = murderSpot.transform.rotation;
     }
 
     public void FinalTexts(string word)
