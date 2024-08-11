@@ -52,7 +52,6 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
         //    npcList.Add(npc);
         //}
 
-        DOTween.Init();
         npcInfoList = InfoManagerKJY.instance.gameNpcList;
     }
 
@@ -161,7 +160,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             dieNpcList[i].SetActive(false);
         }
 
-        image.DOFade(1, 2);
+        image.DOFade(1, 1);
         yield return new WaitForSeconds(1);
         
         ResetPlayersSpot(true);

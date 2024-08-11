@@ -429,7 +429,7 @@ public class GameManager_KJY : MonoBehaviourPun
         OnOffUI(false);
         checkUI.SetActive(false);
         ResetSelect();
-        //UI.instance.DayAndNight(true);
+        PhotonConnection.Instance.UpdateDayAndNight(true);
         UI.instance.InitLife();
         UI.instance.UpdateDay();
         UI.instance.deathInfoImg.SetActive(false);
@@ -627,12 +627,10 @@ public class GameManager_KJY : MonoBehaviourPun
     [PunRPC]
     public void GointerrogationRoom()
     {
-        print("dadada");
         // 변지환 추가
         // 배경음악 실행
-        //AudioManager.Instnace.StopSound();
-        //AudioManager.Instnace.PlaySound(BGM_List.InterrogationRoom_BG, 0.2f, 1.5f);
-        print("Next");
+        AudioManager.Instnace.StopSound();
+        AudioManager.Instnace.PlaySound(BGM_List.InterrogationRoom_BG, 0.2f, 1.5f);
 
         selectUI.SetActive(false);
         StopAllCoroutines();
@@ -674,13 +672,13 @@ public class GameManager_KJY : MonoBehaviourPun
         yield return new WaitForSeconds(2);
         KJY_CitizenManager.Instance.ResetPlayersSpot(false);
         ChatManager.instance.Startinterrogation();
-        image.DOFade(0, 2f);
+        image.DOFade(0, 1f);
     }
 
     private IEnumerator HanginterrogationRoom()
     {
         image.DOFade(1, 1f);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         SettingInterrogationRoom();
     }
 

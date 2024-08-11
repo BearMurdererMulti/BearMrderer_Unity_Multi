@@ -257,11 +257,11 @@ public class UI : MonoBehaviourPun
         lifes[lifeCount].gameObject.SetActive(false);
         lifeCount--;
 
-        if(lifeCount < 0 && Input.GetKeyDown(KeyCode.P))
-        {
-            PhotonConnection.Instance.UpdateDayAndNight(false);
-            PhotonConnection.Instance.UpdateCitizenCall();
-        }
+       // if(lifeCount < 0 && Input.GetKeyDown(KeyCode.P))
+       // {
+       //     PhotonConnection.Instance.UpdateDayAndNight(false);
+       //     PhotonConnection.Instance.UpdateCitizenCall();
+      //  }
     }
 
     public void InitLife()
