@@ -166,7 +166,7 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     {
         UI.instance.timerText.enabled = true;
         float startTime = (float)PhotonNetwork.Time;
-        photonView.RPC("StartTimerRPC", RpcTarget.All, startTime, 120);
+        photonView.RPC("StartTimerRPC", RpcTarget.All, startTime, 60);
     }
 
     [PunRPC]

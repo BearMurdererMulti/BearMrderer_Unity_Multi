@@ -414,7 +414,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 // 취조실 나가는 로직
                 PhotonView pv = WeaponManager.Instance.gameObject.GetComponent<PhotonView>();
                 pv.RPC("PutdownButtonActive", RpcTarget.Others, true);
-                //photonView.RPC("PutdownButtonActive", RpcTarget.Others, false);
+                inputFieldObject.SetActive(false);
             }
             dialog.text = string.Empty;
             inputFieldObject.SetActive(true);
@@ -499,7 +499,6 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public void ResetInterrogation()
     {
         GameManager_KJY.instance.interrogationBtn(true);
-        inputFieldObject.SetActive(false);
         chat.SetActive(false);
         dialog.text = string.Empty;
         isTimerover = false;
