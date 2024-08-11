@@ -409,15 +409,17 @@ public class ChatManager : MonoBehaviourPunCallbacks
             {
                 
                 photonView.RPC("ResetInterrogation", RpcTarget.All);
-
                 // 변지환 추가
                 // 취조실 나가는 로직
                 PhotonView pv = WeaponManager.Instance.gameObject.GetComponent<PhotonView>();
                 pv.RPC("PutdownButtonActive", RpcTarget.Others, true);
                 inputFieldObject.SetActive(false);
             }
+            if (isTimerover == false)
+            {
+                inputFieldObject.SetActive(true);
+            }
             dialog.text = string.Empty;
-            inputFieldObject.SetActive(true);
             inputButton.SetActive(true);
         }
 
