@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,16 @@ public class FindObjects : MonoBehaviour
         foreach (Collider coll in colls)
         {
             coll.gameObject.GetComponent<MeshRenderer>().enabled = true;
+            AudioManager.Instnace.PlayEffect(SoundEffect_List.Pop_SoundEffect, 0.3f, 0f);
+
+            StartCoroutine(CoOffDogHearts());
+            gameObject.GetComponent<DogCanvas02>().SetActiveDogheard(true);
         }
+    }
+
+    IEnumerator CoOffDogHearts()
+    {
+        yield return new WaitForSeconds(2f);
+        gameObject.GetComponent<DogCanvas02>().SetActiveDogheard(false);
     }
 }

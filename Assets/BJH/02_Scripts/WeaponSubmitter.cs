@@ -25,7 +25,6 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
     
     public void PutDownWeaponOnTr(string weaponName)
     {
-        Debug.Log("weaponsubmitter입니다. 무기 내려놓겠삼. 받은 무기는" + weaponName);
         foreach(GameObject weapon in weaponPrefabs)
         {
             if(weapon.name == weaponName)
@@ -47,7 +46,6 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
 
     IEnumerator CoDeleteWeapon(GameObject go)
     {
-        yield return new WaitForSeconds(118f);
-        Destroy(go);
+        yield return new WaitForSeconds(57.0f);
     }
 }

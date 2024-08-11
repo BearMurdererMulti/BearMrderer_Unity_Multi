@@ -28,10 +28,14 @@ public class PlayerMove_BJH : MonoBehaviourPunCallbacks, IPunObservable
     //서버에서 넘어오는 회전값
     Quaternion receiveRot = Quaternion.identity;
 
+    private PhotonView _audioManagerPhotonView;
+
     private void Start()
     {
         rigid = this.GetComponent<Rigidbody>();
         animator = gameObject.GetComponent<Animator>();
+
+        _audioManagerPhotonView = AudioManager.Instnace.gameObject.GetComponent<PhotonView>();
     }
 
     void Update()
@@ -76,6 +80,7 @@ public class PlayerMove_BJH : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isRoll");
+                _audioManagerPhotonView.RPC("PlayEffect", RpcTarget.All, SoundEffect_List.Bow_SoundEffect, 0.3f, 0f);
             }
             // 돌기, 바운스, 두려움, 앉기, 선택된
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -89,6 +94,8 @@ public class PlayerMove_BJH : MonoBehaviourPunCallbacks, IPunObservable
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isFear");
+                _audioManagerPhotonView.RPC("PlayEffect", RpcTarget.All, SoundEffect_List.Bow_SoundEffect, 0.3f, 0f);
+
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
