@@ -698,7 +698,13 @@ PlayerSettings:
   XboxOneOverrideIdentityName: 
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 0
+    Game Performance: 0
+    Legacy Analytics: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -718,11 +724,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 63e224c0-a80c-473a-bfc1-d6a4287cf3ab
+  cloudProjectId: ce4d4b49-ee0d-4a5f-8eb3-adb7148c60b0
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
   projectName: gummy-unity
-  organizationId: juyeon0514two
+  organizationId: wkdghk24
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
