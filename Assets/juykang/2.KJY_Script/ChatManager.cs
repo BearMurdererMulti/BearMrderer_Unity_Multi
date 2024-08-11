@@ -227,7 +227,13 @@ public class ChatManager : MonoBehaviourPunCallbacks
         camTopDown.enabled = false;
         camBack.enabled = false;
         xButton.SetActive(false);
-        PhotonConnection.Instance.UpdatePutdownButtonActive();
+
+        // 변지환 추가
+        // 취조방 입장하는 메서드
+        PhotonView pv = WeaponManager.Instance.gameObject.GetComponent<PhotonView>();
+        pv.RPC("PutdownButtonActive", RpcTarget.Others, true);
+
+        //PhotonConnection.Instance.UpdatePutdownButtonActive();
         //StartTalkinterrogation();//임시
     }
 
@@ -403,7 +409,12 @@ public class ChatManager : MonoBehaviourPunCallbacks
             {
                 
                 photonView.RPC("ResetInterrogation", RpcTarget.All);
-                photonView.RPC("PutdownButtonActive", RpcTarget.Others);
+
+                // 변지환 추가
+                // 취조실 나가는 로직
+                PhotonView pv = WeaponManager.Instance.gameObject.GetComponent<PhotonView>();
+                pv.RPC("PutdownButtonActive", RpcTarget.Others, true);
+                //photonView.RPC("PutdownButtonActive", RpcTarget.Others, false);
             }
             dialog.text = string.Empty;
             inputFieldObject.SetActive(true);

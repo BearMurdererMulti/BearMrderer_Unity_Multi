@@ -6,12 +6,10 @@ using UnityEngine;
 public class WeaponSubmitter : MonoBehaviourPunCallbacks
 {
     [SerializeField] private Transform putdownTr; // 어디 내려놓을지 위치 잡아서 아래 코드로 assign
-    [SerializeField] private List<GameObject> weaponPrefabs; // PhotonNetwork.Instantiate로 무기를 찾으니 프리팹들 말고 미리 지정된 이름을 삽입하는건 어떨지 제시 -변지환- 리팩토링 요소
+    [SerializeField] private List<GameObject> weaponPrefabs = new List<GameObject>(); // PhotonNetwork.Instantiate로 무기를 찾으니 프리팹들 말고 미리 지정된 이름을 삽입하는건 어떨지 제시 -변지환- 리팩토링 요소
     private void Start()
     {
         WeaponManager.Instance.weaponSubmitter = this; // 자기 자신을 코드로 assign
-
-        weaponPrefabs = new List<GameObject>(); // 초기화
 
         putdownTr = WeaponManager.Instance.SubmitWeaponPosition;
     }
@@ -32,7 +30,10 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
         {
             if(weapon.name == weaponName)
             {
-                PhotonNetwork.Instantiate(weaponName, putdownTr.position, Quaternion.identity);
+                GameObject go = Instantiate(weapon, putdownTr.position, Quaternion.identity);
+                Vector3 targetScale = new Vector3(0.3f, 0.3f, 0.3f);
+                go.transform.localScale = targetScale;
+                StartCoroutine(CoDeleteWeapon(go));
             }
         }
 
@@ -42,5 +43,11 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
         pv.RPC("SetWeapon", RpcTarget.All, weaponName);
         //pv.RPC("StartTalkinterrogation", RpcTarget.MasterClient);
         ChatManager.instance.StartTalkinterrogation();
+    }
+
+    IEnumerator CoDeleteWeapon(GameObject go)
+    {
+        yield return new WaitForSeconds(118f);
+        Destroy(go);
     }
 }

@@ -88,9 +88,9 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     // 무기를 내려놓는 버튼 ui를 비/활성화 하는 메서드
     // 취조실 들어가고 나갈 때 주연이가 호출
     [PunRPC]
-    public void PutdownButtonActive()
+    public void PutdownButtonActive(bool state)
     {
-        putDownButton.gameObject.SetActive(!putDownButton.gameObject.activeSelf);
+        putDownButton.gameObject.SetActive(state);
     }
 
     // 내려놓은 무기를 동기화하는 메서드

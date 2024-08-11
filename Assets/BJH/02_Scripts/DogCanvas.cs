@@ -49,10 +49,6 @@ public class DogCanvas : MonoBehaviour
     // 누르면 선택된 무기와 함께 내려놓음
     public void OnClick_PuntDownButton()
     {
-        Debug.Log("무기를 내려놓겠습니다 후후..");
-        Debug.Log($"내려놓을 무기 이름은 {_selectedWeaponImageName} 입니다.");
-
-
         PhotonView pv = WeaponManager.Instance.GetComponent<PhotonView>();
 
         pv.RPC("PutdownSelectedWeapon", RpcTarget.All, _selectedWeaponImageName);
