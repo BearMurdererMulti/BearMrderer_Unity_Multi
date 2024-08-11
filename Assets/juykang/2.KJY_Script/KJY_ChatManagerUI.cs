@@ -12,6 +12,12 @@ public class KJY_ChatManagerUI : MonoBehaviour
     [SerializeField] GameObject keyWord;
     private void Start()
     {
+        StartCoroutine(WaitJustSecond());
+    }
+
+    IEnumerator WaitJustSecond()
+    {
+        yield return new WaitForSeconds(1);
         if (InfoManagerKJY.instance.role == "Detective")
         {
             btn.SetActive(true);
