@@ -47,5 +47,6 @@ public class WeaponSubmitter : MonoBehaviourPunCallbacks
     IEnumerator CoDeleteWeapon(GameObject go)
     {
         yield return new WaitForSeconds(57.0f);
+        Destroy(go);
     }
 }
