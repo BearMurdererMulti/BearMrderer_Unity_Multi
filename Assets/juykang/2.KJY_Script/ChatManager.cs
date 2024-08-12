@@ -250,7 +250,6 @@ public class ChatManager : MonoBehaviourPunCallbacks
         {
             int randomIndex = Random.Range(0, lines.Count);
             string selectedLine = lines[randomIndex];
-
             return selectedLine;
         }
         else
@@ -343,7 +342,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
         {
             dialog.text = "≈Ω¡§¥‘, ¿¸ π¸¿Œ¿Ã æ∆¥’¥œ¥Ÿ!";
             TextEffectInterr();
-            if (PhotonNetwork.IsMasterClient)
+            if (InfoManagerKJY.instance.role == "Detective")
             {
                 ConnectionKJY.instance.RequestInterrogationStart(npcdata.npcName, weapon);
             }
@@ -448,7 +447,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
 
     public void OnClickInterrogation()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (InfoManagerKJY.instance.role == "Detective")
         {
             if (InfoManagerKJY.instance.role == "Detective")
             {

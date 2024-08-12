@@ -61,6 +61,7 @@ public class UI : MonoBehaviourPun
     [Tooltip("Button")]
     public GameObject talkBtn, skipBtn, selectBtn;
     public Button talkBt;
+    public List<Button> onlyDetectiveButtonList;
 
 
     [Tooltip("ChatHistory")]
@@ -97,13 +98,6 @@ public class UI : MonoBehaviourPun
 
     private void Start()
     {
-        //startBtn.gameObject.SetActive(false);
-
-        //noteImg.SetActive(false);
-
-        //timeSlider.value = 0;
-        //sliderFill.GetComponent<Image>().color = Color.green;
-        //tmp01.text = dayInt.ToString(); (KJY 추가함)
         tmp01.text = (dayInt).ToString();
 
         settingImg.SetActive(false);
@@ -114,6 +108,14 @@ public class UI : MonoBehaviourPun
         selectBtn.SetActive(false);
 
         chatHistoryScrollView.SetActive(false);
+
+        if (InfoManagerKJY.instance.role == "Assistant")
+        {
+            for (int i = 0; i < onlyDetectiveButtonList.Count; i++)
+            {
+                onlyDetectiveButtonList[i].interactable = false;
+            }
+        }
     }
 
     // 통신된 npc list를 가져와서 ui를 셋팅하는 함수
