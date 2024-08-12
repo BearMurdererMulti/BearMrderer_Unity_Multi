@@ -83,27 +83,27 @@ public class AudioManager : MonoBehaviourPunCallbacks
         StartCoroutine(CoPlayAudioEffectWithFadeIn(effectList, volume, durationTime));
     }
 
-    [PunRPC]
-    // duration time은 페이드인과 페이드 아웃용
-    public void PlaySoundPun(BGM_List soundList, float volume, float durationTime)
-    {
-        StartCoroutine(CoPlayMusicWithFadeIn(soundList, volume, durationTime));
-    }
+    //[PunRPC]
+    //// duration time은 페이드인과 페이드 아웃용
+    //public void PlaySoundPun(BGM_List soundList, float volume, float durationTime)
+    //{
+    //    StartCoroutine(CoPlayMusicWithFadeIn(soundList, volume, durationTime));
+    //}
 
-    // duration time은 페이드인과 페이드 아웃용
-    [PunRPC]
-    public void PlayEffectPun(SoundEffect_List effectList, float volume, float durationTime)
-    {
-        if(PhotonNetwork.IsMasterClient)
-        {
-            Debug.Log("마스터도 음악 나와야 함");
-        }
-        else
-        {
-            Debug.Log("강아지 음악 나옴?");
-        }
-        StartCoroutine(CoPlayAudioEffectWithFadeIn(effectList, volume, durationTime));
-    }
+    //// duration time은 페이드인과 페이드 아웃용
+    //[PunRPC]
+    //public void PlayEffectPun(SoundEffect_List effectList, float volume, float durationTime)
+    //{
+    //    if(PhotonNetwork.IsMasterClient)
+    //    {
+    //        Debug.Log("마스터도 음악 나와야 함");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("강아지 음악 나옴?");
+    //    }
+    //    StartCoroutine(CoPlayAudioEffectWithFadeIn(effectList, volume, durationTime));
+    //}
 
     [PunRPC]
     public void StopSoundPun()
