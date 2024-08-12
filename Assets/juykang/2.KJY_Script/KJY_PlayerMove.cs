@@ -27,6 +27,7 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
     private float h;
     private float v;
 
+
     //서버에서 넘어오는 위치값
     Vector3 receivePos;
     //서버에서 넘어오는 회전값
@@ -147,5 +148,4 @@ public class KJY_PlayerMove : MonoBehaviourPun, IPunObservable
             v = (float)stream.ReceiveNext();
         }
     }
-
 }

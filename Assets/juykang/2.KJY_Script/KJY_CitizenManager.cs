@@ -124,7 +124,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
                 InfoManagerKJY.instance.murderObjectNumber = j;
             }
 
-            if (PhotonNetwork.IsMasterClient)
+            if (InfoManagerKJY.instance.role == "Detective")
             {
                 SetNpcRandomization(); // Randomize NPCs only on the Master Client
             }
@@ -268,7 +268,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
 
     private void SetNpcRandomization()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (InfoManagerKJY.instance.role == "Detective")
         {
             List<int> availableColors = new List<int>();
 

@@ -248,6 +248,7 @@ public class TryResgister : ConnectionStratege
         if (reponse.resultCode == "SUCCESS")
         {
             InfoManagerKJY.instance.playerName = reponse.userName;
+            ConnectionKJY.instance.GetCheckMessage("회원가입 되었습니다.");
             ConnectionKJY.instance.RegisterPopUP();
         }
         else
@@ -1611,7 +1612,17 @@ public class ConnectionKJY : MonoBehaviour
         str.url = "http://ec2-15-165-15-244.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/check-account";
         str.account = account.text;
 
-        TryAccountCheck tryAccountCheck = new TryAccountCheck(str);
+
+        if (account.text == string.Empty || ContainsWhitespace(account.text) || account.text == null || str.account.Length <= 1)
+        {
+            GetCheckMessage("올바르지 않은\n 아이디 입니다.");
+            Check();
+            print(str.account);
+        }
+        else
+        {
+            TryAccountCheck tryAccountCheck = new TryAccountCheck(str);
+        }
     }
 
     public void RequestNickNameCheck()
@@ -1621,6 +1632,18 @@ public class ConnectionKJY : MonoBehaviour
         str.nickname = nickname.text;
 
         TryNickNameCheck tryAccountCheck = new TryNickNameCheck(str);
+    }
+
+    private bool ContainsWhitespace(string input)
+    {
+        foreach (char c in input)
+        {
+            if (char.IsWhiteSpace(c))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     #region Register
@@ -1663,16 +1686,15 @@ public class ConnectionKJY : MonoBehaviour
         str.account = log_id.text;
         str.password = log_password.text;
 
-        if (str.account.Length < 4 || str.password.Length < 2)
+        if (str.account == string.Empty || str.password == string.Empty)
         {
-            GetCheckMessage("아이디나 비밀번호가 잘못됐습니다.");
+            GetCheckMessage("아이디나 비밀번호가 입력되지 않았습니다.");
             Check();
         }
         else
         {
             TryLogin trylogin = new TryLogin(str);
         }
-
     }
     #endregion
 

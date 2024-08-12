@@ -6,7 +6,7 @@ public class PlayerFaceMove : MonoBehaviour
 {
     [SerializeField] Transform target;
     public float speed = 1f;
-
+    [SerializeField] AudioClip foot;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +26,10 @@ public class PlayerFaceMove : MonoBehaviour
 
             transform.rotation = rot;
         }
+    }
+
+    public void FootStep()
+    {
+        KJY_AudioManager.instance.StartAudio(0.3f, foot);
     }
 }

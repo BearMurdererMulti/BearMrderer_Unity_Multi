@@ -110,7 +110,7 @@ public class GameManager_KJY : MonoBehaviourPun
 
     private void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (InfoManagerKJY.instance.role == "Detective")
         {
             if (KJY_CitizenManager.Instance.call == true)
             {
@@ -637,7 +637,7 @@ public class GameManager_KJY : MonoBehaviourPun
         cameratopdown.enabled = false;
         ChatManager.instance.npcdata = obj.GetComponent<NpcData>();
         Camera.main.transform.position = arrestCameraSpot.transform.position;
-        Camera.main.transform.rotation = arrestCameraSpot.transform.rotation;
+        Camera.main.transform.rotation = arrestCameraSpot.transform.localRotation;
         if (InfoManagerKJY.instance.role == "Detective")
         {
             GameObject detective = KJY_CitizenManager.Instance.player;
