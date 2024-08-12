@@ -441,34 +441,34 @@ public class TestOlny : MonoBehaviour
     //    TestIntroScenario testIntroScenario = new TestIntroScenario(introScenarioUrl);
     //}
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            // 게임이 시작되면 자동으로 로그인하여 토큰을 가져옴
-            InfoManagerKJY.instance.isLogin = true;
-            string loginUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/sign-in";
-            TestTryLogin login = new TestTryLogin("test01", "test01", "mafia", loginUrl);
-        }
+    //private void Update()
+    //{
+    //    if(Input.GetKeyDown(KeyCode.Alpha1))
+    //    {
+    //        // 게임이 시작되면 자동으로 로그인하여 토큰을 가져옴
+    //        InfoManagerKJY.instance.isLogin = true;
+    //        string loginUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/members/sign-in";
+    //        TestTryLogin login = new TestTryLogin("test01", "test01", "mafia", loginUrl);
+    //    }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            //게임 새로 만듦
-            string gameStartUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start";
-            TestGameStart gameStart = new TestGameStart(gameStartUrl);
+    //    if (Input.GetKeyDown(KeyCode.Alpha2))
+    //    {
+    //        //게임 새로 만듦
+    //        string gameStartUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/start";
+    //        TestGameStart gameStart = new TestGameStart(gameStartUrl);
 
-            // 기존 게임 로드
-            //string gameStartUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/load";
-            //ConnectGameLoad gameLoad = new ConnectGameLoad(gameStartUrl);
+    //        // 기존 게임 로드
+    //        //string gameStartUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/game/load";
+    //        //ConnectGameLoad gameLoad = new ConnectGameLoad(gameStartUrl);
 
-            //ConnectionKJY.instance.RequestLoad();
-        }
+    //        //ConnectionKJY.instance.RequestLoad();
+    //    }
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            string introScenarioUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/intro-scenario";
-            TestIntroScenario testIntroScenario = new TestIntroScenario(introScenarioUrl);
-        }
-    }
+    //    if (Input.GetKeyDown(KeyCode.Alpha3))
+    //    {
+    //        string introScenarioUrl = "http://ec2-43-201-108-241.ap-northeast-2.compute.amazonaws.com:8081/api/v1/scenario/intro-scenario";
+    //        TestIntroScenario testIntroScenario = new TestIntroScenario(introScenarioUrl);
+    //    }
+    //}
 }

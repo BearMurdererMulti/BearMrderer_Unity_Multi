@@ -71,39 +71,38 @@ public class PlayerMove_BJH : MonoBehaviourPunCallbacks, IPunObservable
                 animator.SetFloat("MoveSpeed", 0.0f);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Jump();
-            }
-
             // 스페이스는 구르기
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isRoll");
-                _audioManagerPhotonView.RPC("PlayEffect", RpcTarget.All, SoundEffect_List.Bow_SoundEffect, 0.3f, 0f);
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.Rolling, 0.3f, 0f);
             }
             // 돌기, 바운스, 두려움, 앉기, 선택된
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isSpin");
+                photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isFear");
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.SmallDogBark, 0.3f, 0f);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isBounce");
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.Bounce, 0.3f, 0f);
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isFear");
-                _audioManagerPhotonView.RPC("PlayEffect", RpcTarget.All, SoundEffect_List.Bow_SoundEffect, 0.3f, 0f);
-
+                photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isSpin");
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.Spin, 0.3f, 0f);
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isSit");
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.Smell, 0.3f, 0f);
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 photonView.RPC("PlaySpecialAnimation", RpcTarget.All, "isClicked");
+                _audioManagerPhotonView.RPC("PlayEffectPun", RpcTarget.All, SoundEffect_List.KkingKKing, 0.3f, 0f);
+
             }
         }
   

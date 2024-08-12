@@ -16,14 +16,14 @@ public class AutoLogin : MonoBehaviour
     {
 #if UNITY_EDITOR
         // F1 키를 눌렀는지 확인
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            AutoFillAndLogin();
-        }
-        if(Input.GetKeyDown(KeyCode.F2))
-        {
-            TryLogin();
-        }
+        //if (Input.GetKeyDown(KeyCode.F1))
+        //{
+        //    AutoFillAndLogin();
+        //}
+        //if(Input.GetKeyDown(KeyCode.F2))
+        //{
+        //    TryLogin();
+        //}
 #endif
     }
 

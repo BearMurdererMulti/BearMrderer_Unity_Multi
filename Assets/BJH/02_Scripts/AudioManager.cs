@@ -17,9 +17,15 @@ public enum BGM_List
 
 public enum SoundEffect_List
 {
-    Bow_SoundEffect,
-    Pop_SoundEffect,
-    Hearbeat_SoundEffect
+    Pop,
+    Hearbeat,
+    Rolling,
+    KkingKKing,
+    SmallDogBark,
+    Bounce,
+    Spin,
+    Smell,
+    //Howling
 }
 
 public class AudioManager : MonoBehaviourPunCallbacks
@@ -74,6 +80,28 @@ public class AudioManager : MonoBehaviourPunCallbacks
     // duration time은 페이드인과 페이드 아웃용
     public void PlayEffect(SoundEffect_List effectList, float volume, float durationTime)
     {
+        StartCoroutine(CoPlayAudioEffectWithFadeIn(effectList, volume, durationTime));
+    }
+
+    [PunRPC]
+    // duration time은 페이드인과 페이드 아웃용
+    public void PlaySoundPun(BGM_List soundList, float volume, float durationTime)
+    {
+        StartCoroutine(CoPlayMusicWithFadeIn(soundList, volume, durationTime));
+    }
+
+    // duration time은 페이드인과 페이드 아웃용
+    [PunRPC]
+    public void PlayEffectPun(SoundEffect_List effectList, float volume, float durationTime)
+    {
+        if(PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("마스터도 음악 나와야 함");
+        }
+        else
+        {
+            Debug.Log("강아지 음악 나옴?");
+        }
         StartCoroutine(CoPlayAudioEffectWithFadeIn(effectList, volume, durationTime));
     }
 

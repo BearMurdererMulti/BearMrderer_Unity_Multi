@@ -56,9 +56,14 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d0b3403e325953b4d9c0ce3f9cddaa28, type: 3}
   - {fileID: 8300000, guid: f56ec8b766122f945ba767e919de8e55, type: 3}
   _audioEffectClips:
-  - {fileID: 8300000, guid: b39120c9183643b46aebbcd4b8349ddb, type: 3}
   - {fileID: 8300000, guid: 1270ad4000fc5c24981d61cb68183997, type: 3}
   - {fileID: 8300000, guid: 4770a772330c791479f0c8006ed0c53c, type: 3}
+  - {fileID: 8300000, guid: 49ab1597cbad9414faf03bdf2a4906cc, type: 3}
+  - {fileID: 8300000, guid: 3c7291cac0cb620468f2aa89065fc71f, type: 3}
+  - {fileID: 8300000, guid: 046fa4f73df14fe4aabd027bc13971d9, type: 3}
+  - {fileID: 8300000, guid: 3cac6fc4d528b9442abb378e453eeb15, type: 3}
+  - {fileID: 8300000, guid: 9b8b268348b0dd64dae64602d27a1dfe, type: 3}
+  - {fileID: 8300000, guid: 23e510c892fe7764b988e0acfc02a9e9, type: 3}
   _audioSource: {fileID: 5914915793339943332}
   _effectSource: {fileID: 4549237935870968226}
 --- !u!82 &5914915793339943332
@@ -75,7 +80,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

@@ -139,6 +139,7 @@ public class CinemachineManager : MonoBehaviourPunCallbacks
         if(scriptIndex >= talkList.Count)
         {
             PhotonConnection.Instance.InGameResponsePhoton();
+            return;
         }
 
         StartCoroutine(CoSpeakHeadmanScripts());
