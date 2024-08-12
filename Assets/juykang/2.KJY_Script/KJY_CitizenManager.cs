@@ -160,7 +160,7 @@ public class KJY_CitizenManager : MonoBehaviourPunCallbacks
             dieNpcList[i].SetActive(false);
         }
 
-        image.DOFade(1, 1);
+        image.DOFade(1, 0.5f);
         yield return new WaitForSeconds(1);
         
         ResetPlayersSpot(true);

@@ -677,7 +677,7 @@ public class GameManager_KJY : MonoBehaviourPun
 
     private IEnumerator HanginterrogationRoom()
     {
-        image.DOFade(1, 1f);
+        image.DOFade(1, 0.5f);
         yield return new WaitForSeconds(2f);
         SettingInterrogationRoom();
     }

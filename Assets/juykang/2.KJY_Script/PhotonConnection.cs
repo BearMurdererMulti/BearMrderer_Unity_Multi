@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static KJY_SenarioConnection;
+using static SceneManager;
 
 public class PhotonConnection : MonoBehaviourPunCallbacks
 {
@@ -350,6 +351,21 @@ public class PhotonConnection : MonoBehaviourPunCallbacks
     {
         FinalResponse response = JsonUtility.FromJson<FinalResponse>(jsonResponse);
         InfoManagerKJY.instance.FinalWordConnect(response.message.finalWords);
+    }
+    #endregion
+
+
+    #region
+    public void UpdateFailScene()
+    {
+        photonView.RPC("GoFailScene", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void GoFailScene()
+    {
+        string sceneName = SceneName.KJY_Test_Ending_Fail.ToString();
+        PhotonNetwork.LoadLevel(sceneName);
     }
     #endregion
 }

@@ -9,6 +9,9 @@ public class FailScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        long gameSetNo = InfoManagerKJY.instance.gameSetNo;
+        EndingLetterConnection.Instance.LetterConnection(gameSetNo);
+
         for (int i = 0; i < InfoManagerKJY.instance.npcListInfo.Count; i++)
         {
             if (InfoManagerKJY.instance.npcListInfo[i].GetComponent<NpcData>().npcName ==InfoManagerKJY.instance.voteNpcName)

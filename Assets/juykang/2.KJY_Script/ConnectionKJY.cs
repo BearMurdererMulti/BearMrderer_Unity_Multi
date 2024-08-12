@@ -1051,8 +1051,7 @@ public class TryGameEndSetting : ConnectionStratege
         GameEndResponse reponse = new GameEndResponse();
         reponse = JsonUtility.FromJson<GameEndResponse>(result.text);
 
-        //KJYKJYKJY
-        // KJY_SceneManager.instance.ChangeLoseScene();
+        PhotonConnection.Instance.UpdateFailScene();
     }
 }
 #endregion
@@ -1875,8 +1874,6 @@ public class ConnectionKJY : MonoBehaviour
         TryGameEndSetting gameEnd = new TryGameEndSetting(str);
 
         // 변지환 추가
-        long gameSetNo = InfoManagerKJY.instance.gameSetNo;
-        EndingLetterConnection.Instance.LetterConnection(gameSetNo);
     }
     #endregion
 

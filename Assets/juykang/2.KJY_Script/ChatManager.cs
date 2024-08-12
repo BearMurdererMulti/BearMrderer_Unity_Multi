@@ -210,6 +210,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
     public void StartTalk()
     {
        interactiveBtn.SetActive(false);
+       inputFieldObject.SetActive(false);
        chat.SetActive(true);
        xButton.SetActive(true);
        talk = true;
@@ -414,10 +415,7 @@ public class ChatManager : MonoBehaviourPunCallbacks
                 pv.RPC("PutdownButtonActive", RpcTarget.Others, true);
                 inputFieldObject.SetActive(false);
             }
-            if (isTimerover == false)
-            {
-                inputFieldObject.SetActive(true);
-            }
+            inputFieldObject.SetActive(true);
             dialog.text = string.Empty;
             inputButton.SetActive(true);
         }
